@@ -1,14 +1,14 @@
 package com.ouresports.grimstroke.core.mapper;
 
 import com.ouresports.grimstroke.core.base.mapper.BaseMapper;
-import com.ouresports.grimstroke.core.entity.User;
+import com.ouresports.grimstroke.core.entity.Comment;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author will
- * @date 2018/11/22
+ * @date 2018/11/27
  */
 @Component
-public interface UserMapper extends BaseMapper<User> {
+public interface CommentMapper extends BaseMapper<Comment> {
 }

@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.core.mapper;
 
 import com.ouresports.grimstroke.core.base.mapper.BaseMapper;
-import com.ouresports.grimstroke.core.entity.User;
+import com.ouresports.grimstroke.core.entity.News;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
  * @date 2018/11/22
  */
 @Component
-public interface UserMapper extends BaseMapper<User> {
+public interface NewsMapper extends BaseMapper<News> {
 }
