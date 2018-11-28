@@ -6,7 +6,6 @@ import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.User;
 import com.ouresports.grimstroke.core.service.CommentService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2018/11/27
  */
 @Service
-@Transactional
 public class CommentServiceImpl extends BaseServiceImpl<Comment> implements CommentService {
     @Override
     public Comment addComment(User user, Commentable commentable, String content) {

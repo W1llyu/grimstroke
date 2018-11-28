@@ -1,7 +1,6 @@
 package com.ouresports.grimstroke.core.config;
 
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.ouresports.grimstroke.core.base.injector.ApplicationInjector;

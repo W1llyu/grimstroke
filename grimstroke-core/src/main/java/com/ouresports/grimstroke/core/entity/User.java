@@ -14,5 +14,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
-    private Long externId;
+    private String name;
+    private String token;
 }

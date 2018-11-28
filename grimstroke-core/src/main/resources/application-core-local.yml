@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    dynamic:
+      primary: grimstroke
+      datasource:
+        grimstroke:
+          username: root
+          password:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/grimstroke_dev?useSSL=false&useUnicode=true&characterEncoding=utf-8
+        arcwarden:
+          username: root
+          password:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/arc-warden_dev?useSSL=false&useUnicode=true&characterEncoding=utf-8
