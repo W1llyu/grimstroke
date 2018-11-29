@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.ouresports.grimstroke.app.base.vo.BaseVo;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.enums.Game;
-import com.ouresports.grimstroke.core.enums.NewsType;
+import com.ouresports.grimstroke.core.enums.InformationSubType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,7 +22,7 @@ import java.util.Date;
 public class NewsVo extends BaseVo<News> {
     private long id;
     private String title;
-    private NewsType type;
+    private InformationSubType type;
     private Game game;
 
     private Long commentCount;

@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.core.dto;
 
-import com.ouresports.grimstroke.core.enums.NewsType;
+import com.ouresports.grimstroke.core.enums.InformationSubType;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,7 +16,7 @@ public class NewsDto {
     private String title;
     private String content;
     private Long commentCount;
-    private NewsType type;
+    private InformationSubType type;
     private Integer gameId;
     private String coverImages;
     private Date createdAt;

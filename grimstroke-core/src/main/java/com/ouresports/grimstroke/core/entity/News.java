@@ -6,7 +6,7 @@ import com.ouresports.grimstroke.core.base.entity.BaseEntity;
 import com.ouresports.grimstroke.core.concern.Commentable;
 import com.ouresports.grimstroke.core.concern.Browsable;
 import com.ouresports.grimstroke.core.concern.InfoCollectionable;
-import com.ouresports.grimstroke.core.enums.NewsType;
+import com.ouresports.grimstroke.core.enums.InformationSubType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -25,11 +25,11 @@ import java.util.Date;
 public class News extends BaseEntity implements Browsable, Commentable, InfoCollectionable {
     private String title;
     private String coverImages;
-    private NewsType type;
+    private InformationSubType type;
     private Integer gameId;
     private String content;
     private Long associateId;
-    private Integer enabled;
+    private Boolean enabled;
 
     @TableLogic
     private Date deletedAt;

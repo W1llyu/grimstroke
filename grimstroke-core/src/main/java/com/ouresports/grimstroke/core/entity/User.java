@@ -18,4 +18,7 @@ import lombok.experimental.Accessors;
 public class User extends BaseEntity {
     private String name;
     private String token;
+    private String avatar;
+    private String phone;
+    private String type;
 }

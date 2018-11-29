@@ -17,14 +17,24 @@ import org.springframework.stereotype.Service;
 public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> implements CommentService {
     @Override
     public Comment addComment(User user, Commentable commentable, String content) {
-        String rootType;
-        long rootId;
-        // 回复评论并且该父评论为也是对评论的回复时
-        if (commentable.getClass() == Comment.class && ((Comment) commentable).getRootType().equals(Comment.class.getSimpleName())) {
+        String rootType, subRootType = null;
+        Long rootId, subRootId = null;
+        // 回复评论时
+        if (commentable.getClass() == Comment.class) {
             Comment parentComment = (Comment) commentable;
+            // 父评论也是对评论的回复
+            if (parentComment.getSubRootType() != null) {
+                subRootType = parentComment.getSubRootType();
+                subRootId = parentComment.getSubRootId();
+            } else {
+                // 父评论是对信息流的评论
+                subRootType = parentComment.getCommentableType();
+                subRootId = parentComment.getId();
+            }
             rootType = parentComment.getRootType();
             rootId = parentComment.getRootId();
         } else {
+            // 直接对信息流评论
             rootType = commentable.getCommentableType();
             rootId = commentable.getId();
         }
@@ -32,6 +42,8 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
                 .setUserId(user.getId())
                 .setRootType(rootType)
                 .setRootId(rootId)
+                .setSubRootType(subRootType)
+                .setSubRootId(subRootId)
                 .setTargetType(commentable.getCommentableType())
                 .setTargetId(commentable.getId())
                 .setContent(content);

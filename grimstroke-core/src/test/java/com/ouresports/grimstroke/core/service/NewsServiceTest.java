@@ -1,9 +1,10 @@
 package com.ouresports.grimstroke.core.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
-import com.ouresports.grimstroke.core.dto.NewsDto;
+import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.entity.User;
@@ -24,8 +25,9 @@ public class NewsServiceTest extends GrimstrokeCoreApplicationTest {
     private NewsService newsService;
 
     @Test
-    public void testGetNewsDto() {
-        IPage<NewsDto> newsDtos = newsService.getNewsDto(new Page<>(1, 10), null);
+    public void testGetAllInformation() {
+        QueryWrapper<InformationDto> wrapper = new QueryWrapper<InformationDto>().eq("game_id", 3).eq("enabled", true);
+        IPage<InformationDto> informationDtos = newsService.getAllInformationDtos(new Page<>(1, 2), wrapper);
     }
 
     public void testAddComment() {

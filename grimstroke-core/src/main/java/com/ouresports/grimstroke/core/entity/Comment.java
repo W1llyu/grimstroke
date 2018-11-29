@@ -23,6 +23,8 @@ public class Comment extends BaseEntity implements Commentable, Likable {
     private Long userId;
     private String rootType;
     private Long rootId;
+    private String subRootType;
+    private Long subRootId;
     private String targetType;
     private Long targetId;
     private String content;

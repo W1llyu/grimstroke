@@ -3,11 +3,13 @@ package com.ouresports.grimstroke.core.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.core.base.service.BaseServiceImpl;
-import com.ouresports.grimstroke.core.dto.InfoCollectionDto;
+import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.mapper.InfoCollectionMapper;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *
@@ -17,7 +19,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMapper, InfoCollection> implements InfoCollectionService {
     @Override
-    public IPage<InfoCollectionDto> getNewsDto(IPage<InfoCollectionDto> page, Wrapper<InfoCollection> wrapper) {
-        return null;
+    public List<InformationDto> getInformationDtos(Wrapper<InformationDto> wrapper) {
+        return baseMapper.selectInformationDtos(wrapper);
+    }
+
+    @Override
+    public IPage<InformationDto> getInformationDtos(IPage<InformationDto> page,
+                                                   long infoCollectionId,
+                                                   Wrapper<InformationDto> wrapper) {
+        List<InformationDto> list = baseMapper.selectInformationDtosOfCol(page, infoCollectionId, wrapper);
+        page.setRecords(list);
+        return page;
     }
 }

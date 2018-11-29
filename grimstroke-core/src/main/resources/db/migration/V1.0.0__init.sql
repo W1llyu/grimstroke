@@ -20,6 +20,7 @@ CREATE TABLE `news` (
 CREATE TABLE `videos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
+  `cover_images` varchar(255) NOT NULL DEFAULT '[]',
   `address` varchar(255) NOT NULL,
   `game_id` int(10),
   `tag_id` bigint(20),
@@ -61,8 +62,10 @@ CREATE TABLE `info_collections_informations` (
 CREATE TABLE `comments` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `root_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `root_type` varchar(255) NOT NULL,
   `root_id` bigint(20) NOT NULL,
+  `sub_root_type` varchar(255),
+  `sub_root_id` bigint(20),
   `target_type` varchar(255) NOT NULL,
   `target_id` bigint(20) NOT NULL,
   `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -73,6 +76,7 @@ CREATE TABLE `comments` (
   PRIMARY KEY (`id`),
   KEY `index_comments_on_user_id` (`user_id`),
   KEY `index_comments_on_root_type_and_root_id` (`root_type`,`root_id`),
+  KEY `index_comments_on_sub_root_type_and_sub_root_id` (`sub_root_type`,`sub_root_id`),
   KEY `index_comments_on_target_type_and_target_id` (`target_type`,`target_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author will
  * @date 2018/11/28
  */
-public enum NewsType implements IEnum {
+public enum InformationSubType implements IEnum {
     /**
      * 普通资讯
      */
@@ -26,7 +26,7 @@ public enum NewsType implements IEnum {
 
     private String type;
 
-    NewsType(final String type) {
+    InformationSubType(final String type) {
         this.type = type;
     }
 

@@ -20,19 +20,22 @@ public class CommentServiceTest extends GrimstrokeCoreApplicationTest {
 
     @Test
     public void testReplyComment() {
-        User user = userService.findBy(null);
+        User user = userService.find(7972);
         Comment commentable = commentService.findBy(null);
         Comment comment = commentService.addComment(user, commentable, "测试回复评论");
-        Assert.assertEquals(comment.getRootType(), commentable.getCommentableType());
-        Assert.assertEquals(comment.getRootId(), commentable.getId());
+        Assert.assertEquals(comment.getRootType(), commentable.getRootType());
+        Assert.assertEquals(comment.getRootId(), commentable.getRootId());
+        Assert.assertEquals(comment.getSubRootType(), commentable.getCommentableType());
+        Assert.assertEquals(comment.getSubRootId(), commentable.getId());
         Assert.assertEquals(comment.getTargetType(), commentable.getCommentableType());
         Assert.assertEquals(comment.getTargetId(), commentable.getId());
     }
 
     @Test
     public void testReplyReplication() {
-        User user = userService.findBy(null);
-        Comment commentable = commentService.findBy(new QueryWrapper<Comment>().eq("root_type", Comment.class.getSimpleName()));
+        User user = userService.find(7972);
+        Comment commentable = commentService.findBy(new QueryWrapper<Comment>()
+                .eq("sub_root_type", Comment.class.getSimpleName()));
         if (commentable == null || user == null) {
             return;
         }

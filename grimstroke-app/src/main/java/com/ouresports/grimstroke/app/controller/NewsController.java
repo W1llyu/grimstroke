@@ -49,7 +49,7 @@ public class NewsController extends BaseController {
     public ResponseEntity read(@PathVariable long id) throws Exception {
         authenticateUser();
         News news = loadNewsById(id);
-        usersNewsService.findOrCreateBy(new UsersInformation().setNewsId(news.getId()).setUserId(currentUser.getId()));
+        usersNewsService.addUserReadable(currentUser, news);
         return render(ResultTemplate.createOk());
     }
 

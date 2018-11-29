@@ -1,12 +1,9 @@
 package com.ouresports.grimstroke.core.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.core.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.core.dto.InformationDto;
-import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.mapper.NewsMapper;
 import com.ouresports.grimstroke.core.service.NewsService;
@@ -21,16 +18,15 @@ import java.util.List;
  */
 @Service
 public class NewsServiceImpl extends BaseServiceImpl<NewsMapper, News> implements NewsService {
+
     @Override
-    public IPage<NewsDto> getNewsDto(IPage<NewsDto> page, Wrapper<News> wrapper) {
-        List<NewsDto> newsDtos = baseMapper.selectNewsDto(page, wrapper == null ? new QueryWrapper<>() : wrapper);
-        page.setRecords(newsDtos);
-        return page;
+    public List<InformationDto> getInformationDtos(Wrapper<InformationDto> wrapper) {
+        return baseMapper.selectInformationDtos(wrapper);
     }
 
     @Override
-    public IPage<InformationDto> getAllInformationDto(IPage<InformationDto> page) {
-        List<InformationDto> informationDtos = baseMapper.selectAllInformationDto(page);
+    public IPage<InformationDto> getAllInformationDtos(IPage<InformationDto> page, Wrapper<InformationDto> wrapper) {
+        List<InformationDto> informationDtos = baseMapper.selectAllInformationDto(page, wrapper);
         page.setRecords(informationDtos);
         return page;
     }

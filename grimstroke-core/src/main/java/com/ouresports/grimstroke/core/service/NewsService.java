@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.core.base.service.Service;
 import com.ouresports.grimstroke.core.dto.InformationDto;
-import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.News;
+
+import java.util.List;
 
 /**
  *
@@ -13,7 +14,13 @@ import com.ouresports.grimstroke.core.entity.News;
  * @date 2018/11/22
  */
 public interface NewsService extends Service<News> {
-    IPage<NewsDto> getNewsDto(IPage<NewsDto> page, Wrapper<News> wrapper);
+    List<InformationDto> getInformationDtos(Wrapper<InformationDto> wrapper);
 
-    IPage<InformationDto> getAllInformationDto(IPage<InformationDto> page);
+    /**
+     * 获取所有的信息流
+     * @param page
+     * @param wrapper
+     * @return
+     */
+    IPage<InformationDto> getAllInformationDtos(IPage<InformationDto> page, Wrapper<InformationDto> wrapper);
 }
