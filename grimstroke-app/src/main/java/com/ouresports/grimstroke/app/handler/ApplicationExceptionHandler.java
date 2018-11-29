@@ -1,6 +1,7 @@
 package com.ouresports.grimstroke.app.handler;
 
-import com.ouresports.grimstroke.app.base.dto.ApiResult;
+import com.ouresports.grimstroke.app.base.template.ResultTemplate;
+import com.ouresports.grimstroke.app.exception.*;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,10 +19,15 @@ public class ApplicationExceptionHandler {
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity notFoundExceptionHandler(NotFoundException e) {
-        return generateResponseEntity(ApiResult.notFound());
+        return generateResponseEntity(ResultTemplate.notFound());
     }
 
-    private ResponseEntity generateResponseEntity(ApiResult result) {
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity applicationExceptionHandler(ApplicationException e) {
+        return generateResponseEntity(e.toResult());
+    }
+
+    private ResponseEntity generateResponseEntity(ResultTemplate result) {
         return new ResponseEntity<>(result, result.getStatus());
     }
 }

@@ -27,6 +27,7 @@ public class WebMvcConfigure extends WebMvcConfigurationSupport {
         FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
+        config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);

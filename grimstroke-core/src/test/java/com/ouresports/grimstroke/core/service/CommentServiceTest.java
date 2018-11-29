@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.core.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ouresports.grimstroke.core.BaseTest;
+import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.User;
 import org.junit.Assert;
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 /**
  * Created by will on 2018/11/27.
  */
-public class CommentServiceTest extends BaseTest {
+public class CommentServiceTest extends GrimstrokeCoreApplicationTest {
     @Resource
     private CommentService commentService;
     @Resource
@@ -33,7 +33,7 @@ public class CommentServiceTest extends BaseTest {
     public void testReplyReplication() {
         User user = userService.findBy(null);
         Comment commentable = commentService.findBy(new QueryWrapper<Comment>().eq("root_type", Comment.class.getSimpleName()));
-        if (commentable == null) {
+        if (commentable == null || user == null) {
             return;
         }
         Comment comment = commentService.addComment(user, commentable, "测试回复回复");

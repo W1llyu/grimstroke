@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.core.mapper.NewsMapper">
+    <select id="selectInfoCollectionDtos" resultType="com.ouresports.grimstroke.core.dto.InfoCollectionDto">
+        SELECT
+          `news`.*,
+          COUNT(`comments`.`id`) + COUNT(`sub_comments`.`id`) AS `comment_count`
+        FROM `info_collections`
+        LEFT OUTER JOIN `comments`
+          ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id`
+        LEFT OUTER JOIN `comments` AS `sub_comments`
+          ON `sub_comments`.`root_type` = 'Comment' AND `sub_comments`.`root_id` = `comments`.`id`
+        GROUP BY `news`.`id`
+        ${ew.sqlSegment}
+    </select>
+</mapper>

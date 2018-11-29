@@ -4,6 +4,7 @@ import com.ouresports.grimstroke.core.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.core.concern.Commentable;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.User;
+import com.ouresports.grimstroke.core.mapper.CommentMapper;
 import com.ouresports.grimstroke.core.service.CommentService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @date 2018/11/27
  */
 @Service
-public class CommentServiceImpl extends BaseServiceImpl<Comment> implements CommentService {
+public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> implements CommentService {
     @Override
     public Comment addComment(User user, Commentable commentable, String content) {
         String rootType;
@@ -34,7 +35,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
                 .setTargetType(commentable.getCommentableType())
                 .setTargetId(commentable.getId())
                 .setContent(content);
-        create(comment);
+        save(comment);
         return comment;
     }
 }

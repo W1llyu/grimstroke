@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
  * @author will
  * @date 2018/11/27
  */
-public abstract class BaseController {
+public abstract class AbstractController {
     protected ResponseEntity render(Object obj) {
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }

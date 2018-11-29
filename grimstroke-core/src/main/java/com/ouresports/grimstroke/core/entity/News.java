@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.core.base.entity.BaseEntity;
 import com.ouresports.grimstroke.core.concern.Commentable;
+import com.ouresports.grimstroke.core.concern.Browsable;
+import com.ouresports.grimstroke.core.concern.InfoCollectionable;
+import com.ouresports.grimstroke.core.enums.NewsType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -17,10 +21,14 @@ import java.util.Date;
 @TableName("news")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class News extends BaseEntity implements Commentable {
+@Accessors(chain=true)
+public class News extends BaseEntity implements Browsable, Commentable, InfoCollectionable {
     private String title;
-    private String coverImage;
+    private String coverImages;
+    private NewsType type;
+    private Integer gameId;
     private String content;
+    private Long associateId;
     private Integer enabled;
 
     @TableLogic
@@ -28,6 +36,16 @@ public class News extends BaseEntity implements Commentable {
 
     @Override
     public String getCommentableType() {
-        return this.getClass().getSimpleName();
+        return getPolymorphicType();
+    }
+
+    @Override
+    public String getBrowsableType() {
+        return getPolymorphicType();
+    }
+
+    @Override
+    public String getInfoCollectionableType() {
+        return getPolymorphicType();
     }
 }

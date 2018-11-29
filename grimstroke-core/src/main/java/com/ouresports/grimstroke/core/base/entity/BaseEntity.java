@@ -21,4 +21,8 @@ public abstract class BaseEntity {
 
     @TableField("updated_at")
     protected Date updatedAt;
+
+    public String getPolymorphicType() {
+        return getClass().getSimpleName();
+    }
 }

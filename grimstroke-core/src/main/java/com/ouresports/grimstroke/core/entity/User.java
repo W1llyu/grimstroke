@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.core.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  *
@@ -13,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @TableName("users")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Accessors(chain=true)
 public class User extends BaseEntity {
     private String name;
     private String token;

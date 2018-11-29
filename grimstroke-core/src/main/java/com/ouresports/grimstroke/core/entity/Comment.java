@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.core.base.entity.BaseEntity;
 import com.ouresports.grimstroke.core.concern.Commentable;
+import com.ouresports.grimstroke.core.concern.Likable;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -18,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class Comment extends BaseEntity implements Commentable {
+public class Comment extends BaseEntity implements Commentable, Likable {
     private Long userId;
     private String rootType;
     private Long rootId;
@@ -31,6 +32,11 @@ public class Comment extends BaseEntity implements Commentable {
 
     @Override
     public String getCommentableType() {
-        return this.getClass().getSimpleName();
+        return getPolymorphicType();
+    }
+
+    @Override
+    public String getLikableType() {
+        return getPolymorphicType();
     }
 }

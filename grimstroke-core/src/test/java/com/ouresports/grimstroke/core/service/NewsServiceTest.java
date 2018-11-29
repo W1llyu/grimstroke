@@ -1,6 +1,9 @@
 package com.ouresports.grimstroke.core.service;
 
-import com.ouresports.grimstroke.core.BaseTest;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
+import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.entity.User;
@@ -12,7 +15,7 @@ import javax.annotation.Resource;
 /**
  * Created by will on 2018/11/23.
  */
-public class NewsServiceTest extends BaseTest {
+public class NewsServiceTest extends GrimstrokeCoreApplicationTest {
     @Resource
     private CommentService commentService;
     @Resource
@@ -21,9 +24,16 @@ public class NewsServiceTest extends BaseTest {
     private NewsService newsService;
 
     @Test
+    public void testGetNewsDto() {
+        IPage<NewsDto> newsDtos = newsService.getNewsDto(new Page<>(1, 10), null);
+    }
+
     public void testAddComment() {
         User user = userService.findBy(null);
         News news = newsService.findBy(null);
+        if (user == null || news == null) {
+            return;
+        }
         Comment comment = commentService.addComment(user, news, "测试评论");
         Assert.assertEquals(comment.getRootType(), news.getCommentableType());
         Assert.assertEquals(comment.getRootId(), news.getId());

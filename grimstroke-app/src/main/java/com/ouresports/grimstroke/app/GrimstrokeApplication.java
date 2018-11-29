@@ -14,8 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
         "com.ouresports.grimstroke.app",
         "com.ouresports.grimstroke.core"
 })
-public class GrimStrokeApplication {
+public class GrimstrokeApplication {
     public static void main(String[] argvs) {
-        SpringApplication.run(GrimStrokeApplication.class, argvs);
+        SpringApplication.run(GrimstrokeApplication.class, argvs);
     }
 }

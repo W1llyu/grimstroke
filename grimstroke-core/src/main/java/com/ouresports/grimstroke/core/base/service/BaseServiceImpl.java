@@ -4,27 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ouresports.grimstroke.core.util.ReflectUtil;
 import org.apache.ibatis.exceptions.TooManyResultsException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
  * @author will
- * @date 2018/11/22
+ * @date 2018/11/28
  */
-public class BaseServiceImpl<T> implements Service<T> {
-    @Autowired
-    protected BaseMapper<T> mapper;
-
+public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements Service<T> {
     @Override
     public T find(long id) {
-        return mapper.selectById(id);
+        return getById(id);
     }
 
     @Override
@@ -32,61 +28,82 @@ public class BaseServiceImpl<T> implements Service<T> {
         if (wrapper == null) {
             wrapper = new QueryWrapper<>();
         }
-        return mapper.selectOne(wrapper.last("LIMIT 1"));
+        return baseMapper.selectOne(wrapper.last("LIMIT 1"));
     }
 
     @Override
     public T findOne(Wrapper<T> wrapper) throws TooManyResultsException {
-        return mapper.selectOne(wrapper);
+        return getOne(wrapper);
     }
 
     @Override
-    public List<T> whereBatchIds(Collection<? extends Serializable> idList) {
-        return mapper.selectBatchIds(idList);
+    public IPage<T> list(IPage<T> var1, Wrapper<T> var2) {
+        return page(var1, var2);
     }
 
     @Override
-    public List<T> where(Wrapper<T> wrapper) {
-        return mapper.selectList(wrapper);
-    }
-
-    @Override
-    public IPage<T> where(IPage<T> iPage, Wrapper<T> wrapper) {
-        return mapper.selectPage(iPage, wrapper);
-    }
-
-    @Override
-    public int count(Wrapper<T> wrapper) {
-        return mapper.selectCount(wrapper);
-    }
-
-    @Override
-    public int create(T t) {
+    public boolean save(T t) {
         initTimestamp(t, "createdAt");
         initTimestamp(t, "updatedAt");
-        return mapper.insert(t);
+        return super.save(t);
     }
 
     @Override
-    public int updateById(T t) {
-        initTimestamp(t, "updatedAt");
-        return mapper.updateById(t);
+    public boolean saveBatch(Collection<T> collection) {
+        for(T t: collection) {
+            initTimestamp(t, "createdAt");
+            initTimestamp(t, "updatedAt");
+        }
+        return super.saveBatch(collection);
     }
 
     @Override
-    public int update(T t, Wrapper<T> wrapper) {
-        initTimestamp(t, "updatedAt");
-        return mapper.update(t, wrapper);
+    public boolean saveBatch(Collection<T> collection, int batchSize) {
+        for(T t: collection) {
+            initTimestamp(t, "createdAt");
+            initTimestamp(t, "updatedAt");
+        }
+        return super.saveBatch(collection, batchSize);
     }
 
     @Override
-    public int deleteById(long id) {
-        return mapper.deleteById(id);
+    public boolean updateById(T t) {
+        updateTimestamp(t, "updatedAt");
+        return super.updateById(t);
     }
 
     @Override
-    public int delete(Wrapper<T> wrapper) {
-        return mapper.delete(wrapper);
+    public boolean update(T t, Wrapper<T> wrapper) {
+        updateTimestamp(t, "updatedAt");
+        return super.update(t, wrapper);
+    }
+
+    @Override
+    public boolean updateBatchById(Collection<T> collection) {
+        for(T t: collection) {
+            updateTimestamp(t, "updatedAt");
+        }
+        return super.updateBatchById(collection);
+    }
+
+    @Override
+    public boolean updateBatchById(Collection<T> collection, int batchSize) {
+        for(T t: collection) {
+            updateTimestamp(t, "updatedAt");
+        }
+        return super.updateBatchById(collection, batchSize);
+    }
+
+    @Override
+    @Transactional
+    public T findOrCreateBy(T var1) {
+        QueryWrapper<T> wrapper = new QueryWrapper<T>(var1);
+        T t = findBy(wrapper);
+        if (t == null) {
+            t = wrapper.getEntity();
+            save(t);
+        }
+        return t;
     }
 
     private void initTimestamp(T t, String fieldName) {

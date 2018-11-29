@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2018/11/22
  */
 @SpringBootApplication
-public class GrimStrokeCoreApplication {
+public class GrimstrokeCoreApplication {
     public static void main(String[] argvs) {
-        SpringApplication.run(GrimStrokeCoreApplication.class, argvs);
+        SpringApplication.run(GrimstrokeCoreApplication.class, argvs);
     }
 }

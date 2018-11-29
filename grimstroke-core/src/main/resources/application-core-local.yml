@@ -1,3 +1,6 @@
+mybatis-plus:
+  typeEnumsPackage: com.ouresports.grimstroke.core.enums
+  mapper-locations: classpath:/mapper/*Mapper.xml
 spring:
   datasource:
     dynamic:
