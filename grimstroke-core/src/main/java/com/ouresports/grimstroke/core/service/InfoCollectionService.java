@@ -14,7 +14,19 @@ import java.util.List;
  * @date 2018/11/29
  */
 public interface InfoCollectionService extends Service<InfoCollection> {
+    /**
+     * 获得专栏信息流DTO
+     * @param wrapper
+     * @return
+     */
     List<InformationDto> getInformationDtos(Wrapper<InformationDto> wrapper);
+
+    /**
+     * 获得专栏信息流DTO Page
+     * @param wrapper
+     * @return
+     */
+    IPage<InformationDto> getInformationDtoPages(IPage<InformationDto> page, Wrapper<InformationDto> wrapper);
 
     /**
      * 获取专栏下所有的信息流
@@ -23,7 +35,7 @@ public interface InfoCollectionService extends Service<InfoCollection> {
      * @param wrapper
      * @return
      */
-    IPage<InformationDto> getInformationDtos(IPage<InformationDto> page,
+    IPage<InformationDto> getInformationDtosOfCol(IPage<InformationDto> page,
                                            long infoCollectionId,
                                            Wrapper<InformationDto> wrapper);
 }

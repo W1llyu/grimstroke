@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
+import com.ouresports.grimstroke.app.vo.InformationVo;
 import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.enums.InformationSubType;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
 import com.ouresports.grimstroke.core.service.NewsService;
+import com.ouresports.grimstroke.core.util.ListUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,18 +43,26 @@ public class InformationController extends BaseController {
     // 竞猜课堂位置
     private static final int COURSE_INDEX = 4;
 
+    /**
+     * 首页信息流列表
+     * @param currentPage
+     * @param gameId
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value="")
-    public ResponseEntity index(@RequestParam(defaultValue="1") int currentPage,
-                                @RequestParam(required=false) Integer gameId) throws Exception {
+    public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
+                                @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         List<InformationDto> informationDtos = getOrderedInformation(currentPage, gameId);
         IPage<InformationDto> pages = new Page<>(currentPage, NEWS_PAGE_SIZE + COL_PAGE_SIZE + 2);
         pages.setRecords(informationDtos);
         pages.setTotal(getInformationCount(gameId));
-        return render(new PaginationTemplate(pages));
+        return render(new PaginationTemplate(pages, InformationVo.class));
     }
 
     /**
      * 获得符合排序规则的信息流
+     * 每页按照 3资讯 1专栏 1课堂 2资讯 1专栏 1分析 排列
      * @param currentPage
      * @param gameId
      * @return
@@ -62,25 +72,14 @@ public class InformationController extends BaseController {
         List<InformationDto> colInfo = getInfoColInformation(currentPage, gameId);
         InformationDto courseInfo = getCourseInformation();
         InformationDto analysisInfo = getAnalysisInformation(currentPage, gameId);
-        int index = 0;
         if (colInfo.size() > 0) {
-            index = COL_INTERVAL - 1;
-            if (index > newsInfo.size()) {
-                newsInfo.add(colInfo.get(0));
-            } else {
-                newsInfo.add(index, colInfo.get(0));
-            }
+            ListUtil.addElement(newsInfo, colInfo.get(0), COL_INTERVAL - 1);
         }
         if (courseInfo != null) {
-            newsInfo.add(COURSE_INDEX, courseInfo);
+            ListUtil.addElement(newsInfo, courseInfo, COURSE_INDEX);
         }
         if (colInfo.size() > 1) {
-            index = 2 * COL_INTERVAL - 1;
-            if (index > newsInfo.size()) {
-                newsInfo.add(colInfo.get(1));
-            } else {
-                newsInfo.add(index, colInfo.get(1));
-            }
+            ListUtil.addElement(newsInfo, colInfo.get(1), 2 * COL_INTERVAL - 1);
         }
         if (analysisInfo != null) {
             newsInfo.add(analysisInfo);

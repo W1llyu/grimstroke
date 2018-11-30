@@ -26,8 +26,8 @@ public class PaginationTemplate {
         initMeta(iPage);
     }
 
-    public PaginationTemplate(IPage iPage, Class<? extends IVo> dtoClass) throws IllegalAccessException, InstantiationException {
-        data = dtoClass.newInstance().convertFor(iPage.getRecords());
+    public PaginationTemplate(IPage iPage, Class<? extends IVo> voClass) throws IllegalAccessException, InstantiationException {
+        data = voClass.newInstance().convertFor(iPage.getRecords());
         initMeta(iPage);
     }
 

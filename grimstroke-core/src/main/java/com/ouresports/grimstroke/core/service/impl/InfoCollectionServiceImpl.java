@@ -20,11 +20,18 @@ import java.util.List;
 public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMapper, InfoCollection> implements InfoCollectionService {
     @Override
     public List<InformationDto> getInformationDtos(Wrapper<InformationDto> wrapper) {
-        return baseMapper.selectInformationDtos(wrapper);
+        return baseMapper.selectInformationDtos(null, wrapper);
     }
 
     @Override
-    public IPage<InformationDto> getInformationDtos(IPage<InformationDto> page,
+    public IPage<InformationDto> getInformationDtoPages(IPage<InformationDto> page, Wrapper<InformationDto> wrapper) {
+        List<InformationDto> list = baseMapper.selectInformationDtos(page, wrapper);
+        page.setRecords(list);
+        return page;
+    }
+
+    @Override
+    public IPage<InformationDto> getInformationDtosOfCol(IPage<InformationDto> page,
                                                    long infoCollectionId,
                                                    Wrapper<InformationDto> wrapper) {
         List<InformationDto> list = baseMapper.selectInformationDtosOfCol(page, infoCollectionId, wrapper);

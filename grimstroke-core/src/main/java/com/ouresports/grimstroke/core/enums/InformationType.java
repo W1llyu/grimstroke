@@ -15,6 +15,10 @@ public enum InformationType implements IEnum {
      */
     NEWS("News"),
     /**
+     * 视频
+     */
+    Video("Video"),
+    /**
      * 专题
      */
     COLLECTION("InfoCollection"),

@@ -17,7 +17,18 @@ import java.util.List;
  */
 @Component
 public interface NewsMapper extends BaseMapper<News> {
+    /**
+     * 获得资讯类信息流
+     * @param wrapper
+     * @return
+     */
     List<InformationDto> selectInformationDtos(@Param("ew") Wrapper<InformationDto> wrapper);
 
+    /**
+     * 获得所有信息流
+     * @param page
+     * @param wrapper
+     * @return
+     */
     List<InformationDto> selectAllInformationDto(IPage<InformationDto> page, @Param("ew") Wrapper<InformationDto> wrapper);
 }

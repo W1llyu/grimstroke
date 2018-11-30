@@ -27,8 +27,14 @@ public abstract class BaseVo<T> implements IVo<T> {
 
     @Override
     public IVo<T> convertFor(T t) {
-        BeanUtils.copyProperties(t, this);
-        return this;
+        IVo<T> vo = null;
+        try {
+            vo = this.getClass().newInstance();
+            BeanUtils.copyProperties(t, vo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vo;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ouresports.grimstroke.app.config;
 
+import com.alibaba.fastjson.PropertyNamingStrategy;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
@@ -26,8 +28,14 @@ public class WebMvcConfigure extends WebMvcConfigurationSupport {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
         FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
-        config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+        config.setSerializerFeatures(
+                SerializerFeature.WriteNullListAsEmpty,
+                SerializerFeature.WriteEnumUsingToString
+        );
+        config.setDateFormat("yyyy-MM-dd hh:mm:ss");
+        SerializeConfig serializeConfig = new SerializeConfig();
+        serializeConfig.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
+        config.setSerializeConfig(serializeConfig);
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);

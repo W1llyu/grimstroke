@@ -17,8 +17,20 @@ import java.util.List;
  */
 @Component
 public interface InfoCollectionMapper extends BaseMapper<InfoCollection> {
-    List<InformationDto> selectInformationDtos(@Param("ew") Wrapper<InformationDto> wrapper);
+    /**
+     * 获得专栏信息流
+     * @param wrapper
+     * @return
+     */
+    List<InformationDto> selectInformationDtos(IPage<InformationDto> page, @Param("ew") Wrapper<InformationDto> wrapper);
 
+    /**
+     * 获得专栏下的所有信息流
+     * @param page
+     * @param infoCollectionId
+     * @param wrapper
+     * @return
+     */
     List<InformationDto> selectInformationDtosOfCol(IPage<InformationDto> page,
                                                @Param("id") long infoCollectionId,
                                                @Param("ew") Wrapper<InformationDto> wrapper);
