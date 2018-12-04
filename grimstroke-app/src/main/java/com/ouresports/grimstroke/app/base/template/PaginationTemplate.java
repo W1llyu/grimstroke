@@ -15,18 +15,18 @@ import java.util.List;
  * @date 2018/11/27
  */
 @Data
-public class PaginationTemplate {
+public class PaginationTemplate<T> {
     @JSONField(name="meta")
     private MetaDto meta;
     @JSONField(name="data")
     protected List data;
 
-    public PaginationTemplate(IPage iPage) {
+    public PaginationTemplate(IPage<T> iPage) {
         data = iPage.getRecords();
         initMeta(iPage);
     }
 
-    public PaginationTemplate(IPage iPage, Class<? extends IVo> voClass) throws IllegalAccessException, InstantiationException {
+    public PaginationTemplate(IPage<T> iPage, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
         data = voClass.newInstance().convertFor(iPage.getRecords());
         initMeta(iPage);
     }

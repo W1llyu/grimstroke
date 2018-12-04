@@ -6,10 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 /**
  *
  * @author will

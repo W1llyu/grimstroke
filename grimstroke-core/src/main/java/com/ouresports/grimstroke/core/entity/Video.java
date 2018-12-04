@@ -23,9 +23,11 @@ import java.util.Date;
 @Accessors(chain=true)
 public class Video extends BaseEntity implements Browsable, Commentable, Likable {
     private String title;
+    private String coverImage;
     private String address;
     private Integer gameId;
     private Long tagId;
+    private Boolean sticky;
     private Boolean enabled;
 
     @TableLogic

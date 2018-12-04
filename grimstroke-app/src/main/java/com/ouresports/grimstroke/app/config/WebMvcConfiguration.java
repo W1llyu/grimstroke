@@ -5,11 +5,10 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.nio.charset.Charset;
@@ -21,9 +20,7 @@ import java.util.List;
  * @date 2018/7/21
  */
 @Configuration
-public class WebMvcConfigure extends WebMvcConfigurationSupport {
-    private final Logger logger = LoggerFactory.getLogger(WebMvcConfigure.class);
-
+public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
@@ -32,7 +29,7 @@ public class WebMvcConfigure extends WebMvcConfigurationSupport {
                 SerializerFeature.WriteNullListAsEmpty,
                 SerializerFeature.WriteEnumUsingToString
         );
-        config.setDateFormat("yyyy-MM-dd hh:mm:ss");
+        config.setDateFormat("yyyy-MM-dd HH:mm:ss");
         SerializeConfig serializeConfig = new SerializeConfig();
         serializeConfig.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
         config.setSerializeConfig(serializeConfig);
@@ -46,5 +43,13 @@ public class WebMvcConfigure extends WebMvcConfigurationSupport {
         registry.addMapping("/**").allowedOrigins("*")
                 .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
                 .allowCredentials(false).maxAge(3600);
+    }
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

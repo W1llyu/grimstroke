@@ -1,9 +1,14 @@
 package com.ouresports.grimstroke.core.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.core.base.service.Service;
 import com.ouresports.grimstroke.core.concern.Commentable;
+import com.ouresports.grimstroke.core.dto.CommentDto;
+import com.ouresports.grimstroke.core.dto.SubCommentDto;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.User;
+import com.ouresports.grimstroke.core.exception.ServiceException;
 
 /**
  *
@@ -17,5 +22,40 @@ public interface CommentService extends Service<Comment> {
      * @param commentable
      * @param content
      */
-    Comment addComment(User user, Commentable commentable, String content);
+    Comment addComment(User user, Commentable commentable, String content) throws ServiceException;
+
+    /**
+     * 获得一条评论详情
+     * @param id
+     * @param user
+     * @return
+     */
+    CommentDto getCommentDto(long id, User user);
+
+    /**
+     * 分页获得评论
+     * @param page
+     * @param wrapper
+     * @param user
+     * @return
+     */
+    IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user);
+
+    /**
+     * 分页获得评论
+     * @param page
+     * @param commentable
+     * @param user
+     * @return
+     */
+    IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Commentable commentable, User user);
+
+    /**
+     * 分页获得评论的回复
+     * @param page
+     * @param comment
+     * @param user
+     * @return
+     */
+    IPage<SubCommentDto> getSubCommentDtoPage(IPage<SubCommentDto> page, Comment comment, User user);
 }

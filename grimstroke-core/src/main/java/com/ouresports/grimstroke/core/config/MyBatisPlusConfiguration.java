@@ -18,7 +18,7 @@ import static com.ouresports.grimstroke.core.base.constant.ApplicationConstant.*
  * @date 2018/11/22
  */
 @Configuration
-public class MyBatisPlusConfig {
+public class MyBatisPlusConfiguration {
     /**
      * SQL执行效率插件
      */

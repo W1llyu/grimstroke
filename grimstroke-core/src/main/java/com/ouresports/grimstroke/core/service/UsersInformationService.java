@@ -16,5 +16,5 @@ public interface UsersInformationService extends Service<UsersInformation> {
      * @param user
      * @param readable
      */
-    void addUserReadable(User user, Browsable readable);
+    void addUserBrowsable(User user, Browsable readable);
 }

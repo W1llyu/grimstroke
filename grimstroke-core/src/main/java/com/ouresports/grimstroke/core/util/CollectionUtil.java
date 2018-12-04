@@ -1,13 +1,17 @@
 package com.ouresports.grimstroke.core.util;
 
+import com.google.common.collect.Sets;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author will
  * @date 2018/11/30
  */
-public class ListUtil {
+public class CollectionUtil {
     /**
      * 安全地在把元素插入到list指定位置
      * @param list
@@ -26,5 +30,13 @@ public class ListUtil {
             list.add(index, element);
             return index;
         }
+    }
+
+    public static <T, E> Set<T> getElementAttrsOfList(Collection<E> collection, String propertyName) throws NoSuchFieldException, IllegalAccessException {
+        Set<T> results = Sets.newHashSet();
+        for (E element: collection) {
+            results.add((T) ReflectUtil.getFieldValue(element, propertyName));
+        }
+        return results;
     }
 }

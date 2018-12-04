@@ -20,15 +20,15 @@ public class SingleTemplate<T> {
         data = list;
     }
 
-    public SingleTemplate(List<T> list, Class<? extends IVo> dtoClass) throws IllegalAccessException, InstantiationException {
-        data = dtoClass.newInstance().convertFor(list);
+    public SingleTemplate(List<T> list, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
+        data = voClass.newInstance().convertFor(list);
     }
 
     public SingleTemplate(T t) {
         data = t;
     }
 
-    public SingleTemplate(T t, Class<? extends IVo> dtoClass) throws IllegalAccessException, InstantiationException {
-        data = dtoClass.newInstance().convertFor(t);
+    public SingleTemplate(T t, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
+        data = voClass.newInstance().convertFor(t);
     }
 }

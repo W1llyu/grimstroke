@@ -25,6 +25,6 @@ public class UsersInformationServiceTest extends GrimstrokeCoreApplicationTest {
         if (user == null || news == null) {
             return;
         }
-        usersInformationService.addUserReadable(user, news);
+        usersInformationService.addUserBrowsable(user, news);
     }
 }

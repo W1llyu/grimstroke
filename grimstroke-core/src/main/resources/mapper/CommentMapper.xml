@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.core.mapper.CommentMapper">
+    <resultMap id="CommentDtoMap" type="com.ouresports.grimstroke.core.dto.CommentDto">
+        <id column="id" property="id"/>
+        <collection property="subComments" column="id"
+                    select="com.ouresports.grimstroke.core.mapper.CommentMapper.selectSubCommentLimit"
+                    javaType="java.util.List"
+                    ofType="com.ouresports.grimstroke.core.dto.SubCommentDto"/>
+    </resultMap>
+
+    <select id="selectCommentDtos" resultMap="CommentDtoMap">
+        SELECT
+          `comments`.*,
+          COUNT(DISTINCT `likes`.`id`) AS `like_count`,
+          IF(COUNT(DISTINCT `likes`.`user_id` = #{user_id} OR NULL) > 0, 1, 0) AS `liked`,
+          COUNT(DISTINCT `sub_comments`.`id`) AS `sub_comment_count`
+        FROM `comments`
+        LEFT OUTER JOIN `comments` AS `sub_comments`
+          ON `sub_comments`.`root_comment_id` = `comments`.`id`
+        LEFT OUTER JOIN `likes`
+          ON `likes`.`target_type` = 'Comment' AND `likes`.`target_id` = `comments`.`id`
+        WHERE `comments`.`deleted_at` IS NULL AND ${ew.sqlSegment}
+    </select>
+
+    <select id="selectSubCommentDtos" resultType="com.ouresports.grimstroke.core.dto.SubCommentDto">
+        SELECT
+          `comments`.*,
+          COUNT(DISTINCT `likes`.`id`) AS `like_count`,
+          IF(COUNT(DISTINCT `likes`.`user_id` = #{user_id} OR NULL) > 0, 1, 0) AS `liked`,
+          `parent_comments`.`user_id` AS `target_user_id`
+        FROM `comments`
+        INNER JOIN `comments` AS `parent_comments`
+          ON `parent_comments`.`id` = `comments`.`parent_comment_id`
+        LEFT OUTER JOIN `likes`
+          ON `likes`.`target_type` = 'Comment' AND `likes`.`target_id` = `comments`.`id`
+        WHERE `comments`.`deleted_at` IS NULL AND `comments`.`enabled` = 1
+        AND ${ew.sqlSegment}
+    </select>
+
+    <select id="selectSubCommentLimit" resultType="com.ouresports.grimstroke.core.dto.SubCommentDto">
+        SELECT
+          `comments`.*,
+          COUNT(DISTINCT `likes`.`id`) AS `like_count`,
+          IF(COUNT(DISTINCT `likes`.`user_id` = #{user_id} OR NULL) > 0, 1, 0) AS `liked`,
+          `parent_comments`.`user_id` AS `target_user_id`
+        FROM `comments`
+        INNER JOIN `comments` AS `parent_comments`
+          ON `parent_comments`.`id` = `comments`.`parent_comment_id`
+        LEFT OUTER JOIN `likes`
+          ON `likes`.`target_type` = 'Comment' AND `likes`.`target_id` = `comments`.`id`
+        WHERE `comments`.`root_comment_id` = #{id}
+        AND `comments`.`deleted_at` IS NULL AND `comments`.`enabled` = 1
+        GROUP BY `comments`.`id`
+        ORDER BY `comments`.`created_at` DESC
+        LIMIT 2
+    </select>
+</mapper>

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsersInformationServiceImpl extends BaseServiceImpl<UsersInformationMapper, UsersInformation> implements UsersInformationService {
     @Override
-    public void addUserReadable(User user, Browsable browsable) {
+    public void addUserBrowsable(User user, Browsable browsable) {
         UsersInformation condition = new UsersInformation()
                 .setUserId(user.getId())
                 .setInformationType(browsable.getBrowsableType())

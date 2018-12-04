@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.app.exception;
+package com.ouresports.grimstroke.app.base.exception;
 
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
 import com.ouresports.grimstroke.app.enums.ApplicationError;

@@ -1,6 +1,5 @@
 package com.ouresports.grimstroke.core.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
@@ -18,7 +17,6 @@ public class InfoCollectionServiceTest extends GrimstrokeCoreApplicationTest {
 
     @Test
     public void testGetInformation() {
-        QueryWrapper<InformationDto> wrapper = new QueryWrapper<InformationDto>().eq("game_id", 3).eq("enabled", true);
-        IPage<InformationDto> informationDtos = infoCollectionService.getInformationDtosOfCol(new Page<>(1, 10), 1, wrapper);
+        IPage<InformationDto> informationDtos = infoCollectionService.getInformationDtoOfCol(new Page<>(1, 10), 1);
     }
 }

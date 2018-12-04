@@ -6,26 +6,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  *
  * @author will
- * @date 2018/11/29
+ * @date 2018/11/30
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CommentDto extends BaseDto<Comment> {
+public class SubCommentDto extends BaseDto<Comment> {
     private Long id;
     private Long userId;
-    private String rootType;
-    private Long rootId;
+    private Long targetUserId;
     private String content;
     private Boolean enabled;
-    private Long subCommentCount;
-    private List<SubCommentDto> subComments;
+    private Date createdAt;
     private Boolean liked;
     private Long likeCount;
-    private Date createdAt;
     private NormalUserDto user;
+    private NormalUserDto targetUser;
 }

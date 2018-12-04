@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ouresports.grimstroke.core.mapper.InfoCollectionMapper">
-    <select id="selectInformationDtos" resultType="com.ouresports.grimstroke.core.dto.InformationDto">
-        SELECT * FROM (
-          SELECT
-            `cols`.`id`,
-            'InfoCollection' AS `type`,
-            NULL AS `sub_type`,
-            `cols`.`title`,
-            `cols`.`cover_images`,
-            `cols`.`game_id`,
-            NULL AS `tag_name`,
-            `cols`.`enabled`,
-            `cols`.`created_at`,
-            `cols`.`deleted_at`,
-            0 AS `like_count`,
-            COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
-          FROM `info_collections` AS `cols`
-          LEFT OUTER JOIN `info_collections_informations` AS `col_news`
-            ON `col_news`.`info_collection_id` = `cols`.`id` AND `col_news`.`information_type` = 'News'
-          LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
-          LEFT OUTER JOIN `comments` AS `news_comments`
-            ON (`news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id`)
-          LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
-            ON `col_videos`.`info_collection_id` = `cols`.`id` AND `col_videos`.`information_type` = 'Video'
-          LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
-          LEFT OUTER JOIN `comments` AS `video_comments`
-            ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id`
-          WHERE `cols`.`deleted_at` IS NULL
-          GROUP BY `cols`.`id`
-        ) AS `information`
-        WHERE ${ew.sqlSegment}
+    <select id="selectInfoCollectionDtos" resultType="com.ouresports.grimstroke.core.dto.InfoCollectionDto">
+        SELECT
+          `cols`.`id`,
+          `cols`.`title`,
+          `cols`.`sub_title`,
+          `cols`.`cover_image`,
+          `cols`.`game_id`,
+          `cols`.`sticky`,
+          `cols`.`enabled`,
+          MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0))) AS `created_at`,
+          `cols`.`deleted_at`,
+          COUNT(DISTINCT `news`.`id`) AS `news_count`,
+          COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
+        FROM `info_collections` AS `cols`
+        LEFT OUTER JOIN `info_collections_informations` AS `col_news`
+          ON `col_news`.`info_collection_id` = `cols`.`id` AND `col_news`.`information_type` = 'News'
+        LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
+        LEFT OUTER JOIN `comments` AS `news_comments`
+          ON (`news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id`)
+        LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
+          ON `col_videos`.`info_collection_id` = `cols`.`id` AND `col_videos`.`information_type` = 'Video'
+        LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
+        LEFT OUTER JOIN `comments` AS `video_comments`
+          ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id`
+        WHERE `cols`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 
     <select id="selectInformationDtosOfCol" resultType="com.ouresports.grimstroke.core.dto.InformationDto">
@@ -40,13 +35,13 @@
             'News' AS `type`,
             `news`.`type` AS `sub_type`,
             `news`.`title` AS `title`,
-            `news`.`cover_images` AS `cover_images`,
+            `news`.`cover_image` AS `cover_image`,
             `news`.`game_id` AS `game_id`,
             `tags`.`name` AS `tag_name`,
+            `news`.`sticky`,
             `news`.`enabled`,
             `news`.`created_at`,
             `news`.`deleted_at`,
-            0 AS `like_count`,
             COUNT(DISTINCT `comments`.`id`) AS `comment_count`
           FROM `news`
           INNER JOIN `info_collections_informations` AS `info_news`
@@ -64,13 +59,13 @@
             'Video' AS `type`,
             NULL AS `sub_type`,
             `videos`.`title`,
-            `videos`.`cover_images`,
+            `videos`.`cover_image`,
             `videos`.`game_id`,
             `tags`.`name` AS `tag_name`,
+            `videos`.`sticky`,
             `videos`.`enabled`,
             `videos`.`created_at`,
             `videos`.`deleted_at`,
-            COUNT(DISTINCT `likes`.`id`) AS `like_count`,
             COUNT(DISTINCT `comments`.`id`) AS `comment_count`
           FROM `videos`
           INNER JOIN `info_collections_informations` AS `info_videos`

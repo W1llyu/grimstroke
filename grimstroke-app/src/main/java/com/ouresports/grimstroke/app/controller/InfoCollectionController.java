@@ -1,12 +1,15 @@
 package com.ouresports.grimstroke.app.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
+import com.ouresports.grimstroke.app.base.template.SingleTemplate;
+import com.ouresports.grimstroke.app.vo.InfoCollectionVo;
 import com.ouresports.grimstroke.app.vo.InformationVo;
+import com.ouresports.grimstroke.core.dto.InfoCollectionDto;
 import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +38,24 @@ public class InfoCollectionController extends BaseController {
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
                                 @RequestParam(defaultValue="10") int per,
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
-        Page<InformationDto> page = new Page<>(currentPage, per);
-        QueryWrapper<InformationDto> wrapper = new QueryWrapper<InformationDto>().eq("enabled", true);
-        if (gameId != null) {
-            wrapper.eq("game_id", gameId);
+        Page<InfoCollectionDto> page = new Page<>(currentPage, per);
+        IPage<InfoCollectionDto> informationPage = infoCollectionService.getInfoCollectionDtos(page, gameId);
+        return render(new PaginationTemplate<>(informationPage, InfoCollectionVo.class));
+    }
+
+    /**
+     * 专栏详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/{id}")
+    public ResponseEntity show(@PathVariable long id) throws Exception {
+        InfoCollectionDto dto = infoCollectionService.getInfoCollectionDto(id);
+        if (dto == null) {
+            throw new NotFoundException("InfoCollection");
         }
-        IPage<InformationDto> informationPages = infoCollectionService.getInformationDtoPages(page, wrapper);
-        return render(new PaginationTemplate(informationPages, InformationVo.class));
+        return render(new SingleTemplate<>(dto, InfoCollectionVo.class));
     }
 
     /**
@@ -57,8 +71,7 @@ public class InfoCollectionController extends BaseController {
                                            @RequestParam(value="page", defaultValue="1") int currentPage,
                                            @RequestParam(defaultValue="10") int per) throws Exception {
         Page<InformationDto> page = new Page<>(currentPage, per);
-        QueryWrapper<InformationDto> wrapper = new QueryWrapper<InformationDto>().eq("enabled", true);
-        IPage<InformationDto> informationDtoIPage = infoCollectionService.getInformationDtosOfCol(page, id, wrapper);
-        return render(new PaginationTemplate(informationDtoIPage, InformationVo.class));
+        IPage<InformationDto> infoDtos = infoCollectionService.getInformationDtoOfCol(page, id);
+        return render(new PaginationTemplate<>(infoDtos, InformationVo.class));
     }
 }

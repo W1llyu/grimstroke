@@ -19,11 +19,14 @@ public class InformationDto {
     private InformationType type;
     private InformationSubType subType;
     private String title;
-    private String coverImages;
+    private String subTitle;
+    private String coverImage;
     private Integer gameId;
     private String tagName;
+    private Long newsCount;
+    private Long browseCount;
     private Long commentCount;
-    private Long likeCount;
+    private Boolean sticky;
     private Boolean enabled;
     private Date createdAt;
 }

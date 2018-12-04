@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by will on 2018/11/26.
+ *
+ * @author will
+ * @date 2018/11/26
  */
 public abstract class AbstractSoftMethod extends AbstractMethod {
     protected String sqlLogicSet(TableInfo table) {

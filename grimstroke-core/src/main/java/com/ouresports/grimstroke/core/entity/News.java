@@ -24,11 +24,12 @@ import java.util.Date;
 @Accessors(chain=true)
 public class News extends BaseEntity implements Browsable, Commentable, InfoCollectionable {
     private String title;
-    private String coverImages;
+    private String coverImage;
     private InformationSubType type;
     private Integer gameId;
     private String content;
     private Long associateId;
+    private Boolean sticky;
     private Boolean enabled;
 
     @TableLogic

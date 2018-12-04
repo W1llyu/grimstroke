@@ -18,7 +18,7 @@ public enum ApplicationError {
     private final int value;
     private final String message;
 
-    private ApplicationError(HttpStatus status, int value, String message) {
+    ApplicationError(HttpStatus status, int value, String message) {
         this.status = status;
         this.value = value;
         this.message = message;

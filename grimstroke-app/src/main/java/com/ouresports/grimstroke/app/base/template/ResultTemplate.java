@@ -30,6 +30,10 @@ public class ResultTemplate {
         return ResultTemplate.of(HttpStatus.OK, 0, "更新成功");
     }
 
+    public static ResultTemplate deleteOk() {
+        return ResultTemplate.of(HttpStatus.OK, 0, "删除成功");
+    }
+
     public static ResultTemplate notFound() {
         return ResultTemplate.of(HttpStatus.NOT_FOUND, 1000, "资源不存在");
     }

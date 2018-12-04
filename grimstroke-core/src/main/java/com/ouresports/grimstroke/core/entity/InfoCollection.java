@@ -20,8 +20,10 @@ import java.util.Date;
 @Accessors(chain=true)
 public class InfoCollection extends BaseEntity {
     private String title;
-    private String coverImages;
+    private String subTitle;
+    private String coverImage;
     private Integer gameId;
+    private Boolean sticky;
     private Boolean enabled;
 
     @TableLogic

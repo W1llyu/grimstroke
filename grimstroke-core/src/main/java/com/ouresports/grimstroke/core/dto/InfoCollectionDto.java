@@ -1,21 +1,45 @@
 package com.ouresports.grimstroke.core.dto;
 
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.ouresports.grimstroke.core.enums.InformationType.COLLECTION;
 
 /**
  *
  * @author will
- * @date 2018/11/29
+ * @date 2018/12/3
  */
 @Data
 public class InfoCollectionDto {
     private Long id;
     private String title;
-    private String coverImages;
+    private String subTitle;
+    private String coverImage;
     private Integer gameId;
+    private Boolean sticky;
     private Boolean enabled;
-    private Long comentCount;
+    private Long newsCount;
+    private Long browseCount;
+    private Long commentCount;
     private Date createdAt;
+
+    public InformationDto toInformation() {
+        InformationDto informationDto = new InformationDto();
+        BeanUtils.copyProperties(this, informationDto);
+        informationDto.setType(COLLECTION);
+        return informationDto;
+    }
+
+    public static List<InformationDto> toInformations(List<InfoCollectionDto> infoCollectionDtos) {
+        List<InformationDto> informationDtos = new ArrayList<>();
+        for (InfoCollectionDto infoCollectionDto: infoCollectionDtos) {
+            informationDtos.add(infoCollectionDto.toInformation());
+        }
+        return informationDtos;
+    }
 }
