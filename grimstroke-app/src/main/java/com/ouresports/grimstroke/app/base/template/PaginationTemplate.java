@@ -2,7 +2,7 @@ package com.ouresports.grimstroke.app.base.template;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ouresports.grimstroke.app.base.vo.IVo;
+import com.ouresports.grimstroke.core.base.entity.ITo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class PaginationTemplate<T> {
         initMeta(iPage);
     }
 
-    public PaginationTemplate(IPage<T> iPage, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
+    public PaginationTemplate(IPage<T> iPage, Class<? extends ITo<T>> voClass) throws IllegalAccessException, InstantiationException {
         data = voClass.newInstance().convertFor(iPage.getRecords());
         initMeta(iPage);
     }

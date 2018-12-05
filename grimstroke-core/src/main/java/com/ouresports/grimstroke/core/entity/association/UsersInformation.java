@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
  * @date 2018/11/28
  */
 @TableName("users_informations")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class UsersInformation extends BaseEntity {
     private Long userId;

@@ -19,8 +19,8 @@ import java.util.Date;
  * @date 2018/11/22
  */
 @TableName("news")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class News extends BaseEntity implements Browsable, Commentable, InfoCollectionable {
     private String title;

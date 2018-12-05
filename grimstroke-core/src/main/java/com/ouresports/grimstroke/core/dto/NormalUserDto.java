@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.core.dto;
 
-import com.ouresports.grimstroke.core.base.dto.BaseDto;
+import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.core.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class NormalUserDto extends BaseDto<User> {
+public class NormalUserDto extends BaseTo<User> {
     private Long id;
     private String name;
     private String avatar;

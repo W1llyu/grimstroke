@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.app.base.template;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.ouresports.grimstroke.app.base.vo.IVo;
+import com.ouresports.grimstroke.core.base.entity.ITo;
 import lombok.Data;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class SingleTemplate<T> {
         data = list;
     }
 
-    public SingleTemplate(List<T> list, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
+    public SingleTemplate(List<T> list, Class<? extends ITo<T>> voClass) throws IllegalAccessException, InstantiationException {
         data = voClass.newInstance().convertFor(list);
     }
 
@@ -28,7 +28,7 @@ public class SingleTemplate<T> {
         data = t;
     }
 
-    public SingleTemplate(T t, Class<? extends IVo<T>> voClass) throws IllegalAccessException, InstantiationException {
+    public SingleTemplate(T t, Class<? extends ITo<T>> voClass) throws IllegalAccessException, InstantiationException {
         data = voClass.newInstance().convertFor(t);
     }
 }

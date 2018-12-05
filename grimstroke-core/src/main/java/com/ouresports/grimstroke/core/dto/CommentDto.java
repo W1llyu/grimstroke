@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.core.dto;
 
-import com.ouresports.grimstroke.core.base.dto.BaseDto;
+import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.core.entity.Comment;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CommentDto extends BaseDto<Comment> {
+public class CommentDto extends BaseTo<Comment> {
     private Long id;
     private Long userId;
     private String rootType;

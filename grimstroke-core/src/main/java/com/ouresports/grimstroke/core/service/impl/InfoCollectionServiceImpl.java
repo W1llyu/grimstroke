@@ -9,6 +9,7 @@ import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.mapper.InfoCollectionMapper;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +22,17 @@ import java.util.List;
 @Service
 public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMapper, InfoCollection> implements InfoCollectionService {
     @Override
-    public InfoCollectionDto getInfoCollectionDto(long id) {
+    public InfoCollectionDto getInfoCollectionDto(long id) throws NotFoundException {
         QueryWrapper<InfoCollectionDto> wrapper = new QueryWrapper<InfoCollectionDto>()
                 .eq("`cols`.`enabled`", true)
                 .eq("`cols`.`id`", id)
+                .groupBy("`cols`.`id`")
                 .last("LIMIT 1");
         List<InfoCollectionDto> list = getInfoCollectionDtos(wrapper);
-        return list.isEmpty() ? null : list.get(0);
+        if (list.isEmpty()) {
+            throw new NotFoundException("InfoCollection");
+        }
+        return list.get(0);
     }
 
     @Override
@@ -45,8 +50,7 @@ public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMap
         if (gameId != null) {
             wrapper.eq("`cols`.`game_id`", gameId);
         }
-        List<InfoCollectionDto> list = baseMapper.selectInfoCollectionDtos(page, wrapper);
-        page.setRecords(list);
+        page.setRecords(baseMapper.selectInfoCollectionDtos(page, wrapper));
         return page;
     }
 
@@ -56,8 +60,7 @@ public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMap
                 .eq("`enabled`", true)
                 .orderByDesc("`sticky`")
                 .orderByDesc("`created_at`");
-        List<InformationDto> list = baseMapper.selectInformationDtosOfCol(page, id, wrapper);
-        page.setRecords(list);
+        page.setRecords(baseMapper.selectInformationDtosOfCol(page, id, wrapper));
         return page;
     }
 }

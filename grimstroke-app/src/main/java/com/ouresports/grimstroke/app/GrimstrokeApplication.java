@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages={
         "com.ouresports.grimstroke.app",
-        "com.ouresports.grimstroke.core"
+        "com.ouresports.grimstroke.core",
+        "com.ouresports.grimstroke.lib"
 })
 public class GrimstrokeApplication {
     public static void main(String[] argvs) {

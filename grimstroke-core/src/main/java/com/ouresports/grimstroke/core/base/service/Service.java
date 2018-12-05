@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.apache.ibatis.javassist.NotFoundException;
 
 /**
  *
@@ -20,7 +21,7 @@ public interface Service<T> extends IService<T> {
      * @param id 主键ID
      * @return 实体
      */
-    T find(long id);
+    T find(long id) throws NotFoundException;
 
     /**
      * <p>

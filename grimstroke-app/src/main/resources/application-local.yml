@@ -2,4 +2,4 @@ server:
   port: 8080
 spring:
   profiles:
-    include: core-local
+    include: core-local, lib-local

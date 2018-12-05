@@ -7,6 +7,7 @@ import com.ouresports.grimstroke.core.dto.InfoCollectionDto;
 import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface InfoCollectionService extends Service<InfoCollection> {
      * @param id
      * @return
      */
-    InfoCollectionDto getInfoCollectionDto(long id);
+    InfoCollectionDto getInfoCollectionDto(long id) throws NotFoundException;
 
     /**
      * 获得专栏列表

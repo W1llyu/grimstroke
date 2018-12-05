@@ -17,14 +17,17 @@ import java.util.Date;
  * @author will
  * @date 2018/11/29
  */
-@TableName("users_news")
-@Data
+@TableName("videos")
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class Video extends BaseEntity implements Browsable, Commentable, Likable {
     private String title;
     private String coverImage;
-    private String address;
+    private String description;
+    private String vodId;
+    private Float duration;
+    private Long size;
     private Integer gameId;
     private Long tagId;
     private Boolean sticky;

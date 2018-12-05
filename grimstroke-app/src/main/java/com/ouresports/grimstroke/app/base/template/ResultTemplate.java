@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.base.template;
 
+import com.ouresports.grimstroke.app.enums.ApplicationError;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +35,7 @@ public class ResultTemplate {
         return ResultTemplate.of(HttpStatus.OK, 0, "删除成功");
     }
 
-    public static ResultTemplate notFound() {
-        return ResultTemplate.of(HttpStatus.NOT_FOUND, 1000, "资源不存在");
-    }
-
-    public static ResultTemplate invalidParam() {
-        return ResultTemplate.of(HttpStatus.NOT_ACCEPTABLE, 1001, "参数错误");
+    public static ResultTemplate of(ApplicationError error) {
+        return ResultTemplate.of(error.status(), error.value(), error.message());
     }
 }

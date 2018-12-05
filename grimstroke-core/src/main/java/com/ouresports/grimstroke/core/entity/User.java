@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
  * @date 2018/11/22
  */
 @TableName("users")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class User extends BaseEntity {
     private String name;

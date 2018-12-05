@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ouresports.grimstroke.core.util.ReflectUtil;
 import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -19,8 +20,12 @@ import java.util.Date;
  */
 public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements Service<T> {
     @Override
-    public T find(long id) {
-        return getById(id);
+    public T find(long id) throws NotFoundException {
+        T t = getById(id);
+        if (t == null) {
+            throw new NotFoundException("not found");
+        }
+        return t;
     }
 
     @Override

@@ -15,8 +15,8 @@ import java.util.Date;
  * @date 2018/11/29
  */
 @TableName("info_collections")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class InfoCollection extends BaseEntity {
     private String title;

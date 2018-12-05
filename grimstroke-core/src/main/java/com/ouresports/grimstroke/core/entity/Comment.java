@@ -16,8 +16,8 @@ import java.util.Date;
  * @date 2018/11/27
  */
 @TableName("comments")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain = true)
 public class Comment extends BaseEntity implements Commentable, Likable {
     private Long userId;

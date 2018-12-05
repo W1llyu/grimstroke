@@ -15,8 +15,8 @@ import java.util.Date;
  * @date 2018/11/28
  */
 @TableName("tags")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class Tag extends BaseEntity {
     private String name;

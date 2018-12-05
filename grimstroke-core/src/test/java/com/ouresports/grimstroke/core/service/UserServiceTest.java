@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.core.service;
 
 import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
 import com.ouresports.grimstroke.core.entity.User;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -14,7 +15,7 @@ public class UserServiceTest extends GrimstrokeCoreApplicationTest {
     private UserService userService;
 
     @Test
-    public void testSelect() {
+    public void testSelect() throws NotFoundException {
         User user = userService.find(7972);
     }
 }

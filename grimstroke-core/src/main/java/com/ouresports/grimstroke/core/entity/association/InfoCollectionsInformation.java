@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
  * @date 2018/11/29
  */
 @TableName("info_collections_informations")
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Data
 @Accessors(chain=true)
 public class InfoCollectionsInformation extends BaseEntity {
     private Long infoCollectionId;
