@@ -14,7 +14,6 @@ import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.NewsService;
 import com.ouresports.grimstroke.core.service.UsersInformationService;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

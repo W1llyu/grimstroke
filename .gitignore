@@ -23,5 +23,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-*-staging.properties
-*-prod.properties
+application-lib-*.yml
+*-staging.yml
+*-prod.yml
