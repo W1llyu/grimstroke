@@ -67,7 +67,7 @@
                 <includes>
                     <include>db/migration/*.sql</include>
                     <include>mapper/*.xml</include>
-                    <include>application-core-*.yml</include>
+                    <include>*.yml</include>
                 </includes>
             </resource>
         </resources>

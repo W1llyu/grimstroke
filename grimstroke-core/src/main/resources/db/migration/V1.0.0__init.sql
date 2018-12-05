@@ -6,6 +6,8 @@ CREATE TABLE `news` (
   `game_id` int(10),
   `tag_id` bigint(20),
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author` varchar(64),
+  `source` varchar(64),
   `associate_id` bigint(20),
   `sticky` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -127,9 +129,11 @@ CREATE TABLE `tags` (
 
 CREATE TABLE `banners` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255),
   `cover_image` varchar(255) NOT NULL,
   `redirect_url` varchar(255),
   `priority` int(10) NOT NULL DEFAULT 0,
+  `description` varchar(255),
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,

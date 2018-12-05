@@ -24,6 +24,8 @@ public class NewsVo extends BaseTo<NewsDto> {
     private Integer gameId;
     private String tagName;
     private String content;
+    private String author;
+    private String source;
     private Long commentCount;
     private Boolean sticky;
     private Long associateId;

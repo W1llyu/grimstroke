@@ -10,6 +10,8 @@
           `news`.`game_id` AS `game_id`,
           `tags`.`name` AS `tag_name`,
           `news`.`content` AS `content`,
+          `news`.`author` AS `author`,
+          `news`.`source` AS `source`,
           `news`.`associate_id` AS `associate_id`,
           `news`.`sticky`,
           `news`.`enabled`,
