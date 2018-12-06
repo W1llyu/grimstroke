@@ -17,6 +17,7 @@ import com.ouresports.grimstroke.core.mapper.CommentMapper;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.UserService;
 import com.ouresports.grimstroke.core.util.CollectionUtil;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,14 +74,14 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
     }
 
     @Override
-    public CommentDto getCommentDto(long id, User user) {
+    public CommentDto getCommentDto(long id, User user) throws NotFoundException {
         QueryWrapper<Comment> wrapper = new QueryWrapper<Comment>()
                 .eq("`comments`.`id`", id)
                 .groupBy("`comments`.`id`")
                 .last("LIMIT 1");
-        List<CommentDto> commentDtoList = baseMapper.selectCommentDtos(null, wrapper, user == null ? 0 : user.getId());
-        setUserForCommentDto(commentDtoList);
-        return commentDtoList.isEmpty() ? null : commentDtoList.get(0);
+        List<CommentDto> list = baseMapper.selectCommentDtos(null, wrapper, user == null ? 0 : user.getId());
+        setUserForCommentDto(list);
+        return CollectionUtil.getFirstElement(list);
     }
 
     @Override

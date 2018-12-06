@@ -9,6 +9,7 @@ import com.ouresports.grimstroke.core.dto.InformationDto;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.mapper.InfoCollectionMapper;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
+import com.ouresports.grimstroke.core.util.CollectionUtil;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,7 @@ public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMap
                 .groupBy("`cols`.`id`")
                 .last("LIMIT 1");
         List<InfoCollectionDto> list = getInfoCollectionDtos(wrapper);
-        if (list.isEmpty()) {
-            throw new NotFoundException("InfoCollection");
-        }
-        return list.get(0);
+        return CollectionUtil.getFirstElement(list);
     }
 
     @Override

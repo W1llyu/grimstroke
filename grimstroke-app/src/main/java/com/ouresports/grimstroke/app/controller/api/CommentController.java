@@ -13,7 +13,6 @@ import com.ouresports.grimstroke.core.dto.SubCommentDto;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.LikeService;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +42,6 @@ public class CommentController extends BaseController {
     public ResponseEntity show(@PathVariable long id) throws Exception {
         authenticateUser();
         CommentDto commentDto = commentService.getCommentDto(id, currentUser);
-        if (commentDto == null) {
-            throw new NotFoundException("Comment");
-        }
         return render(new SingleTemplate<>(commentDto, CommentVo.class));
     }
 

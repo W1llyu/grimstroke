@@ -7,6 +7,8 @@ import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.mapper.NewsMapper;
 import com.ouresports.grimstroke.core.service.NewsService;
+import com.ouresports.grimstroke.core.util.CollectionUtil;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +22,13 @@ import java.util.List;
 public class NewsServiceImpl extends BaseServiceImpl<NewsMapper, News> implements NewsService {
 
     @Override
-    public NewsDto getNewsDto(long id) {
+    public NewsDto getNewsDto(long id) throws NotFoundException  {
         QueryWrapper<NewsDto> wrapper = new QueryWrapper<NewsDto>()
                 .eq("`news`.`enabled`", true)
                 .eq("`news`.`id`", id)
                 .groupBy("`news`.`id`");
         List<NewsDto> list = baseMapper.selectNewsDtos(wrapper);
-        return list.isEmpty() ? null : list.get(0);
+        return CollectionUtil.getFirstElement(list);
     }
 
     @Override

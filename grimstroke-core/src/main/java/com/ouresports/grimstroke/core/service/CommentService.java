@@ -9,6 +9,7 @@ import com.ouresports.grimstroke.core.dto.SubCommentDto;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.entity.User;
 import com.ouresports.grimstroke.core.exception.ServiceException;
+import org.apache.ibatis.javassist.NotFoundException;
 
 /**
  *
@@ -30,7 +31,7 @@ public interface CommentService extends Service<Comment> {
      * @param user
      * @return
      */
-    CommentDto getCommentDto(long id, User user);
+    CommentDto getCommentDto(long id, User user) throws NotFoundException;
 
     /**
      * 分页获得评论

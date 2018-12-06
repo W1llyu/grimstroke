@@ -1,6 +1,7 @@
 package com.ouresports.grimstroke.core.util;
 
 import com.google.common.collect.Sets;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,5 +39,12 @@ public class CollectionUtil {
             results.add((T) ReflectUtil.getFieldValue(element, propertyName));
         }
         return results;
+    }
+
+    public static <T>T getFirstElement(List<T> list) throws NotFoundException {
+        if (list.isEmpty()) {
+            throw new NotFoundException("not found");
+        }
+        return list.get(0);
     }
 }

@@ -23,9 +23,9 @@ public abstract class AbstractSoftMethod extends AbstractMethod {
     protected String sqlWhereEntityWrapper(TableInfo table) {
         if(table.isLogicDelete()) {
             String sqlScript = table.getAllSqlWhere(true, true, "ew.entity.");
-            sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", new Object[]{"ew.entity"}), true);
+            sqlScript = SqlScriptUtils.convertIf(sqlScript, String.format("%s != null", "ew.entity"), true);
             sqlScript = sqlScript + "\n" + getQuerySoftDeleteSql(table, true) + "\n";
-            sqlScript = sqlScript + SqlScriptUtils.convertIf(String.format(" AND ${%s}", new Object[]{"ew.sqlSegment"}), String.format("%s!=null and %s!=\'\'", new Object[]{"ew.sqlSegment", "ew.sqlSegment"}), false);
+            sqlScript = sqlScript + SqlScriptUtils.convertIf(String.format(" AND ${%s}", "ew.sqlSegment"), String.format("%s!=null and %s!=\'\'", "ew.sqlSegment", "ew.sqlSegment"), false);
             sqlScript = SqlScriptUtils.convertTrim(sqlScript, "WHERE", null, "AND|OR", (String)null);
             sqlScript = SqlScriptUtils.convertChoose("ew!=null and !ew.emptyOfWhere", sqlScript, "WHERE " + getQuerySoftDeleteSql(table, false));
             return sqlScript;
@@ -54,7 +54,7 @@ public abstract class AbstractSoftMethod extends AbstractMethod {
                     () -> ExceptionUtils.mpe(String.format("can\'t find the logicFiled from table {%s}", new Object[]{table.getTableName()})
                     ));
             String formatStr = deleteValue? "\'%s\'" : "%s";
-            String logicDeleteSql = field.getColumn() + "=" + String.format(formatStr, new Object[]{deleteValue ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : "null"});
+            String logicDeleteSql = field.getColumn() + "=" + String.format(formatStr, deleteValue ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : "null");
             if(startWithAnd) {
                 logicDeleteSql = " AND " + logicDeleteSql;
             }

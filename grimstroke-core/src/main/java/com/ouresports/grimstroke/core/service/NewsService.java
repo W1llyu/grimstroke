@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.ouresports.grimstroke.core.base.service.Service;
 import com.ouresports.grimstroke.core.dto.NewsDto;
 import com.ouresports.grimstroke.core.entity.News;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface NewsService extends Service<News> {
      * @param id
      * @return
      */
-    NewsDto getNewsDto(long id);
+    NewsDto getNewsDto(long id) throws NotFoundException;
 
     /**
      * 获得资讯DTO列表

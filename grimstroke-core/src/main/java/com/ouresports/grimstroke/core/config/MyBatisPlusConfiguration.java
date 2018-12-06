@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Profile;
 
 import static com.ouresports.grimstroke.core.base.constant.ApplicationConstant.*;
 
-
 /**
  *
  * @author will
