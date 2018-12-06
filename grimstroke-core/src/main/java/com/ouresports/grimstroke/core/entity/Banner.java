@@ -17,6 +17,8 @@ public class Banner extends BaseEntity {
     private String title;
     private String coverImage;
     private String redirectUrl;
+    private String resourceType;
+    private Long resourceId;
     private Integer priority;
     private String description;
     private Boolean enabled;

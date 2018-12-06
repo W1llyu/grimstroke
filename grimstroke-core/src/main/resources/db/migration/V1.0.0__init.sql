@@ -130,10 +130,12 @@ CREATE TABLE `tags` (
 CREATE TABLE `banners` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(255),
-  `cover_image` varchar(255) NOT NULL,
+  `cover_image` varchar(255),
   `redirect_url` varchar(255),
   `priority` int(10) NOT NULL DEFAULT 0,
   `description` varchar(255),
+  `resource_type` varchar(255),
+  `resource_id` bigint(20),
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
