@@ -37,7 +37,7 @@
             `news`.`title` AS `title`,
             `news`.`cover_image` AS `cover_image`,
             `news`.`game_id` AS `game_id`,
-            `tags`.`name` AS `tag_name`,
+            CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
             `news`.`sticky`,
             `news`.`enabled`,
             `news`.`created_at`,
@@ -51,6 +51,7 @@
           LEFT OUTER JOIN `comments`
             ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id`
           INNER JOIN `tags` ON `tags`.`id` = `news`.`tag_id`
+          INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
           WHERE `news`.`deleted_at` IS NULL
           GROUP BY `news`.`id`
           UNION
@@ -61,7 +62,7 @@
             `videos`.`title`,
             `videos`.`cover_image`,
             `videos`.`game_id`,
-            `tags`.`name` AS `tag_name`,
+            CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
             `videos`.`sticky`,
             `videos`.`enabled`,
             `videos`.`created_at`,
@@ -77,6 +78,7 @@
           LEFT OUTER JOIN `likes`
             ON `likes`.`target_type` = 'Video' AND `likes`.`target_id` = `videos`.`id`
           INNER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
+          INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
           WHERE `videos`.`deleted_at` IS NULL
           GROUP BY `videos`.`id`
         ) AS `information`

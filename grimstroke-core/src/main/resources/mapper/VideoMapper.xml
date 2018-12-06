@@ -11,7 +11,7 @@
           `videos`.`duration` AS `duration`,
           `videos`.`size` AS `size`,
           `videos`.`game_id` AS `game_id`,
-          `tags`.`name` AS `tag_name`,
+          CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
           `videos`.`sticky` AS `sticky`,
           `videos`.`enabled` AS `enabled`,
           COUNT(DISTINCT `comments`.`id`) AS `comment_count`,
@@ -22,6 +22,7 @@
         LEFT OUTER JOIN `likes`
           ON `likes`.`target_type` = 'Video' AND `likes`.`target_id` = `videos`.`id`
         INNER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
+        INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
         WHERE `videos`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 </mapper>

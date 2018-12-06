@@ -8,7 +8,7 @@
           `news`.`title` AS `title`,
           `news`.`cover_image` AS `cover_image`,
           `news`.`game_id` AS `game_id`,
-          `tags`.`name` AS `tag_name`,
+          CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
           `news`.`content` AS `content`,
           `news`.`author` AS `author`,
           `news`.`source` AS `source`,
@@ -22,6 +22,7 @@
         LEFT OUTER JOIN `comments`
           ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id`
         INNER JOIN `tags` ON `tags`.`id` = `news`.`tag_id`
+        INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
         WHERE `news`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 </mapper>

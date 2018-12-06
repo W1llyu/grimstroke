@@ -22,13 +22,15 @@ public abstract class BaseController extends AbstractController {
     @Resource
     protected UserService userService;
     protected User currentUser;
+    
+    private static final String AUTH_HEADER_KEY = "Authorization";
 
     /**
      * 检查用户token
      * @throws ApplicationException
      */
     protected void authenticateUserForce() throws ApplicationException {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTH_HEADER_KEY);
         currentUser = userService.findBy(new QueryWrapper<User>().eq("token", token));
         if (currentUser == null) {
             throw new ApplicationException(ApplicationError.TOKEN_ERROR);
@@ -38,8 +40,10 @@ public abstract class BaseController extends AbstractController {
     /**
      * 检查用户token
      */
-    protected void authenticateUser() {
-        String token = request.getHeader("Authorization");
-        currentUser = userService.findBy(new QueryWrapper<User>().eq("token", token));
+    protected void authenticateUser() throws ApplicationException {
+        if (request.getHeader(AUTH_HEADER_KEY) == null) {
+            return;
+        }
+        authenticateUserForce();
     }
 }

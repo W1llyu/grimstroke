@@ -10,7 +10,6 @@ import com.ouresports.grimstroke.app.vo.api.CommentVo;
 import com.ouresports.grimstroke.app.vo.api.NewsVo;
 import com.ouresports.grimstroke.core.dto.CommentDto;
 import com.ouresports.grimstroke.core.dto.NewsDto;
-import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.NewsService;
 import com.ouresports.grimstroke.core.service.UsersInformationService;
@@ -43,8 +42,11 @@ public class NewsController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        News news = loadNewsById(id);
-        NewsDto dto = newsService.getNewsDto(news.getId());
+        authenticateUser();
+        NewsDto dto = newsService.getNewsDto(id);
+        if (currentUser != null) {
+            usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
+        }
         return render(new SingleTemplate<>(dto, NewsVo.class));
     }
 
@@ -61,9 +63,8 @@ public class NewsController extends BaseController {
                                    @RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
-        News news = loadNewsById(id);
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, news, currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, newsService.find(id), currentUser);
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -78,7 +79,7 @@ public class NewsController extends BaseController {
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo comment) throws Exception {
         authenticateUserForce();
-        commentService.addComment(currentUser, loadNewsById(id), comment.getContent());
+        commentService.addComment(currentUser, newsService.find(id), comment.getContent());
         return render(ResultTemplate.createOk());
     }
 
@@ -88,15 +89,10 @@ public class NewsController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PostMapping(value="/{id}/read")
-    public ResponseEntity read(@PathVariable long id) throws Exception {
+    @PostMapping(value="/{id}/browse")
+    public ResponseEntity browse(@PathVariable long id) throws Exception {
         authenticateUserForce();
-        News news = loadNewsById(id);
-        usersNewsService.addUserBrowsable(currentUser, news);
+        usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
         return render(ResultTemplate.createOk());
-    }
-
-    private News loadNewsById(long id) throws Exception {
-        return newsService.find(id);
     }
 }

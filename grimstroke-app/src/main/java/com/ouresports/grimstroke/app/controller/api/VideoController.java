@@ -9,13 +9,12 @@ import com.ouresports.grimstroke.app.rbo.api.CommentRbo;
 import com.ouresports.grimstroke.app.vo.api.CommentVo;
 import com.ouresports.grimstroke.core.dto.CommentDto;
 import com.ouresports.grimstroke.core.dto.VideoDto;
-import com.ouresports.grimstroke.core.entity.Video;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.LikeService;
+import com.ouresports.grimstroke.core.service.UsersInformationService;
 import com.ouresports.grimstroke.core.service.VideoService;
 import com.ouresports.grimstroke.lib.aliyun.entity.VodPlayAuthResponse;
 import com.ouresports.grimstroke.lib.aliyun.service.AliyunVodService;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +37,8 @@ public class VideoController extends BaseController {
     private CommentService commentService;
     @Resource
     private LikeService likeService;
+    @Resource
+    private UsersInformationService usersNewsService;
 
     /**
      * 获取视频播放凭证
@@ -47,7 +48,7 @@ public class VideoController extends BaseController {
      */
     @GetMapping(value="/{id}/play_auth")
     public ResponseEntity getPlayAuth(@PathVariable long id) throws Exception {
-        VodPlayAuthResponse vodPlayAuth = aliyunVodService.getVideoPlayAuth(loadVideoById(id).getVodId());
+        VodPlayAuthResponse vodPlayAuth = aliyunVodService.getVideoPlayAuth(videoService.find(id).getVodId());
         return render(new SingleTemplate<>(vodPlayAuth));
     }
 
@@ -76,7 +77,11 @@ public class VideoController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
+        authenticateUser();
         VideoDto dto = videoService.getVideoDto(id);
+        if (currentUser != null) {
+            usersNewsService.addUserBrowsable(currentUser, videoService.find(id));
+        }
         return render(new SingleTemplate<>(dto));
     }
 
@@ -93,9 +98,8 @@ public class VideoController extends BaseController {
                                    @RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
-        Video video = loadVideoById(id);
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, video, currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, videoService.find(id), currentUser);
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -110,7 +114,7 @@ public class VideoController extends BaseController {
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo comment) throws Exception {
         authenticateUserForce();
-        commentService.addComment(currentUser, loadVideoById(id), comment.getContent());
+        commentService.addComment(currentUser, videoService.find(id), comment.getContent());
         return render(ResultTemplate.createOk());
     }
 
@@ -123,7 +127,7 @@ public class VideoController extends BaseController {
     @PostMapping(value="/{id}/like")
     public ResponseEntity likeComment(@PathVariable long id) throws Exception {
         authenticateUserForce();
-        likeService.addLike(currentUser, loadVideoById(id));
+        likeService.addLike(currentUser, videoService.find(id));
         return render(ResultTemplate.createOk());
     }
 
@@ -136,11 +140,7 @@ public class VideoController extends BaseController {
     @DeleteMapping(value="/{id}/remove_like")
     public ResponseEntity removeLikeComment(@PathVariable long id) throws Exception {
         authenticateUserForce();
-        likeService.removeLike(currentUser, loadVideoById(id));
+        likeService.removeLike(currentUser, videoService.find(id));
         return render(ResultTemplate.deleteOk());
-    }
-
-    private Video loadVideoById(long id) throws NotFoundException {
-        return videoService.find(id);
     }
 }

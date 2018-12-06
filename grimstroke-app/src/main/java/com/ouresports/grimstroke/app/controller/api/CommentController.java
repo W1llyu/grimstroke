@@ -10,7 +10,6 @@ import com.ouresports.grimstroke.app.vo.api.CommentVo;
 import com.ouresports.grimstroke.app.vo.api.SubCommentVo;
 import com.ouresports.grimstroke.core.dto.CommentDto;
 import com.ouresports.grimstroke.core.dto.SubCommentDto;
-import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.LikeService;
 import org.springframework.http.ResponseEntity;
@@ -58,9 +57,8 @@ public class CommentController extends BaseController {
                                       @RequestParam(value="page", defaultValue="1") int currentPage,
                                       @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
-        Comment comment = loadCommentById(id);
         Page<SubCommentDto> page = new Page<>(currentPage, per);
-        IPage<SubCommentDto> dtos = commentService.getSubCommentDtoPage(page, comment, currentUser);
+        IPage<SubCommentDto> dtos = commentService.getSubCommentDtoPage(page, commentService.find(id), currentUser);
         return render(new PaginationTemplate<>(dtos, SubCommentVo.class));
     }
 
@@ -73,7 +71,7 @@ public class CommentController extends BaseController {
     @PostMapping(value="/{id}/like")
     public ResponseEntity likeComment(@PathVariable long id) throws Exception {
         authenticateUserForce();
-        likeService.addLike(currentUser, loadCommentById(id));
+        likeService.addLike(currentUser, commentService.find(id));
         return render(ResultTemplate.createOk());
     }
 
@@ -86,7 +84,7 @@ public class CommentController extends BaseController {
     @DeleteMapping(value="/{id}/remove_like")
     public ResponseEntity removeLikeComment(@PathVariable long id) throws Exception {
         authenticateUserForce();
-        likeService.removeLike(currentUser, loadCommentById(id));
+        likeService.removeLike(currentUser, commentService.find(id));
         return render(ResultTemplate.deleteOk());
     }
 
@@ -101,11 +99,7 @@ public class CommentController extends BaseController {
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo commentRbo) throws Exception {
         authenticateUserForce();
-        commentService.addComment(currentUser, loadCommentById(id), commentRbo.getContent());
+        commentService.addComment(currentUser, commentService.find(id), commentRbo.getContent());
         return render(ResultTemplate.createOk());
-    }
-
-    private Comment loadCommentById(long id) throws Exception {
-        return commentService.find(id);
     }
 }
