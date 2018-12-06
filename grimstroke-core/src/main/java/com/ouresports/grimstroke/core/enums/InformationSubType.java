@@ -13,15 +13,15 @@ public enum InformationSubType implements IEnum {
     /**
      * 普通资讯
      */
-    NEWS("News"),
+    News("News"),
     /**
      * 竞猜课堂
      */
-    BETCOURSE("BetCourse"),
+    BetCourse("BetCourse"),
     /**
      * 专家分析类资讯
      */
-    ANALYSIS("Analysis"),
+    Analysis("Analysis"),
     ;
 
     private String type;
@@ -38,5 +38,14 @@ public enum InformationSubType implements IEnum {
     @Override
     public String toString() {
         return type;
+    }
+
+    public static InformationSubType getValueByCode(String type){
+        for(InformationSubType subType: InformationSubType.values()){
+            if(type.equals(subType.getValue())){
+                return subType;
+            }
+        }
+        return  null;
     }
 }

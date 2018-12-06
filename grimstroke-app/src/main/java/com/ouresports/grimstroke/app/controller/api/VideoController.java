@@ -7,8 +7,10 @@ import com.ouresports.grimstroke.app.base.template.ResultTemplate;
 import com.ouresports.grimstroke.app.base.template.SingleTemplate;
 import com.ouresports.grimstroke.app.rbo.api.CommentRbo;
 import com.ouresports.grimstroke.app.vo.api.CommentVo;
+import com.ouresports.grimstroke.app.vo.api.VideoVo;
 import com.ouresports.grimstroke.core.dto.CommentDto;
 import com.ouresports.grimstroke.core.dto.VideoDto;
+import com.ouresports.grimstroke.core.entity.Video;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.LikeService;
 import com.ouresports.grimstroke.core.service.UsersInformationService;
@@ -65,8 +67,9 @@ public class VideoController extends BaseController {
                                 @RequestParam(defaultValue="10") int per,
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         Page<VideoDto> page = new Page<>(currentPage, per);
-        IPage<VideoDto> videoDtos = videoService.getVideoDtos(page, gameId);
-        return render(new PaginationTemplate<>(videoDtos));
+        Video video = generateGeneralVideoQuery().setGameId(gameId);
+        IPage<VideoDto> videoDtos = videoService.getVideoDtos(page, video);
+        return render(new PaginationTemplate<>(videoDtos, VideoVo.class));
     }
 
     /**
@@ -78,11 +81,13 @@ public class VideoController extends BaseController {
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
         authenticateUser();
-        VideoDto dto = videoService.getVideoDto(id);
+        Video video = generateGeneralVideoQuery();
+        video.setId(id);
+        VideoDto dto = videoService.getVideoDto(video);
         if (currentUser != null) {
             usersNewsService.addUserBrowsable(currentUser, videoService.find(id));
         }
-        return render(new SingleTemplate<>(dto));
+        return render(new SingleTemplate<>(dto, VideoVo.class));
     }
 
     /**
@@ -99,7 +104,7 @@ public class VideoController extends BaseController {
                                    @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, videoService.find(id), currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, videoService.find(id), currentUser);
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -142,5 +147,9 @@ public class VideoController extends BaseController {
         authenticateUserForce();
         likeService.removeLike(currentUser, videoService.find(id));
         return render(ResultTemplate.deleteOk());
+    }
+
+    private Video generateGeneralVideoQuery() {
+        return new Video().setEnabled(true);
     }
 }

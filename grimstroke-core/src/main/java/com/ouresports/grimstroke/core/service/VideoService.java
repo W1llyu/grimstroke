@@ -23,6 +23,13 @@ public interface VideoService extends Service<Video> {
     VideoDto getVideoDto(long id) throws NotFoundException;
 
     /**
+     * 获得一条视频
+     * @param video
+     * @return
+     */
+    VideoDto getVideoDto(Video video) throws NotFoundException;
+
+    /**
      * 获得视频列表
      * @param wrapper
      * @return
@@ -32,8 +39,8 @@ public interface VideoService extends Service<Video> {
     /**
      * 获得视频列表分页
      * @param page
-     * @param gameId
+     * @param video
      * @return
      */
-    IPage<VideoDto> getVideoDtos(IPage<VideoDto> page, Integer gameId);
+    IPage<VideoDto> getVideoDtos(IPage<VideoDto> page, Video video);
 }

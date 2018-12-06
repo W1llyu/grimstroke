@@ -7,6 +7,9 @@ import com.ouresports.grimstroke.core.dto.BannerDto;
 import com.ouresports.grimstroke.core.entity.Banner;
 import com.ouresports.grimstroke.core.mapper.BannerMapper;
 import com.ouresports.grimstroke.core.service.BannerService;
+import com.ouresports.grimstroke.core.util.CollectionUtil;
+import com.ouresports.grimstroke.core.util.WrapperUtil;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,12 +20,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> implements BannerService {
     @Override
-    public IPage<BannerDto> getBannerDtos(IPage<BannerDto> page) {
-        QueryWrapper<BannerDto> wrapper = new QueryWrapper<BannerDto>()
+    public BannerDto getBannerDto(long id) throws NotFoundException {
+        QueryWrapper<BannerDto> wrapper = generateGeneralQuery()
+                .eq("`banners`.`id`", id)
+                .last("LIMIT 1");
+        return CollectionUtil.getFirstElement(baseMapper.selectBannerDtos(null, wrapper));
+    }
+
+    @Override
+    public BannerDto getBannerDto(Banner banner) throws NotFoundException {
+        QueryWrapper<BannerDto> wrapper = generateGeneralQuery();
+        WrapperUtil.appendEqualQuery(wrapper, banner, "banners");
+        return CollectionUtil.getFirstElement(baseMapper.selectBannerDtos(null, wrapper));
+    }
+
+    @Override
+    public IPage<BannerDto> getBannerDtos(IPage<BannerDto> page, Banner banner) {
+        QueryWrapper<BannerDto> wrapper = generateGeneralQuery()
                 .orderByDesc("`banners`.`priority`")
-                .orderByDesc("`banners`.`created_at`")
-                .groupBy("`banners`.`id`");
+                .orderByDesc("`banners`.`created_at`");
+        WrapperUtil.appendEqualQuery(wrapper, banner, "banners");
         page.setRecords(baseMapper.selectBannerDtos(page, wrapper));
         return page;
+    }
+
+    private QueryWrapper<BannerDto> generateGeneralQuery() {
+        return new QueryWrapper<BannerDto>().groupBy("`banners`.`id`");
     }
 }

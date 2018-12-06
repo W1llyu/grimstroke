@@ -8,6 +8,8 @@ import com.ouresports.grimstroke.core.dto.VideoDto;
 import com.ouresports.grimstroke.core.entity.Video;
 import com.ouresports.grimstroke.core.mapper.VideoMapper;
 import com.ouresports.grimstroke.core.service.VideoService;
+import com.ouresports.grimstroke.core.util.CollectionUtil;
+import com.ouresports.grimstroke.core.util.WrapperUtil;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +24,17 @@ import java.util.List;
 public class VideoServiceImpl extends BaseServiceImpl<VideoMapper, Video> implements VideoService {
     @Override
     public VideoDto getVideoDto(long id) throws NotFoundException {
-        QueryWrapper<VideoDto> wrapper = new QueryWrapper<VideoDto>()
-                .eq("`videos`.`enabled`", true)
+        QueryWrapper<VideoDto> wrapper = generateVideoDtoWrapper()
                 .eq("`videos`.`id`", id)
-                .groupBy("`videos`.`id`")
                 .last("LIMIT 1");
-        List<VideoDto> list = getVideoDtos(wrapper);
-        if (list.isEmpty()) {
-            throw new NotFoundException("Video");
-        }
-        return list.get(0);
+        return CollectionUtil.getFirstElement(getVideoDtos(wrapper));
+    }
+
+    @Override
+    public VideoDto getVideoDto(Video video) throws NotFoundException {
+        QueryWrapper<VideoDto> wrapper = generateVideoDtoWrapper().last("LIMIT 1");
+        WrapperUtil.appendEqualQuery(wrapper, video, "videos");
+        return CollectionUtil.getFirstElement(getVideoDtos(wrapper));
     }
 
     @Override
@@ -40,16 +43,15 @@ public class VideoServiceImpl extends BaseServiceImpl<VideoMapper, Video> implem
     }
 
     @Override
-    public IPage<VideoDto> getVideoDtos(IPage<VideoDto> page, Integer gameId) {
-        QueryWrapper<VideoDto> wrapper = new QueryWrapper<VideoDto>()
-                .eq("`videos`.`enabled`", true)
+    public IPage<VideoDto> getVideoDtos(IPage<VideoDto> page, Video video) {
+        QueryWrapper<VideoDto> wrapper = generateVideoDtoWrapper()
                 .orderByDesc("`videos`.`sticky`")
-                .orderByDesc("`videos`.`created_at`")
-                .groupBy("`videos`.`id`");
-        if (gameId != null) {
-            wrapper.eq("`videos`.`game_id`", gameId);
-        }
+                .orderByDesc("`videos`.`created_at`");
         page.setRecords(baseMapper.selectVideoDtos(page, wrapper));
         return page;
+    }
+
+    private QueryWrapper<VideoDto> generateVideoDtoWrapper() {
+        return new QueryWrapper<VideoDto>().groupBy("`videos`.`id`");
     }
 }

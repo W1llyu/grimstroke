@@ -85,14 +85,14 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
     }
 
     @Override
-    public IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user) {
+    public IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user) {
         List<CommentDto> commentDtoList = baseMapper.selectCommentDtos(page, wrapper, user == null ? 0 : user.getId());
         page.setRecords(commentDtoList);
         return page;
     }
 
     @Override
-    public IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Commentable commentable, User user) {
+    public IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Commentable commentable, User user) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<Comment>()
                 .eq("`comments`.`root_type`", commentable.getCommentableType())
                 .eq("`comments`.`root_id`", commentable.getId())
@@ -100,13 +100,12 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
                 .isNull("`comments`.`root_comment_id`")
                 .groupBy("`comments`.`id`")
                 .orderByDesc("`comments`.`created_at`");
-        IPage<CommentDto> commentDtos = getCommentDtoPage(page, wrapper, user);
-        setUserForCommentDto(commentDtos.getRecords());
-        return commentDtos;
+        page.setRecords(baseMapper.selectCommentDtos(page, wrapper, user == null ? 0 : user.getId()));
+        return page;
     }
 
     @Override
-    public IPage<SubCommentDto> getSubCommentDtoPage(IPage<SubCommentDto> page, Comment comment, User user) {
+    public IPage<SubCommentDto> getSubCommentDtos(IPage<SubCommentDto> page, Comment comment, User user) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<Comment>()
                 .eq("`comments`.`root_comment_id`", comment.getId())
                 .groupBy("`comments`.`id`")

@@ -1,16 +1,20 @@
-package com.ouresports.grimstroke.core.dto;
+package com.ouresports.grimstroke.app.vo.api;
 
+import com.ouresports.grimstroke.core.base.entity.BaseTo;
+import com.ouresports.grimstroke.core.dto.VideoDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 /**
  *
  * @author will
- * @date 2018/12/5
+ * @date 2018/12/6
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class VideoDto {
+public class VideoVo extends BaseTo<VideoDto> {
     private Long id;
     private Date createdAt;
     private String title;
@@ -20,9 +24,7 @@ public class VideoDto {
     private Long size;
     private Integer gameId;
     private String tagName;
-    private Long tagId;
     private Boolean sticky;
     private Long commentCount;
     private Long likeCount;
-    private Boolean enabled;
 }

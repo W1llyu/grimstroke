@@ -90,7 +90,7 @@ public class InformationServiceImpl implements InformationService{
     private List<InformationDto> getNewsInformation(int currentPage, Integer gameId) {
         QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, gameId);
-        wrapper.eq("`news`.`type`", InformationSubType.NEWS)
+        wrapper.eq("`news`.`type`", InformationSubType.News)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
                 .groupBy("`news`.`id`")
@@ -121,7 +121,7 @@ public class InformationServiceImpl implements InformationService{
     private InformationDto getCourseInformation() {
         QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, null);
-        wrapper.eq("`news`.`type`", InformationSubType.BETCOURSE)
+        wrapper.eq("`news`.`type`", InformationSubType.BetCourse)
                 .groupBy("`news`.`id`")
                 .last("ORDER BY RAND() LIMIT 1");
         List<NewsDto> list = newsService.getNewsDtos(wrapper);
@@ -141,7 +141,7 @@ public class InformationServiceImpl implements InformationService{
     private InformationDto getAnalysisInformation(int currentPage, Integer gameId) {
         QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, gameId);
-        wrapper.eq("`news`.`type`", InformationSubType.ANALYSIS)
+        wrapper.eq("`news`.`type`", InformationSubType.Analysis)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
                 .groupBy("`news`.`id`")

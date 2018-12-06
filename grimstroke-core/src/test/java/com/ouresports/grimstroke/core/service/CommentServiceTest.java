@@ -27,6 +27,6 @@ public class CommentServiceTest extends GrimstrokeCoreApplicationTest {
         User user = userService.find(1);
         News news = newsService.find(1);
         Page<CommentDto> page = new Page<>(1, 10);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, news, user);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, news, user);
     }
 }

@@ -28,6 +28,7 @@ public class NewsDto {
     private String author;
     private String source;
     private Integer gameId;
+    private Long tagId;
     private String tagName;
     private Long browseCount;
     private Long commentCount;

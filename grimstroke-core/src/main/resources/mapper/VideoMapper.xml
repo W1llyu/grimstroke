@@ -3,17 +3,8 @@
 <mapper namespace="com.ouresports.grimstroke.core.mapper.VideoMapper">
     <select id="selectVideoDtos" resultType="com.ouresports.grimstroke.core.dto.VideoDto">
         SELECT
-          `videos`.`id` AS `id`,
-          `videos`.`created_at` AS `created_at`,
-          `videos`.`title` AS `title`,
-          `videos`.`cover_image` AS `cover_image`,
-          `videos`.`vod_id` AS `vod_id`,
-          `videos`.`duration` AS `duration`,
-          `videos`.`size` AS `size`,
-          `videos`.`game_id` AS `game_id`,
+          `videos`.*,
           CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
-          `videos`.`sticky` AS `sticky`,
-          `videos`.`enabled` AS `enabled`,
           COUNT(DISTINCT `comments`.`id`) AS `comment_count`,
           COUNT(DISTINCT `likes`.`id`) AS `like_count`
         FROM `videos`

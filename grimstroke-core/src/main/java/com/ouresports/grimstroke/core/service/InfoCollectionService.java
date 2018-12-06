@@ -25,6 +25,13 @@ public interface InfoCollectionService extends Service<InfoCollection> {
     InfoCollectionDto getInfoCollectionDto(long id) throws NotFoundException;
 
     /**
+     * 获得一条专栏详情
+     * @param infoCollection
+     * @return
+     */
+    InfoCollectionDto getInfoCollectionDto(InfoCollection infoCollection) throws NotFoundException;
+
+    /**
      * 获得专栏列表
      * @param wrapper
      * @return
@@ -34,10 +41,10 @@ public interface InfoCollectionService extends Service<InfoCollection> {
     /**
      * 获得专栏DTO Page
      * @param page
-     * @param gameId
+     * @param infoCollection
      * @return
      */
-    IPage<InfoCollectionDto> getInfoCollectionDtos(IPage<InfoCollectionDto> page, Integer gameId);
+    IPage<InfoCollectionDto> getInfoCollectionDtos(IPage<InfoCollectionDto> page, InfoCollection infoCollection);
 
     /**
      * 获取专栏下所有的资讯

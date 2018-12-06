@@ -10,6 +10,7 @@ import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.mapper.InfoCollectionMapper;
 import com.ouresports.grimstroke.core.service.InfoCollectionService;
 import com.ouresports.grimstroke.core.util.CollectionUtil;
+import com.ouresports.grimstroke.core.util.WrapperUtil;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,17 @@ import java.util.List;
 public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMapper, InfoCollection> implements InfoCollectionService {
     @Override
     public InfoCollectionDto getInfoCollectionDto(long id) throws NotFoundException {
-        QueryWrapper<InfoCollectionDto> wrapper = new QueryWrapper<InfoCollectionDto>()
-                .eq("`cols`.`enabled`", true)
+        QueryWrapper<InfoCollectionDto> wrapper = generateInfoCollectionDtoWrapper()
                 .eq("`cols`.`id`", id)
-                .groupBy("`cols`.`id`")
                 .last("LIMIT 1");
-        List<InfoCollectionDto> list = getInfoCollectionDtos(wrapper);
-        return CollectionUtil.getFirstElement(list);
+        return CollectionUtil.getFirstElement(getInfoCollectionDtos(wrapper));
+    }
+
+    @Override
+    public InfoCollectionDto getInfoCollectionDto(InfoCollection infoCollection) throws NotFoundException {
+        QueryWrapper<InfoCollectionDto> wrapper = generateInfoCollectionDtoWrapper().last("LIMIT 1");
+        WrapperUtil.appendEqualQuery(wrapper, infoCollection, "cols");
+        return CollectionUtil.getFirstElement(getInfoCollectionDtos(wrapper));
     }
 
     @Override
@@ -39,15 +44,11 @@ public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMap
     }
 
     @Override
-    public IPage<InfoCollectionDto> getInfoCollectionDtos(IPage<InfoCollectionDto> page, Integer gameId) {
-        QueryWrapper<InfoCollectionDto> wrapper = new QueryWrapper<InfoCollectionDto>()
-                .eq("`cols`.`enabled`", true)
+    public IPage<InfoCollectionDto> getInfoCollectionDtos(IPage<InfoCollectionDto> page, InfoCollection infoCollection) {
+        QueryWrapper<InfoCollectionDto> wrapper = generateInfoCollectionDtoWrapper()
                 .orderByDesc("`cols`.`sticky`")
-                .orderByDesc("`cols`.`created_at`")
-                .groupBy("`cols`.`id`");
-        if (gameId != null) {
-            wrapper.eq("`cols`.`game_id`", gameId);
-        }
+                .orderByDesc("`cols`.`created_at`");
+        WrapperUtil.appendEqualQuery(wrapper, infoCollection, "cols");
         page.setRecords(baseMapper.selectInfoCollectionDtos(page, wrapper));
         return page;
     }
@@ -60,5 +61,9 @@ public class InfoCollectionServiceImpl extends BaseServiceImpl<InfoCollectionMap
                 .orderByDesc("`created_at`");
         page.setRecords(baseMapper.selectInformationDtosOfCol(page, id, wrapper));
         return page;
+    }
+
+    private QueryWrapper<InfoCollectionDto> generateInfoCollectionDtoWrapper() {
+        return new QueryWrapper<InfoCollectionDto>().groupBy("`cols`.`id`");
     }
 }

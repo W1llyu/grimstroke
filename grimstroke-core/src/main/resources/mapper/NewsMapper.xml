@@ -3,26 +3,17 @@
 <mapper namespace="com.ouresports.grimstroke.core.mapper.NewsMapper">
     <select id="selectNewsDtos" resultType="com.ouresports.grimstroke.core.dto.NewsDto">
         SELECT
-          `news`.`id`,
-          `news`.`type` AS `type`,
-          `news`.`title` AS `title`,
-          `news`.`cover_image` AS `cover_image`,
-          `news`.`game_id` AS `game_id`,
+          `news`.*,
           CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
-          `news`.`content` AS `content`,
-          `news`.`author` AS `author`,
-          `news`.`source` AS `source`,
-          `news`.`associate_id` AS `associate_id`,
-          `news`.`sticky`,
-          `news`.`enabled`,
-          `news`.`created_at`,
-          `news`.`deleted_at`,
-          COUNT(DISTINCT `comments`.`id`) AS `comment_count`
+          COUNT(DISTINCT `comments`.`id`) AS `comment_count`,
+          COUNT(DISTINCT `u_i`.`id`) AS `browse_count`
         FROM `news`
         LEFT OUTER JOIN `comments`
           ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id`
         INNER JOIN `tags` ON `tags`.`id` = `news`.`tag_id`
         INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
+        LEFT OUTER JOIN `users_informations` AS `u_i`ON `u_i`.`information_type` = 'News'
+          AND `u_i`.`information_id` = `news`.`id`
         WHERE `news`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 </mapper>

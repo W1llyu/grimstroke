@@ -40,7 +40,7 @@ public interface CommentService extends Service<Comment> {
      * @param user
      * @return
      */
-    IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user);
+    IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user);
 
     /**
      * 分页获得评论
@@ -49,7 +49,7 @@ public interface CommentService extends Service<Comment> {
      * @param user
      * @return
      */
-    IPage<CommentDto> getCommentDtoPage(IPage<CommentDto> page, Commentable commentable, User user);
+    IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Commentable commentable, User user);
 
     /**
      * 分页获得评论的回复
@@ -58,5 +58,5 @@ public interface CommentService extends Service<Comment> {
      * @param user
      * @return
      */
-    IPage<SubCommentDto> getSubCommentDtoPage(IPage<SubCommentDto> page, Comment comment, User user);
+    IPage<SubCommentDto> getSubCommentDtos(IPage<SubCommentDto> page, Comment comment, User user);
 }

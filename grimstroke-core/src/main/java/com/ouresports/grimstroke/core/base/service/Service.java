@@ -63,4 +63,15 @@ public interface Service<T> extends IService<T> {
      * @return
      */
     IPage<T> list(IPage<T> var1, Wrapper<T> var2);
+
+    /**
+     * <p>
+     * 分页查询
+     * </p>
+     *
+     * @param var1
+     * @param var2
+     * @return
+     */
+    IPage<T> list(IPage<T> var1, T var2);
 }

@@ -58,7 +58,7 @@ public class CommentController extends BaseController {
                                       @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
         Page<SubCommentDto> page = new Page<>(currentPage, per);
-        IPage<SubCommentDto> dtos = commentService.getSubCommentDtoPage(page, commentService.find(id), currentUser);
+        IPage<SubCommentDto> dtos = commentService.getSubCommentDtos(page, commentService.find(id), currentUser);
         return render(new PaginationTemplate<>(dtos, SubCommentVo.class));
     }
 

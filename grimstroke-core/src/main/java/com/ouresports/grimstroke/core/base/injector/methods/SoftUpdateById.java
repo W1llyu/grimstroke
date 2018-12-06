@@ -18,7 +18,7 @@ public class SoftUpdateById extends AbstractSoftMethod {
         SqlMethod sqlMethod = SqlMethod.UPDATE_BY_ID;
         StringBuilder append = (new StringBuilder("<if test=\"et instanceof java.util.Map\">")).append("<if test=\"et.").append("MP_OPTLOCK_VERSION_ORIGINAL").append("!=null\">").append(" AND ${et.").append("MP_OPTLOCK_VERSION_COLUMN").append("}=#{et.").append("MP_OPTLOCK_VERSION_ORIGINAL").append("}").append("</if></if>");
         if(logicDelete) {
-            append.append(tableInfo.getLogicDeleteSql(true, false));
+            append.append(getQuerySoftDeleteSql(tableInfo, true));
         }
 
         String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), this.sqlSet(logicDelete, false, tableInfo, "et."), tableInfo.getKeyColumn(), "et." + tableInfo.getKeyProperty(), append);

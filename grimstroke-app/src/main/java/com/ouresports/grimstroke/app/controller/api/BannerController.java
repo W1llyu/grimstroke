@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.vo.api.BannerVo;
 import com.ouresports.grimstroke.core.dto.BannerDto;
+import com.ouresports.grimstroke.core.entity.Banner;
 import com.ouresports.grimstroke.core.service.BannerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class BannerController extends BaseController {
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
                                 @RequestParam(defaultValue="10") int per) throws Exception {
         Page<BannerDto> page = new Page<>(currentPage, per);
-        IPage<BannerDto> banners = bannerService.getBannerDtos(page);
+        IPage<BannerDto> banners = bannerService.getBannerDtos(page, new Banner().setEnabled(true));
         return render(new PaginationTemplate<>(banners, BannerVo.class));
     }
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ouresports.grimstroke.core.util.ReflectUtil;
+import com.ouresports.grimstroke.core.util.WrapperUtil;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
     @Override
     public IPage<T> list(IPage<T> var1, Wrapper<T> var2) {
         return page(var1, var2);
+    }
+
+    @Override
+    public IPage<T> list(IPage<T> var1, T var2) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        WrapperUtil.appendEqualQuery(wrapper, var2);
+        return page(var1, wrapper);
     }
 
     @Override

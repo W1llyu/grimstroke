@@ -4,7 +4,6 @@ import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.lib.aliyun.entity.VodUploadInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,9 +16,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class VideoUploadAuthRbo extends BaseTo<VodUploadInfo>{
     @NotNull(message="标题不可为空")
-    @NotBlank(message="标题不可为空")
     private String title;
     @NotNull(message="文件名不可为空")
-    @NotBlank(message="文件名不可为空")
     private String fileName;
 }

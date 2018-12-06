@@ -27,6 +27,7 @@ public class News extends BaseEntity implements Browsable, Commentable, InfoColl
     private String coverImage;
     private InformationSubType type;
     private Integer gameId;
+    private Long tagId;
     private String content;
     private String author;
     private String source;

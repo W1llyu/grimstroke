@@ -1,21 +1,18 @@
-package com.ouresports.grimstroke.core.entity;
+package com.ouresports.grimstroke.app.rbo.admin;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.ouresports.grimstroke.core.base.entity.BaseEntity;
+import com.ouresports.grimstroke.core.base.entity.BaseTo;
+import com.ouresports.grimstroke.core.entity.Banner;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  *
  * @author will
- * @date 2018/12/5
+ * @date 2018/12/6
  */
-@TableName("banners")
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Accessors(chain=true)
-public class Banner extends BaseEntity {
+public class BannerRbo extends BaseTo<Banner> {
     private String title;
     private String coverImage;
     private String redirectUrl;

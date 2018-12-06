@@ -10,6 +10,7 @@ import com.ouresports.grimstroke.app.vo.api.CommentVo;
 import com.ouresports.grimstroke.app.vo.api.NewsVo;
 import com.ouresports.grimstroke.core.dto.CommentDto;
 import com.ouresports.grimstroke.core.dto.NewsDto;
+import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.service.CommentService;
 import com.ouresports.grimstroke.core.service.NewsService;
 import com.ouresports.grimstroke.core.service.UsersInformationService;
@@ -43,7 +44,9 @@ public class NewsController extends BaseController {
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
         authenticateUser();
-        NewsDto dto = newsService.getNewsDto(id);
+        News news = generateGeneralQuery();
+        news.setId(id);
+        NewsDto dto = newsService.getNewsDto(news);
         if (currentUser != null) {
             usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
         }
@@ -64,7 +67,7 @@ public class NewsController extends BaseController {
                                    @RequestParam(defaultValue="10") int per) throws Exception {
         authenticateUser();
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtoPage(page, newsService.find(id), currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, newsService.find(id), currentUser);
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -94,5 +97,9 @@ public class NewsController extends BaseController {
         authenticateUserForce();
         usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
         return render(ResultTemplate.createOk());
+    }
+
+    private News generateGeneralQuery() {
+        return new News().setEnabled(true);
     }
 }
