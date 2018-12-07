@@ -2,15 +2,18 @@ package com.ouresports.grimstroke.core.base.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ouresports.grimstroke.core.base.mapper.BaseMapper;
+import com.ouresports.grimstroke.core.util.CollectionUtil;
+import com.ouresports.grimstroke.core.util.EntityUtil;
 import com.ouresports.grimstroke.core.util.ReflectUtil;
 import com.ouresports.grimstroke.core.util.WrapperUtil;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
 
@@ -20,6 +23,8 @@ import java.util.Date;
  * @date 2018/11/28
  */
 public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements Service<T> {
+    protected Class<?> entityClass;
+
     @Override
     public T find(long id) throws NotFoundException {
         T t = getById(id);
@@ -119,6 +124,25 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
         return t;
     }
 
+    @Override
+    public <E>E getDto(long id) throws NotFoundException {
+        String tableName = EntityUtil.getEntityTableName(getEntityClass());
+        QueryWrapper<T> wrapper = new QueryWrapper<T>()
+                .groupBy(String.format("`%s`.`id`", tableName))
+                .last("limit 1")
+                .eq(String.format("`%s`.`id`", tableName), id);
+        return CollectionUtil.getFirstElement(baseMapper.selectDtos(null, wrapper));
+    }
+
+    @Override
+    public <E>IPage<E> getDtos(IPage<E> page, QueryWrapper<T> wrapper) {
+        String tableName = EntityUtil.getEntityTableName(getEntityClass());
+        wrapper.groupBy(String.format("`%s`.`id`", tableName));
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity(), tableName);
+        page.setRecords(baseMapper.selectDtos(page, wrapper));
+        return page;
+    }
+
     private void initTimestamp(T t, String fieldName) {
         try {
             if (ReflectUtil.getFieldValue(t, fieldName) == null) {
@@ -137,5 +161,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Class<?> getEntityClass() {
+        if (entityClass == null) {
+            entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        }
+        return entityClass;
     }
 }

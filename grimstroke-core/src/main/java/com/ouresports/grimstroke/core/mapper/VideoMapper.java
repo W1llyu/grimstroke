@@ -1,8 +1,8 @@
 package com.ouresports.grimstroke.core.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ouresports.grimstroke.core.base.mapper.BaseMapper;
 import com.ouresports.grimstroke.core.dto.VideoDto;
 import com.ouresports.grimstroke.core.entity.Video;
 import org.apache.ibatis.annotations.Param;

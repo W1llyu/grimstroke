@@ -74,4 +74,8 @@ public interface Service<T> extends IService<T> {
      * @return
      */
     IPage<T> list(IPage<T> var1, T var2);
+
+    <E>E getDto(long id) throws NotFoundException;
+
+    <E>IPage<E> getDtos(IPage<E> page, QueryWrapper<T> wrapper);
 }

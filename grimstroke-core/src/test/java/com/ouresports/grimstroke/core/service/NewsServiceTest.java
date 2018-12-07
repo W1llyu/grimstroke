@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.core.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
@@ -19,6 +20,6 @@ public class NewsServiceTest extends GrimstrokeCoreApplicationTest {
     @Test
     public void testGetNewsDtos() {
         News news = new News().setGameId(1);
-        IPage<NewsDto> newsDtos = newsService.getNewsDtos(new Page<>(1, 10), news);
+        IPage<NewsDto> newsDtos = newsService.getDtos(new Page<>(1, 10), new QueryWrapper<>(news));
     }
 }
