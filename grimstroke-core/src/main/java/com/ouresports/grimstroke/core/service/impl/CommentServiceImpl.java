@@ -85,13 +85,6 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
     }
 
     @Override
-    public IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user) {
-        List<CommentDto> commentDtoList = baseMapper.selectCommentDtos(page, wrapper, user == null ? 0 : user.getId());
-        page.setRecords(commentDtoList);
-        return page;
-    }
-
-    @Override
     public IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Commentable commentable, User user) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<Comment>()
                 .eq("`comments`.`root_type`", commentable.getCommentableType())
@@ -101,6 +94,7 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
                 .groupBy("`comments`.`id`")
                 .orderByDesc("`comments`.`created_at`");
         page.setRecords(baseMapper.selectCommentDtos(page, wrapper, user == null ? 0 : user.getId()));
+        setUserForCommentDto(page.getRecords());
         return page;
     }
 

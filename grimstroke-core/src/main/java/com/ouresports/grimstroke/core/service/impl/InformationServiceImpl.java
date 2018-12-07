@@ -88,14 +88,13 @@ public class InformationServiceImpl implements InformationService{
      * @return
      */
     private List<InformationDto> getNewsInformation(int currentPage, Integer gameId) {
-        QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
+        QueryWrapper<News> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, gameId);
         wrapper.eq("`news`.`type`", InformationSubType.News)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
-                .groupBy("`news`.`id`")
                 .last(String.format("LIMIT %d, %d", (currentPage - 1) * NEWS_PAGE_SIZE, currentPage * NEWS_PAGE_SIZE));
-        return NewsDto.toInformations(newsService.getNewsDtos(wrapper));
+        return NewsDto.toInformations(newsService.getDtos(wrapper));
     }
 
     /**
@@ -105,13 +104,12 @@ public class InformationServiceImpl implements InformationService{
      * @return
      */
     private List<InformationDto> getInfoColInformation(int currentPage, Integer gameId) {
-        QueryWrapper<InfoCollectionDto> wrapper = new QueryWrapper<>();
+        QueryWrapper<InfoCollection> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, gameId);
-        wrapper.orderByDesc("`cols`.`sticky`")
-                .orderByDesc("`cols`.`created_at`")
-                .groupBy("`cols`.`id`")
+        wrapper.orderByDesc("`info_collections`.`sticky`")
+                .orderByDesc("`info_collections`.`created_at`")
                 .last(String.format("LIMIT %d, %d", (currentPage - 1) * COL_PAGE_SIZE, currentPage * COL_PAGE_SIZE));
-        return InfoCollectionDto.toInformations(infoCollectionService.getInfoCollectionDtos(wrapper));
+        return InfoCollectionDto.toInformations(infoCollectionService.getDtos(wrapper));
     }
 
     /**
@@ -119,12 +117,11 @@ public class InformationServiceImpl implements InformationService{
      * @return
      */
     private InformationDto getCourseInformation() {
-        QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
+        QueryWrapper<News> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, null);
         wrapper.eq("`news`.`type`", InformationSubType.BetCourse)
-                .groupBy("`news`.`id`")
                 .last("ORDER BY RAND() LIMIT 1");
-        List<NewsDto> list = newsService.getNewsDtos(wrapper);
+        List<NewsDto> list = newsService.getDtos(wrapper);
         InformationDto dto = null;
         if (!list.isEmpty()) {
             dto = list.get(0).toInformation();
@@ -139,14 +136,13 @@ public class InformationServiceImpl implements InformationService{
      * @return
      */
     private InformationDto getAnalysisInformation(int currentPage, Integer gameId) {
-        QueryWrapper<NewsDto> wrapper = new QueryWrapper<>();
+        QueryWrapper<News> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, gameId);
         wrapper.eq("`news`.`type`", InformationSubType.Analysis)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
-                .groupBy("`news`.`id`")
                 .last(String.format("LIMIT %d, %d", currentPage - 1, currentPage));
-        List<NewsDto> list = newsService.getNewsDtos(wrapper);
+        List<NewsDto> list = newsService.getDtos(wrapper);
         InformationDto dto = null;
         if (!list.isEmpty()) {
             dto = list.get(0).toInformation();

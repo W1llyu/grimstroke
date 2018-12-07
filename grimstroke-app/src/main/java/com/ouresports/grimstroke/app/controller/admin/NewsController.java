@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
@@ -41,7 +42,7 @@ public class NewsController extends BaseController {
                                 @RequestParam(defaultValue="10") int per,
                                 News news) throws Exception {
         Page<NewsDto> page = new Page<>(currentPage, per);
-        return render(new PaginationTemplate<>(newsService.getNewsDtos(page, news), NewsVo.class));
+        return render(new PaginationTemplate<>(newsService.getDtos(page, new QueryWrapper<>(news)), NewsVo.class));
     }
 
     /**
@@ -52,7 +53,7 @@ public class NewsController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        NewsDto news = newsService.getNewsDto(id);
+        NewsDto news = newsService.getDto(id);
         return render(new SingleTemplate<>(news, NewsDetailVo.class));
     }
 

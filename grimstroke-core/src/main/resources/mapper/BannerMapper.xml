@@ -11,7 +11,7 @@
         </association>
     </resultMap>
 
-    <select id="selectBannerDtos" resultMap="BannerDtoMap">
+    <select id="selectDtos" resultMap="BannerDtoMap">
         SELECT
         `banners`.*,
         CASE `banners`.`resource_type`

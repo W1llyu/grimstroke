@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ouresports.grimstroke.core.mapper.InfoCollectionMapper">
-    <select id="selectInfoCollectionDtos" resultType="com.ouresports.grimstroke.core.dto.InfoCollectionDto">
-        SELECT
-          `cols`.`id`,
-          `cols`.`title`,
-          `cols`.`sub_title`,
-          `cols`.`cover_image`,
-          `cols`.`game_id`,
-          `cols`.`sticky`,
-          `cols`.`enabled`,
-          MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0))) AS `created_at`,
-          `cols`.`deleted_at`,
-          COUNT(DISTINCT `news`.`id`) AS `news_count`,
-          COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
-        FROM `info_collections` AS `cols`
-        LEFT OUTER JOIN `info_collections_informations` AS `col_news`
-          ON `col_news`.`info_collection_id` = `cols`.`id` AND `col_news`.`information_type` = 'News'
-        LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
-        LEFT OUTER JOIN `comments` AS `news_comments`
-          ON (`news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id`)
-        LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
-          ON `col_videos`.`info_collection_id` = `cols`.`id` AND `col_videos`.`information_type` = 'Video'
-        LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
-        LEFT OUTER JOIN `comments` AS `video_comments`
-          ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id`
-        WHERE `cols`.`deleted_at` IS NULL AND ${ew.sqlSegment}
+    <select id="selectDtos" resultType="com.ouresports.grimstroke.core.dto.InfoCollectionDto">
+      SELECT
+      `info_collections`.`id`,
+      `info_collections`.`title`,
+      `info_collections`.`sub_title`,
+      `info_collections`.`cover_image`,
+      `info_collections`.`game_id`,
+      `info_collections`.`sticky`,
+      `info_collections`.`enabled`,
+      MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0))) AS `created_at`,
+      `info_collections`.`deleted_at`,
+      COUNT(DISTINCT `news`.`id`) AS `news_count`,
+      COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
+      FROM `info_collections`
+      LEFT OUTER JOIN `info_collections_informations` AS `col_news`
+      ON `col_news`.`info_collection_id` = `info_collections`.`id` AND `col_news`.`information_type` = 'News'
+      LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
+      LEFT OUTER JOIN `comments` AS `news_comments`
+      ON (`news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id`)
+      LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
+      ON `col_videos`.`info_collection_id` = `info_collections`.`id` AND `col_videos`.`information_type` = 'Video'
+      LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
+      LEFT OUTER JOIN `comments` AS `video_comments`
+      ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id`
+      WHERE `info_collections`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 
     <select id="selectInformationDtosOfCol" resultType="com.ouresports.grimstroke.core.dto.InformationDto">

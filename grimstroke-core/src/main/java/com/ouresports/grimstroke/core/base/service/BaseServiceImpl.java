@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,7 +24,7 @@ import java.util.Date;
  * @date 2018/11/28
  */
 public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements Service<T> {
-    protected Class<?> entityClass;
+    protected String tableName;
 
     @Override
     public T find(long id) throws NotFoundException {
@@ -126,19 +127,30 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
     @Override
     public <E>E getDto(long id) throws NotFoundException {
-        String tableName = EntityUtil.getEntityTableName(getEntityClass());
         QueryWrapper<T> wrapper = new QueryWrapper<T>()
-                .groupBy(String.format("`%s`.`id`", tableName))
+                .groupBy(String.format("`%s`.`id`", getTableName()))
                 .last("limit 1")
-                .eq(String.format("`%s`.`id`", tableName), id);
+                .eq(String.format("`%s`.`id`", getTableName()), id);
         return CollectionUtil.getFirstElement(baseMapper.selectDtos(null, wrapper));
     }
 
     @Override
+    public <E> E getDto(QueryWrapper<T> wrapper) throws NotFoundException {
+        wrapper.groupBy(String.format("`%s`.`id`", getTableName()))
+                .last("LIMIT 1");
+        return CollectionUtil.getFirstElement(baseMapper.selectDtos(null, wrapper));
+    }
+
+    @Override
+    public <E> List<E> getDtos(QueryWrapper<T> wrapper) {
+        wrapper.groupBy(String.format("`%s`.`id`", getTableName()));
+        return baseMapper.selectDtos(null, wrapper);
+    }
+
+    @Override
     public <E>IPage<E> getDtos(IPage<E> page, QueryWrapper<T> wrapper) {
-        String tableName = EntityUtil.getEntityTableName(getEntityClass());
-        wrapper.groupBy(String.format("`%s`.`id`", tableName));
-        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity(), tableName);
+        wrapper.groupBy(String.format("`%s`.`id`", getTableName()));
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity(), getTableName());
         page.setRecords(baseMapper.selectDtos(page, wrapper));
         return page;
     }
@@ -163,10 +175,11 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
         }
     }
 
-    private Class<?> getEntityClass() {
-        if (entityClass == null) {
-            entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    public String getTableName() {
+        if (tableName == null) {
+            Class<?> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            tableName = EntityUtil.getEntityTableName(entityClass);
         }
-        return entityClass;
+        return tableName;
     }
 }

@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
@@ -67,8 +68,10 @@ public class VideoController extends BaseController {
                                 @RequestParam(defaultValue="10") int per,
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         Page<VideoDto> page = new Page<>(currentPage, per);
-        Video video = generateGeneralVideoQuery().setGameId(gameId);
-        IPage<VideoDto> videoDtos = videoService.getVideoDtos(page, video);
+        QueryWrapper<Video> wrapper = new QueryWrapper<>(generateGeneralVideoQuery().setGameId(gameId))
+                .orderByDesc("`videos`.`sticky`")
+                .orderByDesc("`videos`.`created_at`");
+        IPage<VideoDto> videoDtos = videoService.getDtos(page, wrapper);
         return render(new PaginationTemplate<>(videoDtos, VideoVo.class));
     }
 
@@ -83,7 +86,7 @@ public class VideoController extends BaseController {
         authenticateUser();
         Video video = generateGeneralVideoQuery();
         video.setId(id);
-        VideoDto dto = videoService.getVideoDto(video);
+        VideoDto dto = videoService.getDto(new QueryWrapper<>(video));
         if (currentUser != null) {
             usersNewsService.addUserBrowsable(currentUser, videoService.find(id));
         }

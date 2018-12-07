@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
@@ -37,7 +38,9 @@ public class BannerController extends BaseController {
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
                                 @RequestParam(defaultValue="10") int per) throws Exception {
         Page<BannerDto> page = new Page<>(currentPage, per);
-        IPage<BannerDto> banners = bannerService.getBannerDtos(page, new Banner().setEnabled(true));
+        QueryWrapper<Banner> banner = new QueryWrapper<>(new Banner().setEnabled(true))
+                .orderByDesc("`banners`.`priority`");
+        IPage<BannerDto> banners = bannerService.getDtos(page, banner);
         return render(new PaginationTemplate<>(banners, BannerVo.class));
     }
 }

@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
@@ -39,8 +40,10 @@ public class InfoCollectionController extends BaseController {
                                 @RequestParam(defaultValue="10") int per,
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         Page<InfoCollectionDto> page = new Page<>(currentPage, per);
-        InfoCollection infoCollection = generateGeneralQuery().setGameId(gameId);
-        IPage<InfoCollectionDto> informationPage = infoCollectionService.getInfoCollectionDtos(page, infoCollection);
+        QueryWrapper<InfoCollection> wrapper = new QueryWrapper<>(generateGeneralQuery().setGameId(gameId))
+                .orderByDesc("`info_collections`.`sticky`")
+                .orderByDesc("`created_at`");
+        IPage<InfoCollectionDto> informationPage = infoCollectionService.getDtos(page, wrapper);
         return render(new PaginationTemplate<>(informationPage, InfoCollectionVo.class));
     }
 
@@ -54,7 +57,7 @@ public class InfoCollectionController extends BaseController {
     public ResponseEntity show(@PathVariable long id) throws Exception {
         InfoCollection infoCollection = generateGeneralQuery();
         infoCollection.setId(id);
-        InfoCollectionDto dto = infoCollectionService.getInfoCollectionDto(infoCollection);
+        InfoCollectionDto dto = infoCollectionService.getDto(new QueryWrapper<>(infoCollection));
         return render(new SingleTemplate<>(dto, InfoCollectionVo.class));
     }
 

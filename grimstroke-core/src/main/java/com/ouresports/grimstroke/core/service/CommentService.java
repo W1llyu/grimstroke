@@ -1,6 +1,5 @@
 package com.ouresports.grimstroke.core.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.core.base.service.Service;
 import com.ouresports.grimstroke.core.concern.Commentable;
@@ -32,15 +31,6 @@ public interface CommentService extends Service<Comment> {
      * @return
      */
     CommentDto getCommentDto(long id, User user) throws NotFoundException;
-
-    /**
-     * 分页获得评论
-     * @param page
-     * @param wrapper
-     * @param user
-     * @return
-     */
-    IPage<CommentDto> getCommentDtos(IPage<CommentDto> page, Wrapper<Comment> wrapper, User user);
 
     /**
      * 分页获得评论

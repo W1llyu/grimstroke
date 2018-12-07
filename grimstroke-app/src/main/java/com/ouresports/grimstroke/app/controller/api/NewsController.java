@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
@@ -46,7 +47,7 @@ public class NewsController extends BaseController {
         authenticateUser();
         News news = generateGeneralQuery();
         news.setId(id);
-        NewsDto dto = newsService.getNewsDto(news);
+        NewsDto dto = newsService.getDto(new QueryWrapper<>(news));
         if (currentUser != null) {
             usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
         }

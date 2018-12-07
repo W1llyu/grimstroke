@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.javassist.NotFoundException;
 
+import java.util.List;
+
+
 /**
  *
  * @author will
@@ -76,6 +79,10 @@ public interface Service<T> extends IService<T> {
     IPage<T> list(IPage<T> var1, T var2);
 
     <E>E getDto(long id) throws NotFoundException;
+
+    <E>E getDto(QueryWrapper<T> wrapper) throws NotFoundException;
+
+    <E>List<E> getDtos(QueryWrapper<T> wrapper);
 
     <E>IPage<E> getDtos(IPage<E> page, QueryWrapper<T> wrapper);
 }

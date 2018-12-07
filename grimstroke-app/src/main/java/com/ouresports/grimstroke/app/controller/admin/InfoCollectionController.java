@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
@@ -41,7 +42,7 @@ public class InfoCollectionController extends BaseController {
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         Page<InfoCollectionDto> page = new Page<>(currentPage, per);
         InfoCollection infoCollection = new InfoCollection().setGameId(gameId);
-        IPage<InfoCollectionDto> informationPage = infoCollectionService.getInfoCollectionDtos(page, infoCollection);
+        IPage<InfoCollectionDto> informationPage = infoCollectionService.getDtos(page, new QueryWrapper<>(infoCollection));
         return render(new PaginationTemplate<>(informationPage, InfoCollectionVo.class));
     }
 
@@ -53,7 +54,7 @@ public class InfoCollectionController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        InfoCollectionDto dto = infoCollectionService.getInfoCollectionDto(id);
+        InfoCollectionDto dto = infoCollectionService.getDto(id);
         return render(new SingleTemplate<>(dto, InfoCollectionVo.class));
     }
 

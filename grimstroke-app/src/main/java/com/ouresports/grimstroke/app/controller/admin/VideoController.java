@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.app.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
@@ -72,7 +73,7 @@ public class VideoController extends BaseController {
                                 @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
         Page<VideoDto> page = new Page<>(currentPage, per);
         Video video = new Video().setGameId(gameId);
-        return render(new PaginationTemplate<>(videoService.getVideoDtos(page, video), VideoVo.class));
+        return render(new PaginationTemplate<>(videoService.getDtos(page, new QueryWrapper<>(video)), VideoVo.class));
     }
 
     /**
@@ -83,7 +84,7 @@ public class VideoController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        VideoDto dto = videoService.getVideoDto(id);
+        VideoDto dto = videoService.getDto(id);
         return render(new SingleTemplate<>(dto, VideoVo.class));
     }
 

@@ -36,7 +36,7 @@ public class BannerController extends BaseController {
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
                                 @RequestParam(defaultValue="10") int per) throws Exception {
         Page<BannerDto> page = new Page<>(currentPage, per);
-        return render(new PaginationTemplate<>(bannerService.getBannerDtos(page, null)));
+        return render(new PaginationTemplate<>(bannerService.getDtos(page, null)));
     }
 
     /**
@@ -47,7 +47,7 @@ public class BannerController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        BannerDto banner = bannerService.getBannerDto(id);
+        BannerDto banner = bannerService.getDto(id);
         return render(new SingleTemplate<>(banner));
     }
 
