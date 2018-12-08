@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.app.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ouresports.grimstroke.app.base.annotation.AuthToken;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
 import com.ouresports.grimstroke.app.base.template.SingleTemplate;
@@ -44,12 +45,11 @@ public class NewsController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        authenticateUser();
         News news = generateGeneralQuery();
         news.setId(id);
         NewsDto dto = newsService.getDto(new QueryWrapper<>(news));
-        if (currentUser != null) {
-            usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
+        if (getCurrentUser() != null) {
+            usersNewsService.addUserBrowsable(getCurrentUser(), newsService.find(id));
         }
         return render(new SingleTemplate<>(dto, NewsVo.class));
     }
@@ -66,9 +66,8 @@ public class NewsController extends BaseController {
     public ResponseEntity comments(@PathVariable long id,
                                    @RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per) throws Exception {
-        authenticateUser();
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, newsService.find(id), currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, newsService.find(id), getCurrentUser());
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -79,11 +78,11 @@ public class NewsController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/comments")
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo comment) throws Exception {
-        authenticateUserForce();
-        commentService.addComment(currentUser, newsService.find(id), comment.getContent());
+        commentService.addComment(getCurrentUser(), newsService.find(id), comment.getContent());
         return render(ResultTemplate.createOk());
     }
 
@@ -93,10 +92,10 @@ public class NewsController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/browse")
     public ResponseEntity browse(@PathVariable long id) throws Exception {
-        authenticateUserForce();
-        usersNewsService.addUserBrowsable(currentUser, newsService.find(id));
+        usersNewsService.addUserBrowsable(getCurrentUser(), newsService.find(id));
         return render(ResultTemplate.createOk());
     }
 

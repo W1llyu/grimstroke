@@ -4,7 +4,7 @@ import com.ouresports.grimstroke.app.base.annotation.*;
 import com.ouresports.grimstroke.app.rbo.admin.BannerRbo;
 import com.ouresports.grimstroke.core.entity.Banner;
 import com.ouresports.grimstroke.core.service.BannerService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *

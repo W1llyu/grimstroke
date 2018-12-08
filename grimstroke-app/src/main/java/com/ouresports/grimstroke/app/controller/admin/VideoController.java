@@ -28,6 +28,7 @@ import javax.validation.Valid;
 @RestIndex(dto=true, voClass=VideoVo.class)
 @RestShow(dto=true, voClass=VideoVo.class)
 @RestUpdate(rboClass=VideoRbo.class, valid=false)
+@AuthToken
 public class VideoController extends BaseController<Video, VideoService> {
     @Resource
     private AliyunVodService aliyunVodService;

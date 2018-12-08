@@ -6,7 +6,7 @@ import com.ouresports.grimstroke.app.vo.admin.NewsDetailVo;
 import com.ouresports.grimstroke.app.vo.admin.NewsVo;
 import com.ouresports.grimstroke.core.entity.News;
 import com.ouresports.grimstroke.core.service.NewsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *

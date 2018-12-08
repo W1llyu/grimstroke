@@ -31,6 +31,7 @@ import java.util.Set;
  * @date 2018/12/7
  */
 @SuppressWarnings("unchecked")
+@AuthToken
 public abstract class BaseCrudController<T extends BaseEntity, S extends Service<T>> extends AbstractController {
     @Autowired
     protected S baseService;

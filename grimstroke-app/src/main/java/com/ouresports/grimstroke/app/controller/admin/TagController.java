@@ -4,7 +4,7 @@ import com.ouresports.grimstroke.app.base.annotation.*;
 import com.ouresports.grimstroke.app.rbo.admin.TagRbo;
 import com.ouresports.grimstroke.core.entity.Tag;
 import com.ouresports.grimstroke.core.service.TagService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *

@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.app.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ouresports.grimstroke.app.base.annotation.AuthToken;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
 import com.ouresports.grimstroke.app.base.template.SingleTemplate;
@@ -83,12 +84,11 @@ public class VideoController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        authenticateUser();
         Video video = generateGeneralVideoQuery();
         video.setId(id);
         VideoDto dto = videoService.getDto(new QueryWrapper<>(video));
-        if (currentUser != null) {
-            usersNewsService.addUserBrowsable(currentUser, videoService.find(id));
+        if (getCurrentUser() != null) {
+            usersNewsService.addUserBrowsable(getCurrentUser(), videoService.find(id));
         }
         return render(new SingleTemplate<>(dto, VideoVo.class));
     }
@@ -105,9 +105,8 @@ public class VideoController extends BaseController {
     public ResponseEntity comments(@PathVariable long id,
                                    @RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per) throws Exception {
-        authenticateUser();
         Page<CommentDto> page = new Page<>(currentPage, per);
-        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, videoService.find(id), currentUser);
+        IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, videoService.find(id), getCurrentUser());
         return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
     }
 
@@ -118,11 +117,11 @@ public class VideoController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/comments")
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo comment) throws Exception {
-        authenticateUserForce();
-        commentService.addComment(currentUser, videoService.find(id), comment.getContent());
+        commentService.addComment(getCurrentUser(), videoService.find(id), comment.getContent());
         return render(ResultTemplate.createOk());
     }
 
@@ -132,10 +131,10 @@ public class VideoController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/like")
     public ResponseEntity likeComment(@PathVariable long id) throws Exception {
-        authenticateUserForce();
-        likeService.addLike(currentUser, videoService.find(id));
+        likeService.addLike(getCurrentUser(), videoService.find(id));
         return render(ResultTemplate.createOk());
     }
 
@@ -145,10 +144,10 @@ public class VideoController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @DeleteMapping(value="/{id}/remove_like")
     public ResponseEntity removeLikeComment(@PathVariable long id) throws Exception {
-        authenticateUserForce();
-        likeService.removeLike(currentUser, videoService.find(id));
+        likeService.removeLike(getCurrentUser(), videoService.find(id));
         return render(ResultTemplate.deleteOk());
     }
 

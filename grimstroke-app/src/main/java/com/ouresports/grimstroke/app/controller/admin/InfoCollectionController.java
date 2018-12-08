@@ -25,6 +25,7 @@ import javax.validation.Valid;
 @RestShow(dto=true, voClass=InfoCollectionVo.class)
 @RestCreate(rboClass=InfoCollectionRbo.class)
 @RestUpdate(rboClass=InfoCollectionRbo.class, valid=false)
+@AuthToken
 public class InfoCollectionController extends BaseController<InfoCollection, InfoCollectionService> {
     @Resource
     private InfoCollectionsInformationService infoCollectionsInformationService;

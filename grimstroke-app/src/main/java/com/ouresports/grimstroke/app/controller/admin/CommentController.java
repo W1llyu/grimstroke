@@ -4,7 +4,7 @@ import com.ouresports.grimstroke.app.base.annotation.*;
 import com.ouresports.grimstroke.app.rbo.admin.CommentRbo;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.service.CommentService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
