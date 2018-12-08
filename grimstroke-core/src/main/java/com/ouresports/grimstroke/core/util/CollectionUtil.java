@@ -1,7 +1,9 @@
 package com.ouresports.grimstroke.core.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,5 +48,19 @@ public class CollectionUtil {
             throw new NotFoundException("not found");
         }
         return list.get(0);
+    }
+
+    public static <T> List<T> copyElementsAttr(List src, Class<T> claz) {
+        List<T> list = Lists.newArrayList();
+        for (Object obj: src) {
+            try {
+                T t = claz.newInstance();
+                BeanUtils.copyProperties(obj, t);
+                list.add(t);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
     }
 }

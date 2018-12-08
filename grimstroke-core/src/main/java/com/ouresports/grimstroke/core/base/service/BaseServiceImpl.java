@@ -50,6 +50,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
     @Override
     public IPage<T> list(IPage<T> var1, Wrapper<T> var2) {
+        WrapperUtil.appendEqualQuery((QueryWrapper) var2, var2.getEntity());
         return page(var1, var2);
     }
 
