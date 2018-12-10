@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.app.controller.admin;
 
 import com.ouresports.grimstroke.app.base.annotation.*;
 import com.ouresports.grimstroke.app.rbo.admin.CommentRbo;
+import com.ouresports.grimstroke.app.vo.admin.CommentVo;
 import com.ouresports.grimstroke.core.entity.Comment;
 import com.ouresports.grimstroke.core.service.CommentService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @RestCrudController(value="AdminCommentController")
 @RequestMapping(value="/admin/comments", produces="application/json;charset=UTF-8")
-@RestIndex
+@RestIndex(voClass=CommentVo.class)
+@RestShow(voClass=CommentVo.class)
 @RestUpdate(rboClass=CommentRbo.class, valid=false)
 public class CommentController extends BaseController<Comment, CommentService> {
 }

@@ -11,6 +11,7 @@ CREATE TABLE `news` (
   `associate_id` bigint(20),
   `sticky` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `series_id` bigint(20),
   `deleted_at` datetime,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -116,7 +117,7 @@ CREATE TABLE `users_informations` (
 CREATE TABLE `tags` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `parent_tag_id` bigint(20),
+  `parent_tag_id` bigint(20) NOT NULL DEFAULT 0,
   `description` varchar(255),
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deleted_at` datetime,

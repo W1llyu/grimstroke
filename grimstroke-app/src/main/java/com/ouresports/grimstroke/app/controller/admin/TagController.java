@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @RestCrudController(value="AdminTagController")
 @RequestMapping(value="/admin/tags", produces="application/json;charset=UTF-8")
-@RestIndex
-@RestShow
+@RestIndex(dto=true)
+@RestShow(dto=true)
 @RestCreate(rboClass=TagRbo.class)
 @RestUpdate(rboClass=TagRbo.class, valid=false)
 @RestDelete
