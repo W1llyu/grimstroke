@@ -6,6 +6,7 @@ import com.ouresports.grimstroke.core.enums.InformationSubType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,18 +18,22 @@ import javax.validation.constraints.NotNull;
 @Data
 public class NewsRbo extends BaseTo<News> {
     @NotNull(message="标题不可为空")
+    @NotBlank(message="封面图片不可为空")
     private String title;
-    @NotNull(message="封片图片不可为空")
+    @NotNull(message="封面图片不可为空")
+    @NotBlank(message="封面图片不可为空")
     private String coverImage;
     @NotNull(message="类型不可为空")
     private InformationSubType type;
     private Integer gameId;
     private Long tagId;
     @NotNull(message="内容不可为空")
+    @NotBlank(message="内容不可为空")
     private String content;
     private String author;
     private String source;
     private Long associateId;
+    private Long seriesId;
     private Boolean sticky;
     private Boolean enabled;
 }

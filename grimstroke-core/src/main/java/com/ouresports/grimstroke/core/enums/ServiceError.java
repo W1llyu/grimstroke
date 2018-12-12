@@ -9,9 +9,9 @@ public enum ServiceError {
     /**
      * 错误Enum
      */
-    CANNOT_COMMENT_SELF(2001, "不能回复自己"),
-    ALREADY_LIKED(2011, "不能重复点赞"),
-    NOT_LIKED_YET(2012, "还没有点过赞"),
+    CANNOT_COMMENT_SELF(3001, "不能回复自己"),
+    ALREADY_LIKED(3011, "不能重复点赞"),
+    NOT_LIKED_YET(3012, "还没有点过赞"),
     INFORMATION_ALREADY_IN_COLLECTION(3050, "信息流已经在专栏中了"),
     INFORMATION_NOT_IN_COLLECTION(3051, "信息流还不在专栏中")
     ;

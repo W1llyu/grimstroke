@@ -5,6 +5,7 @@ import com.ouresports.grimstroke.core.entity.Tag;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class TagRbo extends BaseTo<Tag> {
     @NotNull(message="名字不能为空")
+    @NotBlank(message="名字不可为空")
     private String name;
     private String description;
     private Long parentTagId;

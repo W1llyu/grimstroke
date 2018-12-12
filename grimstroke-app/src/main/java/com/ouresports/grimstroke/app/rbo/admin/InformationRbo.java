@@ -4,6 +4,7 @@ import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.core.concern.InfoCollectionable;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class InformationRbo extends BaseTo<InfoCollectionable> {
     @NotNull(message="信息流类型不可为空")
+    @NotBlank(message="信息流类型不可为空")
     private String informationType;
     @NotNull(message="信息流id不可为空")
     private Long informationId;

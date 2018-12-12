@@ -2,7 +2,7 @@ package com.ouresports.grimstroke.app.rbo.api;
 
 import lombok.Data;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**

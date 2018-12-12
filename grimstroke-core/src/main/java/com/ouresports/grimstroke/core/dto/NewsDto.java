@@ -30,6 +30,7 @@ public class NewsDto {
     private Integer gameId;
     private Long tagId;
     private String tagName;
+    private Long seriesId;
     private Long browseCount;
     private Long commentCount;
     private Boolean sticky;

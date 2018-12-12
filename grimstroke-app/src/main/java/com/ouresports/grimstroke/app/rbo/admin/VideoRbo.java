@@ -5,6 +5,7 @@ import com.ouresports.grimstroke.core.entity.Video;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,6 +22,7 @@ public class VideoRbo extends BaseTo<Video> {
     private Float duration;
     private Long size;
     @NotNull(message="vodId不可为空")
+    @NotBlank(message="vodId不可为空")
     private String vodId;
     @NotNull(message="游戏不可为空")
     private Integer gameId;
