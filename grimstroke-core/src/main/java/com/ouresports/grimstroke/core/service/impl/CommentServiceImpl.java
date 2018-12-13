@@ -1,6 +1,5 @@
 package com.ouresports.grimstroke.core.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Maps;
@@ -15,6 +14,7 @@ import com.ouresports.grimstroke.core.entity.User;
 import com.ouresports.grimstroke.core.exception.ServiceException;
 import com.ouresports.grimstroke.core.mapper.CommentMapper;
 import com.ouresports.grimstroke.core.service.CommentService;
+import com.ouresports.grimstroke.core.service.UserMessageService;
 import com.ouresports.grimstroke.core.service.UserService;
 import com.ouresports.grimstroke.core.util.CollectionUtil;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -36,6 +36,8 @@ import static com.ouresports.grimstroke.core.enums.ServiceError.CANNOT_COMMENT_S
 public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> implements CommentService {
     @Resource
     private UserService userService;
+    @Resource
+    private UserMessageService userMessageService;
 
     @Override
     public Comment addComment(User user, Commentable commentable, String content) throws ServiceException {
@@ -70,6 +72,7 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
                 .setParentCommentId(parentCommentId)
                 .setContent(content);
         save(comment);
+        userNotify(commentable, comment);
         return comment;
     }
 
@@ -108,6 +111,12 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
         setUserForSubCommentDto(subCommentDtoS);
         page.setRecords(subCommentDtoS);
         return page;
+    }
+
+    private void userNotify(Commentable commentable, Comment comment) throws ServiceException {
+        CommentDto dto = (CommentDto) new CommentDto().convertFor(comment);
+        dto.setTarget(commentable);
+        userMessageService.addUserMessage(dto);
     }
 
     private void setUserForCommentDto(List<CommentDto> list) {

@@ -82,7 +82,8 @@ public class NewsController extends BaseController {
     @PostMapping(value="/{id}/comments")
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo comment) throws Exception {
-        commentService.addComment(getCurrentUser(), newsService.find(id), comment.getContent());
+        News news = newsService.find(id);
+        commentService.addComment(getCurrentUser(), news, comment.getContent());
         return render(ResultTemplate.createOk());
     }
 

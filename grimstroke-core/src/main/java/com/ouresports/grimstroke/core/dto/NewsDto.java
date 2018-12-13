@@ -34,6 +34,7 @@ public class NewsDto {
     private Long browseCount;
     private Long commentCount;
     private Boolean sticky;
+    private Boolean enabled;
     private Date createdAt;
 
     public InformationDto toInformation() {

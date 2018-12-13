@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.app.rbo.admin;
 import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.core.entity.Video;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
  * @author will
  * @date 2018/12/5
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain=true)
 public class VideoRbo extends BaseTo<Video> {

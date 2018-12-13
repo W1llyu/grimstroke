@@ -22,7 +22,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain=true)
-public class News extends BaseEntity implements Browsable, Commentable, InfoCollectionable {
+public class News extends BaseEntity implements
+        Browsable, Commentable, InfoCollectionable {
     private String title;
     private String coverImage;
     private InformationSubType type;

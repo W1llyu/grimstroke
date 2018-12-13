@@ -18,6 +18,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 public interface CommentService extends Service<Comment> {
     /**
      * 添加一条评论
+     *
      * @param user
      * @param commentable
      * @param content
@@ -26,6 +27,7 @@ public interface CommentService extends Service<Comment> {
 
     /**
      * 获得一条评论详情
+     *
      * @param id
      * @param user
      * @return
@@ -34,6 +36,7 @@ public interface CommentService extends Service<Comment> {
 
     /**
      * 分页获得评论
+     *
      * @param page
      * @param commentable
      * @param user
@@ -43,6 +46,7 @@ public interface CommentService extends Service<Comment> {
 
     /**
      * 分页获得评论的回复
+     *
      * @param page
      * @param comment
      * @param user
