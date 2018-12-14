@@ -27,11 +27,13 @@ public class InfoCollectionDto {
     private Long browseCount;
     private Long commentCount;
     private Date createdAt;
+    private Date lastInfoTime;
 
     public InformationDto toInformation() {
         InformationDto informationDto = new InformationDto();
         BeanUtils.copyProperties(this, informationDto);
         informationDto.setType(COLLECTION);
+        informationDto.setCreatedAt(lastInfoTime);
         return informationDto;
     }
 

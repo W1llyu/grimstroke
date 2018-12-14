@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.ouresports.grimstroke.core.enums.InformationSubType.BetCourse;
+
 /**
  *
  * @author will
@@ -78,7 +80,7 @@ public class InformationServiceImpl implements InformationService{
     private int getInformationCount(Integer gameId) {
         News newsCondition = new News().setEnabled(true).setGameId(gameId);
         InfoCollection infoColCondition = new InfoCollection().setEnabled(true).setGameId(gameId);
-        return newsService.count(new QueryWrapper<>(newsCondition)) + infoCollectionService.count(new QueryWrapper<>(infoColCondition));
+        return newsService.count(new QueryWrapper<>(newsCondition).ne("`news`.`type`", BetCourse)) + infoCollectionService.count(new QueryWrapper<>(infoColCondition));
     }
 
     /**
@@ -105,9 +107,12 @@ public class InformationServiceImpl implements InformationService{
      */
     private List<InformationDto> getInfoColInformation(int currentPage, Integer gameId) {
         QueryWrapper<InfoCollection> wrapper = new QueryWrapper<>();
-        initInformationWrapper(wrapper, gameId);
+        wrapper.eq("`info_collections`.`enabled`", true);
+        if (gameId != null) {
+            wrapper.eq("`info_collections`.`game_id`", gameId);
+        }
         wrapper.orderByDesc("`info_collections`.`sticky`")
-                .orderByDesc("`info_collections`.`created_at`")
+                .orderByDesc("`last_info_time`")
                 .last(String.format("LIMIT %d, %d", (currentPage - 1) * COL_PAGE_SIZE, currentPage * COL_PAGE_SIZE));
         return InfoCollectionDto.toInformations(infoCollectionService.getDtos(wrapper));
     }
@@ -119,7 +124,7 @@ public class InformationServiceImpl implements InformationService{
     private InformationDto getCourseInformation() {
         QueryWrapper<News> wrapper = new QueryWrapper<>();
         initInformationWrapper(wrapper, null);
-        wrapper.eq("`news`.`type`", InformationSubType.BetCourse)
+        wrapper.eq("`news`.`type`", BetCourse)
                 .last("ORDER BY RAND() LIMIT 1");
         List<NewsDto> list = newsService.getDtos(wrapper);
         InformationDto dto = null;
