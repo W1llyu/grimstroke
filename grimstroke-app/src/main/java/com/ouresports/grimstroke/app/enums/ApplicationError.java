@@ -14,7 +14,7 @@ public enum ApplicationError {
     NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, 1001, "请求参数错误"),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, 1002, "资源不存在"),
     SERVICE_ERROR(HttpStatus.BAD_REQUEST, 1010, "调用第三方服务错误"),
-    TOKEN_ERROR(HttpStatus.UNAUTHORIZED, 2000, "token错误"),
+    TOKEN_ERROR(HttpStatus.UNAUTHORIZED, 2001, "token错误"),
     ;
 
     private final HttpStatus status;

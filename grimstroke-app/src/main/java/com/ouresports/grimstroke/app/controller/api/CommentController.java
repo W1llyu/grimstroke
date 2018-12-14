@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.app.controller.api;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ouresports.grimstroke.app.base.annotation.AuthToken;
 import com.ouresports.grimstroke.app.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.app.base.template.ResultTemplate;
 import com.ouresports.grimstroke.app.base.template.SingleTemplate;
@@ -39,8 +40,7 @@ public class CommentController extends BaseController {
      */
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
-        authenticateUser();
-        CommentDto commentDto = commentService.getCommentDto(id, currentUser);
+        CommentDto commentDto = commentService.getCommentDto(id, getCurrentUser());
         return render(new SingleTemplate<>(commentDto, CommentVo.class));
     }
 
@@ -56,9 +56,8 @@ public class CommentController extends BaseController {
     public ResponseEntity subComments(@PathVariable long id,
                                       @RequestParam(value="page", defaultValue="1") int currentPage,
                                       @RequestParam(defaultValue="10") int per) throws Exception {
-        authenticateUser();
         Page<SubCommentDto> page = new Page<>(currentPage, per);
-        IPage<SubCommentDto> dtos = commentService.getSubCommentDtos(page, commentService.find(id), currentUser);
+        IPage<SubCommentDto> dtos = commentService.getSubCommentDtos(page, commentService.find(id), getCurrentUser());
         return render(new PaginationTemplate<>(dtos, SubCommentVo.class));
     }
 
@@ -68,10 +67,10 @@ public class CommentController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/like")
     public ResponseEntity likeComment(@PathVariable long id) throws Exception {
-        authenticateUserForce();
-        likeService.addLike(currentUser, commentService.find(id));
+        likeService.addLike(getCurrentUser(), commentService.find(id));
         return render(ResultTemplate.createOk());
     }
 
@@ -81,10 +80,10 @@ public class CommentController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @DeleteMapping(value="/{id}/remove_like")
     public ResponseEntity removeLikeComment(@PathVariable long id) throws Exception {
-        authenticateUserForce();
-        likeService.removeLike(currentUser, commentService.find(id));
+        likeService.removeLike(getCurrentUser(), commentService.find(id));
         return render(ResultTemplate.deleteOk());
     }
 
@@ -95,11 +94,11 @@ public class CommentController extends BaseController {
      * @return
      * @throws Exception
      */
+    @AuthToken
     @PostMapping(value="/{id}/comments")
     public ResponseEntity addComment(@PathVariable long id,
                                      @Valid @RequestBody CommentRbo commentRbo) throws Exception {
-        authenticateUserForce();
-        commentService.addComment(currentUser, commentService.find(id), commentRbo.getContent());
+        commentService.addComment(getCurrentUser(), commentService.find(id), commentRbo.getContent());
         return render(ResultTemplate.createOk());
     }
 }

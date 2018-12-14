@@ -1,6 +1,5 @@
 package com.ouresports.grimstroke.core.entity;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.core.base.entity.BaseEntity;
 import lombok.Data;
@@ -23,7 +22,5 @@ public class Tag extends BaseEntity {
     private String description;
     private Long parentTagId;
     private Boolean enabled;
-
-    @TableLogic
     private Date deletedAt;
 }

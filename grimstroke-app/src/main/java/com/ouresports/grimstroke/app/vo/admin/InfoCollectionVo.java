@@ -25,4 +25,5 @@ public class InfoCollectionVo extends BaseTo<InfoCollectionDto> {
     private Long commentCount;
     private Boolean enabled;
     private Date createdAt;
+    private Date lastInfoTime;
 }

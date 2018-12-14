@@ -54,14 +54,7 @@ public class ApplicationExceptionHandler {
         String errorMessage = "参数错误";
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         if (!constraintViolations.isEmpty()) {
-            StringBuilder msgBuilder = new StringBuilder();
-            for(ConstraintViolation constraintViolation :constraintViolations){
-                msgBuilder.append(constraintViolation.getMessage()).append(",");
-            }
-            errorMessage = msgBuilder.toString();
-            if(errorMessage.length()>1){
-                errorMessage = errorMessage.substring(0,errorMessage.length()-1);
-            }
+            errorMessage = constraintViolations.iterator().next().getMessage();
         }
         return generateResponseEntity(ResultTemplate.of(NOT_ACCEPTABLE.status(), NOT_ACCEPTABLE.value(), errorMessage));
     }

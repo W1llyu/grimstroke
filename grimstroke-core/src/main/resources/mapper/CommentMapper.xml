@@ -9,6 +9,16 @@
                     ofType="com.ouresports.grimstroke.core.dto.SubCommentDto"/>
     </resultMap>
 
+    <select id="selectDtos" resultType="com.ouresports.grimstroke.core.dto.CommentDto">
+        SELECT
+        `comments`.*,
+        COUNT(DISTINCT `likes`.`id`) AS `like_count`
+        FROM `comments`
+        LEFT OUTER JOIN `likes`
+        ON `likes`.`target_type` = 'Comment' AND `likes`.`target_id` = `comments`.`id`
+        WHERE `comments`.`deleted_at` IS NULL AND ${ew.sqlSegment}
+    </select>
+
     <select id="selectCommentDtos" resultMap="CommentDtoMap">
         SELECT
           `comments`.*,

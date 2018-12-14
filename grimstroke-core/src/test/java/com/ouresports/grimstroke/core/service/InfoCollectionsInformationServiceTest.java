@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.core.service;
 import com.ouresports.grimstroke.core.GrimstrokeCoreApplicationTest;
 import com.ouresports.grimstroke.core.entity.InfoCollection;
 import com.ouresports.grimstroke.core.entity.News;
+import com.ouresports.grimstroke.core.exception.ServiceException;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -19,7 +20,7 @@ public class InfoCollectionsInformationServiceTest extends GrimstrokeCoreApplica
     private NewsService newsService;
 
     @Test
-    public void testAddInformation() {
+    public void testAddInformation() throws ServiceException {
         News news = newsService.findBy(null);
         InfoCollection infoCollection = infoCollectionService.findBy(null);
         if (news == null || infoCollection == null) {

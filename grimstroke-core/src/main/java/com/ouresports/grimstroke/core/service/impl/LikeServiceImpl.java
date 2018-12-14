@@ -3,12 +3,16 @@ package com.ouresports.grimstroke.core.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ouresports.grimstroke.core.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.core.concern.Likable;
+import com.ouresports.grimstroke.core.dto.LikeDto;
 import com.ouresports.grimstroke.core.entity.Like;
 import com.ouresports.grimstroke.core.entity.User;
 import com.ouresports.grimstroke.core.exception.ServiceException;
 import com.ouresports.grimstroke.core.mapper.LikeMapper;
 import com.ouresports.grimstroke.core.service.LikeService;
+import com.ouresports.grimstroke.core.service.UserMessageService;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 import static com.ouresports.grimstroke.core.enums.ServiceError.ALREADY_LIKED;
 import static com.ouresports.grimstroke.core.enums.ServiceError.NOT_LIKED_YET;
@@ -20,6 +24,9 @@ import static com.ouresports.grimstroke.core.enums.ServiceError.NOT_LIKED_YET;
  */
 @Service
 public class LikeServiceImpl extends BaseServiceImpl<LikeMapper, Like> implements LikeService {
+    @Resource
+    private UserMessageService userMessageService;
+
     @Override
     public void addLike(User user, Likable likable) throws ServiceException {
         QueryWrapper<Like> wrapper = new QueryWrapper<Like>()
@@ -34,6 +41,7 @@ public class LikeServiceImpl extends BaseServiceImpl<LikeMapper, Like> implement
                 .setTargetType(likable.getLikableType())
                 .setTargetId(likable.getId());
         findOrCreateBy(like);
+        userNotify(likable, like);
     }
 
     @Override
@@ -46,5 +54,11 @@ public class LikeServiceImpl extends BaseServiceImpl<LikeMapper, Like> implement
             throw new ServiceException(NOT_LIKED_YET);
         }
         remove(wrapper);
+    }
+
+    private void userNotify(Likable likable, Like like) throws ServiceException {
+        LikeDto dto = (LikeDto) new LikeDto().convertFor(like);
+        dto.setTarget(likable);
+        userMessageService.addUserMessage(dto);
     }
 }

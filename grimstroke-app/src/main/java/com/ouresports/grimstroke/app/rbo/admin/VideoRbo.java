@@ -3,8 +3,10 @@ package com.ouresports.grimstroke.app.rbo.admin;
 import com.ouresports.grimstroke.core.base.entity.BaseTo;
 import com.ouresports.grimstroke.core.entity.Video;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -12,6 +14,7 @@ import javax.validation.constraints.NotNull;
  * @author will
  * @date 2018/12/5
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain=true)
 public class VideoRbo extends BaseTo<Video> {
@@ -21,6 +24,7 @@ public class VideoRbo extends BaseTo<Video> {
     private Float duration;
     private Long size;
     @NotNull(message="vodId不可为空")
+    @NotBlank(message="vodId不可为空")
     private String vodId;
     @NotNull(message="游戏不可为空")
     private Integer gameId;

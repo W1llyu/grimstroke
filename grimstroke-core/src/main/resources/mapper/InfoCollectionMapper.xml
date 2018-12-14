@@ -10,7 +10,9 @@
       `info_collections`.`game_id`,
       `info_collections`.`sticky`,
       `info_collections`.`enabled`,
-      MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0))) AS `created_at`,
+      MAX(GREATEST(IFNULL(`news`.`created_at`, FROM_UNIXTIME(0,'%Y-%m-%d %H:%i:%S')),
+      IFNULL(`videos`.`created_at`, FROM_UNIXTIME(0,'%Y-%m-%d %H:%i:%S')))) AS `last_info_time`,
+      `info_collections`.`created_at`,
       `info_collections`.`deleted_at`,
       COUNT(DISTINCT `news`.`id`) AS `news_count`,
       COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`

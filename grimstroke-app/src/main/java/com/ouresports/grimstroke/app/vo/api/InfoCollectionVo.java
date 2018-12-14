@@ -24,4 +24,5 @@ public class InfoCollectionVo extends BaseTo<InfoCollectionDto> {
     private Long newsCount;
     private Long commentCount;
     private Date createdAt;
+    private Date lastInfoTime;
 }

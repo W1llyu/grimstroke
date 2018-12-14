@@ -40,6 +40,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
         if (wrapper == null) {
             wrapper = new QueryWrapper<>();
         }
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity());
         return baseMapper.selectOne(wrapper.last("LIMIT 1"));
     }
 
@@ -50,6 +51,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
     @Override
     public IPage<T> list(IPage<T> var1, Wrapper<T> var2) {
+        WrapperUtil.appendEqualQuery((QueryWrapper) var2, var2.getEntity());
         return page(var1, var2);
     }
 
@@ -138,6 +140,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
     public <E> E getDto(QueryWrapper<T> wrapper) throws NotFoundException {
         wrapper.groupBy(String.format("`%s`.`id`", getTableName()))
                 .last("LIMIT 1");
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity(), getTableName());
         return CollectionUtil.getFirstElement(baseMapper.selectDtos(null, wrapper));
     }
 

@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.core.base.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public abstract class BaseTo<T> implements ITo<T> {
     @Override
     public T convertTo() {
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<T> entityClass = getTargetClass();
         T t = null;
         try {
             t = entityClass.newInstance();
@@ -42,5 +43,10 @@ public abstract class BaseTo<T> implements ITo<T> {
         List<ITo<T>> dtos = Lists.newArrayList();
         ts.forEach(t -> dtos.add(convertFor(t)));
         return dtos;
+    }
+
+    @JSONField(serialize=false)
+    public Class<T> getTargetClass() {
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 }

@@ -29,7 +29,9 @@ public class NewsVo extends BaseTo<NewsDto> {
     private Long browseCount;
     private Long commentCount;
     private Boolean sticky;
+    private Boolean enabled;
     private Long associateId;
+    private Long seriesId;
     private String coverImage;
     private Date createdAt;
 }
