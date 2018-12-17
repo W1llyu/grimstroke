@@ -5,9 +5,8 @@ import com.ouresports.grimstroke.info.dto.CommentDto;
 import com.ouresports.grimstroke.info.dto.LikeDto;
 import com.ouresports.grimstroke.info.dto.NormalUserDto;
 import com.ouresports.grimstroke.info.dto.UserMessageDto;
-import com.ouresports.grimstroke.info.entity.Comment;
-import com.ouresports.grimstroke.info.entity.News;
 import com.ouresports.grimstroke.base.util.BeanUtil;
+import com.ouresports.grimstroke.info.util.VoUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,7 +36,7 @@ public class UserMessageVo extends BaseTo<UserMessageDto> {
         private Object target;
 
         public void setTarget(Object target) {
-            this.target = generateTargetVo(target);
+            this.target = VoUtil.generateTargetVo(target);
         }
     }
 
@@ -48,7 +47,7 @@ public class UserMessageVo extends BaseTo<UserMessageDto> {
         private Object target;
 
         public void setTarget(Object target) {
-            this.target = generateTargetVo(target);
+            this.target = VoUtil.generateTargetVo(target);
         }
     }
 
@@ -82,21 +81,5 @@ public class UserMessageVo extends BaseTo<UserMessageDto> {
         }
         BeanUtil.copyProperties(trigger, triggerVo);
         return triggerVo;
-    }
-
-    private static Object generateTargetVo(Object target) {
-        Object targetVo;
-        if (target == null) {
-            return null;
-        }
-        if (target.getClass() == Comment.class) {
-            targetVo = new CommentTargetVo();
-        } else if (target.getClass() == News.class) {
-            targetVo = new NewsTargetVo();
-        } else {
-            return target;
-        }
-        BeanUtil.copyProperties(target, targetVo);
-        return targetVo;
     }
 }

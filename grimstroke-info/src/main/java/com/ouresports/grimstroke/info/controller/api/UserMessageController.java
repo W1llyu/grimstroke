@@ -31,7 +31,7 @@ public class UserMessageController extends BaseController {
     @GetMapping(value="")
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
                                 @RequestParam(defaultValue="10") int per,
-                                @RequestParam(value="is_read") Boolean isRead,
+                                @RequestParam(value="is_read", required=false) Boolean isRead,
                                 @RequestParam(value="last_time", required=false) String lastTime) throws Exception {
         Page<UserMessageDto> page = new Page<>(currentPage, per);
         UserMessage userMessage = new UserMessage().setUserId(getCurrentUser().getId()).setIsRead(isRead);

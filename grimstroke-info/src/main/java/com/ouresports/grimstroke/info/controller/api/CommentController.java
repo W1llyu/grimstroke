@@ -7,6 +7,7 @@ import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.info.rbo.api.CommentRbo;
+import com.ouresports.grimstroke.info.vo.api.CommentDetailVo;
 import com.ouresports.grimstroke.info.vo.api.CommentVo;
 import com.ouresports.grimstroke.info.vo.api.SubCommentVo;
 import com.ouresports.grimstroke.info.dto.CommentDto;
@@ -41,7 +42,7 @@ public class CommentController extends BaseController {
     @GetMapping(value="/{id}")
     public ResponseEntity show(@PathVariable long id) throws Exception {
         CommentDto commentDto = commentService.getCommentDto(id, getCurrentUser());
-        return render(new SingleTemplate<>(commentDto, CommentVo.class));
+        return render(new SingleTemplate<>(commentDto, CommentDetailVo.class));
     }
 
     /**

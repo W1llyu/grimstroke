@@ -1,11 +1,13 @@
 package com.ouresports.grimstroke.info.dto;
 
 import com.ouresports.grimstroke.base.entity.BaseTo;
+import com.ouresports.grimstroke.base.util.SpringUtil;
 import com.ouresports.grimstroke.info.concern.MessageTriggerable;
 import com.ouresports.grimstroke.info.concern.Targetable;
 import com.ouresports.grimstroke.info.entity.Comment;
 import com.ouresports.grimstroke.info.entity.News;
 import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.info.service.GeneralService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -74,5 +76,18 @@ public class CommentDto extends BaseTo<Comment> implements Targetable, MessageTr
             return null;
         }
         return user;
+    }
+
+    @Override
+    public Object getTarget() {
+        if (target == null) {
+            initTarget();
+        }
+        return target;
+    }
+
+    private void initTarget() {
+        GeneralService generalService = SpringUtil.getBean(GeneralService.class);
+        target = generalService.getPolymorphicDto(getTargetType(), getTargetId());
     }
 }
