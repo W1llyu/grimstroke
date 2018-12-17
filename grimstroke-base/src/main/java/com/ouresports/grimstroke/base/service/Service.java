@@ -16,6 +16,13 @@ import java.util.List;
  */
 public interface Service<T> extends IService<T> {
     /**
+     *
+     * @param t
+     * @return
+     */
+    int count(T t);
+
+    /**
      * <p>
      * 根据 ID 查询
      * </p>
@@ -34,6 +41,16 @@ public interface Service<T> extends IService<T> {
      * @return 实体
      */
     T findBy(QueryWrapper<T> wrapper);
+
+    /**
+     * <p>
+     * 根据 entity 条件，查询一条记录
+     * </p>
+     *
+     * @param t
+     * @return
+     */
+    T findBy(T t);
 
     /**
      * <p>

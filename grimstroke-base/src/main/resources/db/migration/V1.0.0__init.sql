@@ -11,7 +11,6 @@ CREATE TABLE `news` (
   `associate_id` bigint(20),
   `sticky` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `series_id` bigint(20),
   `deleted_at` datetime,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,

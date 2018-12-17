@@ -27,6 +27,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
     protected String tableName;
 
     @Override
+    public int count(T t) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>(t);
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity());
+        return count(wrapper);
+    }
+
+    @Override
     public T find(long id) throws NotFoundException {
         T t = getById(id);
         if (t == null) {
@@ -40,6 +47,13 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
         if (wrapper == null) {
             wrapper = new QueryWrapper<>();
         }
+        WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity());
+        return baseMapper.selectOne(wrapper.last("LIMIT 1"));
+    }
+
+    @Override
+    public T findBy(T t) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>(t);
         WrapperUtil.appendEqualQuery(wrapper, wrapper.getEntity());
         return baseMapper.selectOne(wrapper.last("LIMIT 1"));
     }

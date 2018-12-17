@@ -33,7 +33,6 @@ public class News extends BaseEntity implements
     private String author;
     private String source;
     private Long associateId;
-    private Long seriesId;
     private Boolean sticky;
     private Boolean enabled;
 

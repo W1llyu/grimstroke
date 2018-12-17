@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -29,7 +30,8 @@ public class NewsDetailVo extends BaseTo<NewsDto> {
     private Long commentCount;
     private Boolean sticky;
     private Long associateId;
-    private Long seriesId;
     private String coverImage;
     private Date createdAt;
+    private List<Long> seriesIds;
+    private List<Long> teamIds;
 }
