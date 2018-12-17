@@ -9,9 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>grimstroke-core</module>
-        <module>grimstroke-app</module>
+        <module>grimstroke-base</module>
+        <module>grimstroke-info</module>
         <module>grimstroke-lib</module>
+        <module>grimstroke-app</module>
     </modules>
 
     <parent>
@@ -22,7 +23,7 @@
     </parent>
 
     <properties>
-        <start-class>com.ouresports.grimstroke.app.GrimStrokeApplication</start-class>
+        <start-class>com.ouresports.grimstroke.info.GrimStrokeApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.info.mapper.NewsMapper">
+    <select id="selectDtos" resultType="com.ouresports.grimstroke.info.dto.NewsDto">
+        SELECT
+        `news`.*,
+        CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
+        COUNT(DISTINCT `comments`.`id`) AS `comment_count`,
+        COUNT(DISTINCT `u_i`.`id`) AS `browse_count`
+        FROM `news`
+        LEFT OUTER JOIN `comments`
+        ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id`
+        LEFT OUTER JOIN `tags` ON `tags`.`id` = `news`.`tag_id`
+        LEFT OUTER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
+        LEFT OUTER JOIN `users_informations` AS `u_i`ON `u_i`.`information_type` = 'News'
+        AND `u_i`.`information_id` = `news`.`id`
+        WHERE `news`.`deleted_at` IS NULL AND ${ew.sqlSegment}
+    </select>
+</mapper>
