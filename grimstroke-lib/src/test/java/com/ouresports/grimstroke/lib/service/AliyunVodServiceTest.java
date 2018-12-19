@@ -23,8 +23,19 @@ public class AliyunVodServiceTest extends GrimstrokeLibApplicationTest{
         aliyunVodService.getVideoUploadAuth(uploadVideo);
     }
 
-    @Test
     public void testGetVodDetail() throws LibServiceException {
         VodDetailResponse vodDetailResponse = aliyunVodService.getVideoDetail("aa80cb9ae57443c7b131ee15c94bcb2c");
+    }
+
+    @Test
+    public void testGenerateStreamPushUrl() {
+        String url = aliyunVodService.generateStreamPushUrl("lolol");
+        System.out.println(url);
+    }
+
+    @Test
+    public void testGenerateStreamPlayUrl() {
+        String url = aliyunVodService.generateStreamPlayUrl("lolol");
+        System.out.println(url);
     }
 }
