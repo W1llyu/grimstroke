@@ -18,9 +18,21 @@ import java.util.Date;
 public class SubCommentVo extends BaseTo<SubCommentDto> {
     private Long id;
     private String content;
-    private NormalUserDto user;
-    private NormalUserDto targetUser;
+    private UserVo user;
+    private UserVo targetUser;
     private Long likeCount;
     private Boolean liked;
     private Date createdAt;
+
+    public void setUser(NormalUserDto user) {
+        if (user != null) {
+            this.user = (UserVo) new UserVo().convertFor(user);
+        }
+    }
+
+    public void setTargetUser(NormalUserDto user) {
+        if (user != null) {
+            this.targetUser = (UserVo) new UserVo().convertFor(user);
+        }
+    }
 }

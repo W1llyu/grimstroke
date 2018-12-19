@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.base.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.collect.Lists;
+import com.ouresports.grimstroke.base.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -31,7 +32,7 @@ public abstract class BaseTo<T> implements ITo<T> {
         ITo<T> bto = null;
         try {
             bto = this.getClass().newInstance();
-            BeanUtils.copyProperties(t, bto);
+            BeanUtil.copyProperties(t, bto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,7 +42,9 @@ public abstract class BaseTo<T> implements ITo<T> {
     @Override
     public List<ITo<T>> convertFor(List<T> ts) {
         List<ITo<T>> dtos = Lists.newArrayList();
-        ts.forEach(t -> dtos.add(convertFor(t)));
+        if (ts != null) {
+            ts.forEach(t -> dtos.add(convertFor(t)));
+        }
         return dtos;
     }
 

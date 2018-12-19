@@ -93,6 +93,16 @@ public class StringUtil {
         return builder.toString();
     }
 
+    public static String mosaicPhone(String phone) {
+        if (phone == null || phone.length() <= 4) {
+            return phone;
+        } else if (phone.length() < 8) {
+            return String.format("%s****", phone.substring(0, phone.length() - 4));
+        } else {
+            return String.format("%s****%s", phone.substring(0, 3), phone.substring(7, phone.length()));
+        }
+    }
+
     public static boolean isUppercaseAlpha(char c) {
         return (c >= 'A') && (c <= 'Z');
     }

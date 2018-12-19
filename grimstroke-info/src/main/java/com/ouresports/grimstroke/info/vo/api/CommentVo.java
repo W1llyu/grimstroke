@@ -25,12 +25,18 @@ public class CommentVo extends BaseTo<CommentDto> {
     private List subComments;
     private Long likeCount;
     private Boolean liked;
-    private NormalUserDto user;
+    private UserVo user;
 
     @Override
     public ITo<CommentDto> convertFor(CommentDto commentDto) {
         CommentVo vo = (CommentVo) super.convertFor(commentDto);
         vo.setSubComments(new SubCommentVo().convertFor(commentDto.getSubComments()));
         return vo;
+    }
+
+    public void setUser(NormalUserDto user) {
+        if (user != null) {
+            this.user = (UserVo) new UserVo().convertFor(user);
+        }
     }
 }

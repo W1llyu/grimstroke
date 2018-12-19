@@ -25,6 +25,7 @@ public class LikeDto extends BaseTo<Like> implements Targetable, MessageTriggera
     private Long targetId;
     private Date createdAt;
     private Object target;
+    private NormalUserDto user;
 
     @Override
     public String getTriggerableType() {

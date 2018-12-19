@@ -16,4 +16,5 @@ public class NormalUserDto extends BaseTo<User> {
     private Long id;
     private String name;
     private String avatar;
+    private String phone;
 }

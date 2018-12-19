@@ -28,6 +28,9 @@ public class BeanUtil {
             Method writeMethod = targetPd.getWriteMethod();
             if (writeMethod != null) {
                 PropertyDescriptor sourcePd = BeanUtils.getPropertyDescriptor(source.getClass(), targetPd.getName());
+                if (sourcePd == null) {
+                    continue;
+                }
                 Method readMethod = sourcePd.getReadMethod();
                 if (readMethod != null && ClassUtils.isAssignable(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
                     try {

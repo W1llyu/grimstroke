@@ -37,7 +37,9 @@ public class GeneralService {
                     commentDto.setUser((NormalUserDto) new NormalUserDto().convertFor(userService.find(commentDto.getUserId())));
                     return commentDto;
                 case "Like":
-                    return new LikeDto().convertFor(likeService.find(id));
+                    LikeDto likeDto = (LikeDto) new LikeDto().convertFor(likeService.find(id));
+                    likeDto.setUser((NormalUserDto) new NormalUserDto().convertFor(userService.find(likeDto.getUserId())));
+                    return likeDto;
                 default:
                     return null;
             }

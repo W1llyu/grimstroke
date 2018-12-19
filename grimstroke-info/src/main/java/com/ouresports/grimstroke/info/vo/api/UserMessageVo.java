@@ -30,13 +30,19 @@ public class UserMessageVo extends BaseTo<UserMessageDto> {
     @Data
     static class CommentTriggerVo {
         private Long id;
-        private NormalUserDto user;
+        private UserVo user;
         private String content;
         private String targetType;
         private Object target;
 
         public void setTarget(Object target) {
             this.target = VoUtil.generateTargetVo(target);
+        }
+
+        public void setUser(NormalUserDto user) {
+            if (user != null) {
+                this.user = (UserVo) new UserVo().convertFor(user);
+            }
         }
     }
 
@@ -45,9 +51,16 @@ public class UserMessageVo extends BaseTo<UserMessageDto> {
         private Long id;
         private String targetType;
         private Object target;
+        private UserVo user;
 
         public void setTarget(Object target) {
             this.target = VoUtil.generateTargetVo(target);
+        }
+
+        public void setUser(NormalUserDto user) {
+            if (user != null) {
+                this.user = (UserVo) new UserVo().convertFor(user);
+            }
         }
     }
 
