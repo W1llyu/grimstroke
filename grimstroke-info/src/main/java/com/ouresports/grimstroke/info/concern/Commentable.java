@@ -1,0 +1,12 @@
+package com.ouresports.grimstroke.info.concern;
+
+/**
+ * 可作为被评论的对象
+ * @author will
+ * @date 2018/11/27
+ */
+public interface Commentable {
+    String getCommentableType();
+
+    Long getId();
+}

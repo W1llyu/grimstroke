@@ -7,13 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  *
  * @author will
- * @date 2018/11/22
+ * @date 2018/12/17
  */
 @SpringBootApplication
 @ComponentScan(basePackages={
-        "com.ouresports.grimstroke.app",
-        "com.ouresports.grimstroke.core",
-        "com.ouresports.grimstroke.lib"
+        "com.ouresports.grimstroke.info"
 })
 public class GrimstrokeApplication {
     public static void main(String[] argvs) {

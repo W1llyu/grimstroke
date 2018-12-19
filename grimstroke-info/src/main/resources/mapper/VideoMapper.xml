@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.info.mapper.VideoMapper">
+    <select id="selectDtos" resultType="com.ouresports.grimstroke.info.dto.VideoDto">
+        SELECT
+        `videos`.*,
+        CONCAT(`par_tags`.`name`,`tags`.`name`) AS `tag_name`,
+        COUNT(DISTINCT `comments`.`id`) AS `comment_count`,
+        COUNT(DISTINCT `likes`.`id`) AS `like_count`
+        FROM `videos`
+        LEFT OUTER JOIN `comments`
+        ON `comments`.`root_type` = 'Video' AND `comments`.`root_id` = `videos`.`id`
+        LEFT OUTER JOIN `likes`
+        ON `likes`.`target_type` = 'Video' AND `likes`.`target_id` = `videos`.`id`
+        INNER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
+        INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
+        WHERE `videos`.`deleted_at` IS NULL AND ${ew.sqlSegment}
+    </select>
+</mapper>
