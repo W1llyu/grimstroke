@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author will
  * @date 2018/11/22
  */
-@Component
+@Component(value="infoUserMapper")
 @DS("arcwarden")
 public interface UserMapper extends BaseMapper<User> {
 }

@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.app;
+package com.ouresports.grimstroke.im;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,15 +7,15 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  *
  * @author will
- * @date 2018/12/17
+ * @date 2018/12/18
  */
 @SpringBootApplication
 @ComponentScan(basePackages={
-        "com.ouresports.grimstroke.info",
-        "com.ouresports.grimstroke.im"
+        "com.ouresports.grimstroke.im",
+        "com.ouresports.grimstroke.base"
 })
-public class GrimstrokeApplication {
+public class GrimstrokeImApplication {
     public static void main(String[] argvs) {
-        SpringApplication.run(GrimstrokeApplication.class, argvs);
+        SpringApplication.run(GrimstrokeImApplication.class, argvs);
     }
 }

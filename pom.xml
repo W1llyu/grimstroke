@@ -13,6 +13,7 @@
         <module>grimstroke-info</module>
         <module>grimstroke-lib</module>
         <module>grimstroke-app</module>
+        <module>grimstroke-im</module>
     </modules>
 
     <parent>

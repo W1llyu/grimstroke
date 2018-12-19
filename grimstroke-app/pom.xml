@@ -17,6 +17,11 @@
             <artifactId>grimstroke-info</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.ouresports</groupId>
+            <artifactId>grimstroke-im</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

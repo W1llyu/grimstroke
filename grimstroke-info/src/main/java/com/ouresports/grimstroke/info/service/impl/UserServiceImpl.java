@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
  * @author will
  * @date 2018/11/22
  */
-@Service
+@Service(value="infoUserService")
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
 }
