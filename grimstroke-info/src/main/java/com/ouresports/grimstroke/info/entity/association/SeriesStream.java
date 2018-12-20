@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.entity;
+package com.ouresports.grimstroke.info.entity.association;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.base.entity.BaseEntity;
@@ -9,16 +9,13 @@ import lombok.experimental.Accessors;
 /**
  *
  * @author will
- * @date 2018/11/22
+ * @date 2018/12/20
  */
-@TableName("users")
+@TableName("series_streams")
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain=true)
-public class User extends BaseEntity {
-    private String name;
-    private String token;
-    private String avatar;
-    private String phone;
-    private String type;
+public class SeriesStream extends BaseEntity {
+    private Long liveStreamId;
+    private Long seriesId;
 }

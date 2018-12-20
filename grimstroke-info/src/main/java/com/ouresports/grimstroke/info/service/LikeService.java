@@ -3,7 +3,7 @@ package com.ouresports.grimstroke.info.service;
 import com.ouresports.grimstroke.base.service.Service;
 import com.ouresports.grimstroke.info.concern.Likable;
 import com.ouresports.grimstroke.info.entity.Like;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.base.exception.ServiceException;
 
 /**

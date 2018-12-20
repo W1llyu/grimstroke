@@ -1,16 +1,16 @@
-package com.ouresports.grimstroke.info.mapper;
+package com.ouresports.grimstroke.base.mapper;
 
 import com.ouresports.grimstroke.base.mapper.BaseMapper;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.Employee;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author will
- * @date 2018/11/22
+ * @date 2018/12/8
  */
-@Component(value="infoUserMapper")
+@Component
 @DS("arcwarden")
-public interface UserMapper extends BaseMapper<User> {
+public interface EmployeeMapper extends BaseMapper<Employee> {
 }

@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.entity;
+package com.ouresports.grimstroke.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.base.entity.BaseEntity;

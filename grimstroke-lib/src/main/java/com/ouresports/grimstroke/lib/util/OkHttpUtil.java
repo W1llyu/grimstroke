@@ -20,6 +20,10 @@ public class OkHttpUtil {
 
     public static String httpGet(String url) {
         Request request = new okhttp3.Request.Builder().url(url).build();
+        return httpGet(request);
+    }
+
+    public static String httpGet(Request request) {
         OkHttpClient okHttpClient = okHttpClientBuilder.build();
         Call call = okHttpClient.newCall(request);
         try {

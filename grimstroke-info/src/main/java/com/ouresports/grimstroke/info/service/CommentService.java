@@ -6,7 +6,7 @@ import com.ouresports.grimstroke.info.concern.Commentable;
 import com.ouresports.grimstroke.info.dto.CommentDto;
 import com.ouresports.grimstroke.info.dto.SubCommentDto;
 import com.ouresports.grimstroke.info.entity.Comment;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.base.exception.ServiceException;
 import org.apache.ibatis.javassist.NotFoundException;
 

@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.info.dto;
 
 import com.ouresports.grimstroke.base.entity.BaseTo;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

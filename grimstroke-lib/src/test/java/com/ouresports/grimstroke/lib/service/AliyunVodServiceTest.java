@@ -5,7 +5,6 @@ import com.ouresports.grimstroke.lib.aliyun.entity.VodDetailResponse;
 import com.ouresports.grimstroke.lib.aliyun.entity.VodUploadInfo;
 import com.ouresports.grimstroke.lib.aliyun.service.AliyunVodService;
 import com.ouresports.grimstroke.lib.exception.LibServiceException;
-import org.junit.Test;
 
 import javax.annotation.Resource;
 
@@ -25,17 +24,5 @@ public class AliyunVodServiceTest extends GrimstrokeLibApplicationTest{
 
     public void testGetVodDetail() throws LibServiceException {
         VodDetailResponse vodDetailResponse = aliyunVodService.getVideoDetail("aa80cb9ae57443c7b131ee15c94bcb2c");
-    }
-
-    @Test
-    public void testGenerateStreamPushUrl() {
-        String url = aliyunVodService.generateStreamPushUrl("lolol");
-        System.out.println(url);
-    }
-
-    @Test
-    public void testGenerateStreamPlayUrl() {
-        String url = aliyunVodService.generateStreamPlayUrl("lolol");
-        System.out.println(url);
     }
 }

@@ -22,6 +22,7 @@ public class AliyunBaseService {
     protected String accessKeyId;
     protected String accessKeySecret;
     protected String regionId;
+    protected String apiVersion;
 
     private final static String ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private final static String HMAC_SHA1_ALGORITHM = "HmacSHA1";
@@ -126,8 +127,8 @@ public class AliyunBaseService {
     protected Map<String, String> generatePublicParameters() {
         Map<String, String> publicParams = Maps.newHashMap();
         publicParams.put("Format", "JSON");
-        publicParams.put("Version", "2017-03-21");
-        publicParams.put("AccessKeyId", this.accessKeyId);
+        publicParams.put("Version", apiVersion);
+        publicParams.put("AccessKeyId", accessKeyId);
         publicParams.put("SignatureMethod", "HMAC-SHA1");
         publicParams.put("Timestamp", generateTimestamp());
         publicParams.put("SignatureVersion", "1.0");

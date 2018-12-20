@@ -1,7 +1,7 @@
-package com.ouresports.grimstroke.info.service;
+package com.ouresports.grimstroke.base.service;
 
 import com.ouresports.grimstroke.base.service.Service;
-import com.ouresports.grimstroke.info.entity.Employee;
+import com.ouresports.grimstroke.base.entity.Employee;
 
 /**
  *

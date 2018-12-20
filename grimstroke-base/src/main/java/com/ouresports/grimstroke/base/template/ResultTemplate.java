@@ -23,6 +23,8 @@ public class ResultTemplate {
     @NonNull
     private String message;
 
+    public static ResultTemplate ok() { return ResultTemplate.of(HttpStatus.OK, 0, "SUCCESS"); }
+
     public static ResultTemplate createOk() {
         return ResultTemplate.of(HttpStatus.CREATED, 0, "创建成功");
     }

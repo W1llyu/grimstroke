@@ -6,7 +6,7 @@ import com.ouresports.grimstroke.info.concern.MessageTriggerable;
 import com.ouresports.grimstroke.info.concern.Targetable;
 import com.ouresports.grimstroke.info.entity.Comment;
 import com.ouresports.grimstroke.info.entity.News;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.info.service.GeneralService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

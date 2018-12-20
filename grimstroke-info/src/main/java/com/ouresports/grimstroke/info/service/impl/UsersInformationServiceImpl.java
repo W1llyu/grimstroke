@@ -2,7 +2,7 @@ package com.ouresports.grimstroke.info.service.impl;
 
 import com.ouresports.grimstroke.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.info.concern.Browsable;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.info.entity.association.UsersInformation;
 import com.ouresports.grimstroke.info.mapper.UsersInformationMapper;
 import com.ouresports.grimstroke.info.service.UsersInformationService;

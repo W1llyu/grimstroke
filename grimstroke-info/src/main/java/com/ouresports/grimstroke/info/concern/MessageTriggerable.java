@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.info.concern;
 
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 
 /**
  *

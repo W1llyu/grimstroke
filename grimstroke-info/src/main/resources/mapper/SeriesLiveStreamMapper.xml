@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.info.mapper.SeriesStreamMapper">
+    <select id="selectSeriesLiveStreamCount" resultType="com.ouresports.grimstroke.info.dto.SeriesLiveStreamCountDto">
+        SELECT `series_streams`.`series_id`,
+          COUNT(CASE WHEN `live_streams`.`type` = 'Extern' THEN live_streams.id END) AS `extern_live_stream_count`,
+          COUNT(CASE WHEN `live_streams`.`type` = 'Ouresports' THEN live_streams.id END) AS `ouresports_live_stream_count`
+        FROM series_streams
+        INNER JOIN `live_streams`
+          ON `series_streams`.live_stream_id = `live_streams`.`id`
+        WHERE `live_streams`.`enabled` = 1 AND `series_streams`.`series_id` IN
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="index">
+            #{item, jdbcType=INTEGER}
+        </foreach>
+        GROUP BY `series_streams`.`series_id`
+    </select>
+
+    <select id="selectLiveStreamDtosBySeries" resultType="com.ouresports.grimstroke.info.dto.LiveStreamDto">
+        SELECT `live_streams`.*
+        FROM `live_streams`
+        INNER JOIN `series_streams`
+          ON `series_streams`.live_stream_id = `live_streams`.`id`
+        WHERE `live_streams`.`enabled` = 1 AND `series_streams`.`series_id` = #{series_id}
+    </select>
+</mapper>

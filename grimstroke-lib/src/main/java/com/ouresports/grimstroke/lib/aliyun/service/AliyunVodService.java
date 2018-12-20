@@ -22,12 +22,12 @@ import java.util.*;
 @Setter
 public class AliyunVodService extends AliyunBaseService {
     private String templateGroupId;
-    private String liveStreamPushDomain;
-    private String liveStreamPlayDomain;
-    private String liveStreamKey;
 
-    private static final String appName = "ouresports";
     private final static String HTTP_METHOD = "GET";
+
+    public AliyunVodService() {
+        this.apiVersion = "2017-03-21";
+    }
 
     public VodUploadAuthResponse getVideoUploadAuth(VodUploadInfo aliVideo) throws LibServiceException {
         Map<String, String> params = Maps.newHashMap();
@@ -59,18 +59,6 @@ public class AliyunVodService extends AliyunBaseService {
         params.put("Action", "GetVideoInfo");
         params.put("VideoId", videoId);
         return getResponseBody(params, VodDetailResponse.class);
-    }
-
-    public String generateStreamPushUrl(String name) {
-        long timestamp = (System.currentTimeMillis() / 1000) + 3600;
-        String seed = String.format("/%s/%s-%d-0-0-%s", appName, name, timestamp, liveStreamKey);
-        return String.format("rtmp://%s/%s/%s?vhost=%s&auth_key=%d-0-0-%s", liveStreamPushDomain, appName, name, liveStreamPlayDomain, timestamp, SecretUtil.md5(seed));
-    }
-
-    public String generateStreamPlayUrl(String name) {
-        long timestamp = (System.currentTimeMillis() / 1000) + 600;
-        String seed = String.format("/%s/%s.m3u8-%d-0-0-%s", appName, name, timestamp, liveStreamKey);
-        return String.format("http://%s/%s/%s.m3u8?auth_key=%d-0-0-%s", liveStreamPlayDomain, appName, name, timestamp, SecretUtil.md5(seed));
     }
 
     private <T extends AliyunResponse>T getResponseBody(Map<String, String> params, Class<T> klass) throws LibServiceException {

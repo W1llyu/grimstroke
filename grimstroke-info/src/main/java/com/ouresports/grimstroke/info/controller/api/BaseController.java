@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.info.controller.api;
 
 import com.ouresports.grimstroke.base.controller.AbstractController;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;

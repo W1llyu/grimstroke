@@ -1,9 +1,9 @@
-package com.ouresports.grimstroke.info.service.impl;
+package com.ouresports.grimstroke.base.service.impl;
 
 import com.ouresports.grimstroke.base.service.BaseServiceImpl;
-import com.ouresports.grimstroke.info.entity.Employee;
-import com.ouresports.grimstroke.info.mapper.EmployeeMapper;
-import com.ouresports.grimstroke.info.service.EmployeeService;
+import com.ouresports.grimstroke.base.entity.Employee;
+import com.ouresports.grimstroke.base.mapper.EmployeeMapper;
+import com.ouresports.grimstroke.base.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 /**

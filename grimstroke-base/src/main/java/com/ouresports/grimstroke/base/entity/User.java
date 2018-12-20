@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.im.entity;
+package com.ouresports.grimstroke.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ouresports.grimstroke.base.entity.BaseEntity;
@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  *
  * @author will
- * @date 2018/12/18
+ * @date 2018/11/22
  */
 @TableName("users")
 @EqualsAndHashCode(callSuper = true)

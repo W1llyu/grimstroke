@@ -18,7 +18,9 @@ public enum ServiceError {
     TEAM_ALREADY_IN_NEWS(3043, "队伍已经和资讯关联了"),
     TEAM_NOT_IN_NEWS(3044, "队伍还未和资讯关联"),
     INFORMATION_ALREADY_IN_COLLECTION(3051, "信息流已经在专栏中了"),
-    INFORMATION_NOT_IN_COLLECTION(3052, "信息流还不在专栏中")
+    INFORMATION_NOT_IN_COLLECTION(3052, "信息流还不在专栏中"),
+    SERIES_ALREADY_IN_LIVESTREAM(3061, "比赛已经和直播流绑定了"),
+    SERIES_NOT_IN_LIVESTREAM(3062, "比赛还没和直播流绑定")
     ;
 
     private final int value;

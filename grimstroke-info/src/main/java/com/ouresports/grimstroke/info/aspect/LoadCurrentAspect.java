@@ -1,8 +1,8 @@
 package com.ouresports.grimstroke.info.aspect;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ouresports.grimstroke.info.entity.User;
-import com.ouresports.grimstroke.info.service.UserService;
+import com.ouresports.grimstroke.base.entity.User;
+import com.ouresports.grimstroke.base.service.UserService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -5,7 +5,7 @@ import com.ouresports.grimstroke.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.info.concern.Likable;
 import com.ouresports.grimstroke.info.dto.LikeDto;
 import com.ouresports.grimstroke.info.entity.Like;
-import com.ouresports.grimstroke.info.entity.User;
+import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.base.exception.ServiceException;
 import com.ouresports.grimstroke.info.mapper.LikeMapper;
 import com.ouresports.grimstroke.info.service.LikeService;
