@@ -12,8 +12,8 @@
         ON `comments`.`root_type` = 'Video' AND `comments`.`root_id` = `videos`.`id`
         LEFT OUTER JOIN `likes`
         ON `likes`.`target_type` = 'Video' AND `likes`.`target_id` = `videos`.`id`
-        INNER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
-        INNER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
+        LEFT OUTER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
+        LEFT OUTER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
         WHERE `videos`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 </mapper>
