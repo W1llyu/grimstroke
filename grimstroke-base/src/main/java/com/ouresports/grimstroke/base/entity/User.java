@@ -1,7 +1,6 @@
 package com.ouresports.grimstroke.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ouresports.grimstroke.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

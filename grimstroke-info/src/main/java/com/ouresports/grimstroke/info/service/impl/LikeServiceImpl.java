@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.ALREADY_LIKED;
-import static com.ouresports.grimstroke.base.enums.ServiceError.NOT_LIKED_YET;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.ALREADY_LIKED;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.NOT_LIKED_YET;
 
 /**
  *

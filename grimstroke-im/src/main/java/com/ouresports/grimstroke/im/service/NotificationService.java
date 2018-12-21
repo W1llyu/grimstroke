@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.im.service;
 
-import com.ouresports.grimstroke.im.rbo.LuxMessageRbo;
+import com.ouresports.grimstroke.im.rbo.socket.LuxMessageRbo;
 
 /**
  *
@@ -8,5 +8,5 @@ import com.ouresports.grimstroke.im.rbo.LuxMessageRbo;
  * @date 2018/12/18
  */
 public interface NotificationService {
-    void notify(LuxMessageRbo rbo);
+    void sendNotification(LuxMessageRbo rbo);
 }

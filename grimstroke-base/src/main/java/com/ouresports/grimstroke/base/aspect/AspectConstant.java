@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.aspect;
+package com.ouresports.grimstroke.base.aspect;
 
 /**
  *

@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.SERIES_ALREADY_IN_LIVESTREAM;
-import static com.ouresports.grimstroke.base.enums.ServiceError.SERIES_NOT_IN_LIVESTREAM;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.SERIES_ALREADY_IN_LIVESTREAM;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.SERIES_NOT_IN_LIVESTREAM;
 
 /**
  *

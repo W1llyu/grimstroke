@@ -1,7 +1,7 @@
 package com.ouresports.grimstroke.im.service;
 
 import com.ouresports.grimstroke.im.GrimstrokeImApplicationTest;
-import com.ouresports.grimstroke.im.rbo.LuxMessageRbo;
+import com.ouresports.grimstroke.im.rbo.socket.LuxMessageRbo;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -15,6 +15,6 @@ public class NotificationServiceTest extends GrimstrokeImApplicationTest {
 
     @Test
     public void testNotify() {
-        notificationService.notify(new LuxMessageRbo().setChannel("test").setEvent("message").setData("aaa"));
+        notificationService.sendNotification(new LuxMessageRbo().setChannel("test").setEvent("message").setData("aaa"));
     }
 }

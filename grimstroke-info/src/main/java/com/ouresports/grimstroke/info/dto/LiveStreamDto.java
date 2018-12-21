@@ -1,6 +1,6 @@
 package com.ouresports.grimstroke.info.dto;
 
-import com.ouresports.grimstroke.base.concern.Userable;
+import com.ouresports.grimstroke.base.concern.WithUser;
 import com.ouresports.grimstroke.base.entity.User;
 import com.ouresports.grimstroke.info.enums.LiveStreamType;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2018/12/20
  */
 @Data
-public class LiveStreamDto implements Userable {
+public class LiveStreamDto implements WithUser {
     private Long id;
     private LiveStreamType type;
     private String name;

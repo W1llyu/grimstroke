@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.CANNOT_COMMENT_SELF;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.CANNOT_COMMENT_SELF;
 
 /**
  *

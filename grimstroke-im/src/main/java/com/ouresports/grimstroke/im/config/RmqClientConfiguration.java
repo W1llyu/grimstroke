@@ -16,16 +16,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RmqClientConfiguration {
-    public static final String EXCHANGE_NAME = "grimstroke";
+    public static final String EXCHANGE_NAME = "lux_default";
 
-    @Bean(name="socket_connect")
+    @Bean(name="join_room")
     public Queue connectQueue() {
-        return new Queue("socket_connect");
+        return new Queue("join_room");
     }
 
-    @Bean(name="socket_disconnect")
+    @Bean(name="leave_room")
     public Queue disconnectQueue() {
-        return new Queue("socket_disconnect");
+        return new Queue("leave_room");
     }
 
     @Bean
@@ -34,12 +34,12 @@ public class RmqClientConfiguration {
     }
 
     @Bean
-    Binding bindingConnectMessage(@Qualifier("socket_connect") Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("im.socket.connect");
+    Binding bindingConnectMessage(@Qualifier("join_room") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("socket.joinRoom.callback");
     }
 
     @Bean
-    Binding bindingDisconnectMessage(@Qualifier("socket_disconnect") Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("im.socket.disconnect");
+    Binding bindingDisconnectMessage(@Qualifier("leave_room") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("socket.leaveRoom.callback");
     }
 }

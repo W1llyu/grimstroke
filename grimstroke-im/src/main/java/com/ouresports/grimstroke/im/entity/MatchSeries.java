@@ -1,6 +1,7 @@
 package com.ouresports.grimstroke.im.entity;
 
 import com.ouresports.grimstroke.base.entity.BaseEntity;
+import com.ouresports.grimstroke.im.enums.MatchSeriesStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,4 +14,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class MatchSeries extends BaseEntity {
     private Integer startTime;
+    private MatchSeriesStatus status;
 }

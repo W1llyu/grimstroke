@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.im.rbo;
+package com.ouresports.grimstroke.im.rbo.socket;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

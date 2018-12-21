@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.aspect;
+package com.ouresports.grimstroke.base.aspect;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ouresports.grimstroke.base.exception.ApplicationException;
@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ouresports.grimstroke.info.aspect.AspectConstant.*;
+import static com.ouresports.grimstroke.base.aspect.AspectConstant.*;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AuthAspect {
     private EmployeeService employeeService;
 
     @Pointcut("(@within(com.ouresports.grimstroke.base.annotation.AuthToken) || @annotation(com.ouresports.grimstroke.base.annotation.AuthToken)) " +
-            "&& execution(public * com.ouresports.grimstroke.info.controller.api.*.*(..))")
+            "&& execution(public * com.ouresports.grimstroke.*.controller.api.*.*(..))")
     public void userAuthAction() {}
 
     @Before("userAuthAction()")
@@ -46,7 +46,7 @@ public class AuthAspect {
     }
 
     @Pointcut("(@within(com.ouresports.grimstroke.base.annotation.AuthToken) || @annotation(com.ouresports.grimstroke.base.annotation.AuthToken)) " +
-            "&& (execution(public * com.ouresports.grimstroke.base.controller.BaseCrudController.*(..)) || execution(public * com.ouresports.grimstroke.info.controller.admin.*.*(..)))")
+            "&& (execution(public * com.ouresports.grimstroke.base.controller.BaseCrudController.*(..)) || execution(public * com.ouresports.grimstroke.*.controller.admin.*.*(..)))")
     public void adminAuthAction() {}
 
     @Before("adminAuthAction()")

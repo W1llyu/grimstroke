@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.controller.api;
+package com.ouresports.grimstroke.im.controller.api;
 
 import com.ouresports.grimstroke.base.controller.AbstractController;
 import com.ouresports.grimstroke.base.entity.User;

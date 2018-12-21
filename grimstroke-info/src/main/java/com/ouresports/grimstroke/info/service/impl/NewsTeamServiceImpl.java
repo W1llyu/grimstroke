@@ -10,8 +10,8 @@ import com.ouresports.grimstroke.info.mapper.NewsTeamMapper;
 import com.ouresports.grimstroke.info.service.NewsTeamService;
 import org.springframework.stereotype.Service;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.TEAM_ALREADY_IN_NEWS;
-import static com.ouresports.grimstroke.base.enums.ServiceError.TEAM_NOT_IN_NEWS;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.TEAM_ALREADY_IN_NEWS;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.TEAM_NOT_IN_NEWS;
 
 /**
  *

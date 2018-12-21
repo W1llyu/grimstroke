@@ -1,4 +1,4 @@
-package com.ouresports.grimstroke.info.aspect;
+package com.ouresports.grimstroke.base.aspect;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ouresports.grimstroke.base.entity.User;
@@ -15,8 +15,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.ouresports.grimstroke.info.aspect.AspectConstant.AUTH_HEADER_KEY;
-import static com.ouresports.grimstroke.info.aspect.AspectConstant.USER_REQUEST_KEY;
+import static com.ouresports.grimstroke.base.aspect.AspectConstant.AUTH_HEADER_KEY;
+import static com.ouresports.grimstroke.base.aspect.AspectConstant.USER_REQUEST_KEY;
 
 /**
  *
@@ -30,7 +30,7 @@ public class LoadCurrentAspect {
     @Resource
     private UserService userService;
 
-    @Pointcut("execution(public * com.ouresports.grimstroke.info.controller.api.*.*(..))")
+    @Pointcut("execution(public * com.ouresports.grimstroke.*.controller.api.*.*(..))")
     public void loadCurrentUser() {}
 
     @Before("loadCurrentUser()")

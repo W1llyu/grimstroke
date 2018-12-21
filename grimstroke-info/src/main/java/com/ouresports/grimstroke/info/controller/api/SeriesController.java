@@ -17,7 +17,7 @@ import java.util.List;
  * @author will
  * @date 2018/12/20
  */
-@RestController
+@RestController("InfoSeriesController")
 @RequestMapping(value="/api/series", produces="application/json;charset=UTF-8")
 public class SeriesController extends BaseController {
     @Resource

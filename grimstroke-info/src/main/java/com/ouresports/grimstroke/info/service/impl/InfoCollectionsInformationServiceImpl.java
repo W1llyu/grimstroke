@@ -10,8 +10,8 @@ import com.ouresports.grimstroke.info.mapper.InfoCollectionsInformationMapper;
 import com.ouresports.grimstroke.info.service.InfoCollectionsInformationService;
 import org.springframework.stereotype.Service;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.INFORMATION_ALREADY_IN_COLLECTION;
-import static com.ouresports.grimstroke.base.enums.ServiceError.INFORMATION_NOT_IN_COLLECTION;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.INFORMATION_ALREADY_IN_COLLECTION;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.INFORMATION_NOT_IN_COLLECTION;
 
 /**
  *

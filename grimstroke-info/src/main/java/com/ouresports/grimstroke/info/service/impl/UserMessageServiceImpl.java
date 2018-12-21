@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.ouresports.grimstroke.base.enums.ServiceError.ALREADY_NOTIFIED;
+import static com.ouresports.grimstroke.info.enums.InfoServiceError.ALREADY_NOTIFIED;
 
 /**
  *
