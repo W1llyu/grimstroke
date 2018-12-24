@@ -13,19 +13,23 @@
       IF(COUNT(DISTINCT `news`.`id`) + COUNT(DISTINCT `video_comments`.`id`) = 0, NULL, MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0)))) AS `last_info_time`,
       `info_collections`.`created_at`,
       `info_collections`.`deleted_at`,
-      COUNT(DISTINCT `news`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `news_count`,
+      COUNT(DISTINCT CASE WHEN `news_root_comments`.`enabled` = 1 OR `news_root_comments`.`enabled` IS NULL THEN `news_comments`.`id` END) + COUNT(DISTINCT CASE WHEN `video_root_comments`.`enabled` = 1 OR `video_root_comments`.`enabled` IS NULL THEN `video_comments`.`id` END) AS `news_count`,
       COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
       FROM `info_collections`
       LEFT OUTER JOIN `info_collections_informations` AS `col_news`
-      ON `col_news`.`info_collection_id` = `info_collections`.`id` AND `col_news`.`information_type` = 'News'
+        ON `col_news`.`info_collection_id` = `info_collections`.`id` AND `col_news`.`information_type` = 'News'
       LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
       LEFT OUTER JOIN `comments` AS `news_comments`
-      ON (`news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id` AND `news_comments`.`enabled` = 1)
+        ON `news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id` AND `news_comments`.`enabled` = 1
+      LEFT OUTER JOIN `comments` AS `news_root_comments`
+	    ON `news_root_comments`.`id` = `news_comments`.`root_comment_id`
       LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
-      ON `col_videos`.`info_collection_id` = `info_collections`.`id` AND `col_videos`.`information_type` = 'Video'
+        ON `col_videos`.`info_collection_id` = `info_collections`.`id` AND `col_videos`.`information_type` = 'Video'
       LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
       LEFT OUTER JOIN `comments` AS `video_comments`
-      ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id` AND `video_comments`.`enabled` = 1
+        ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id` AND `video_comments`.`enabled` = 1
+      LEFT OUTER JOIN `comments` AS `video_root_comments`
+        ON `video_root_comments`.`id` = `video_comments`.`root_comment_id`
       WHERE `info_collections`.`deleted_at` IS NULL AND ${ew.sqlSegment}
     </select>
 
@@ -43,7 +47,7 @@
             `news`.`enabled`,
             `news`.`created_at`,
             `news`.`deleted_at`,
-            COUNT(DISTINCT `comments`.`id`) AS `comment_count`
+            COUNT(DISTINCT CASE WHEN `root_comments`.`enabled` = 1 OR `root_comments`.`enabled` IS NULL THEN `comments`.`id` END) AS `comment_count`
           FROM `news`
           INNER JOIN `info_collections_informations` AS `info_news`
             ON `info_news`.`information_type` = 'News'
@@ -51,6 +55,8 @@
             AND `info_news`.`info_collection_id` = #{id}
           LEFT OUTER JOIN `comments`
             ON `comments`.`root_type` = 'News' AND `comments`.`root_id` = `news`.`id` AND `comments`.`enabled` = 1
+          LEFT OUTER JOIN `comments` AS `root_comments`
+	        ON `root_comments`.`id` = `comments`.`root_comment_id`
           LEFT OUTER JOIN `tags` ON `tags`.`id` = `news`.`tag_id`
           LEFT OUTER JOIN `tags` AS `par_tags` ON `par_tags`.`id` = `tags`.`parent_tag_id`
           WHERE `news`.`deleted_at` IS NULL
@@ -68,7 +74,7 @@
             `videos`.`enabled`,
             `videos`.`created_at`,
             `videos`.`deleted_at`,
-            COUNT(DISTINCT `comments`.`id`) AS `comment_count`
+            COUNT(DISTINCT CASE WHEN `root_comments`.`enabled` = 1 OR `root_comments`.`enabled` IS NULL THEN `comments`.`id` END) AS `comment_count`
           FROM `videos`
           INNER JOIN `info_collections_informations` AS `info_videos`
             ON `info_videos`.`information_type` = 'Video'
@@ -76,6 +82,8 @@
             AND `info_videos`.`info_collection_id` = #{id}
           LEFT OUTER JOIN `comments`
             ON `comments`.`root_type` = 'Video' AND `comments`.`root_id` = `videos`.`id`
+          LEFT OUTER JOIN `comments` AS `root_comments`
+	        ON `root_comments`.`id` = `comments`.`root_comment_id`
           LEFT OUTER JOIN `likes`
             ON `likes`.`target_type` = 'Video' AND `likes`.`target_id` = `videos`.`id`
           LEFT OUTER JOIN `tags` ON `tags`.`id` = `videos`.`tag_id`
