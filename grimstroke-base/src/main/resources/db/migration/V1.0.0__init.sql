@@ -58,7 +58,7 @@ CREATE TABLE `info_collections` (
 CREATE TABLE `info_collections_informations` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `info_collection_id` bigint(20) NOT NULL,
-  `information_type` varchar(255) NOT NULL,
+  `information_type` varchar(64) NOT NULL,
   `information_id` bigint(20) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `info_collections_informations` (
 CREATE TABLE `comments` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `root_type` varchar(255) NOT NULL,
+  `root_type` varchar(64) NOT NULL,
   `root_id` bigint(20) NOT NULL,
   `root_comment_id` bigint(20),
   `parent_comment_id` bigint(20),
@@ -90,7 +90,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `likes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `target_type` varchar(255) NOT NULL,
+  `target_type` varchar(64) NOT NULL,
   `target_id` bigint(20) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `likes` (
 CREATE TABLE `users_informations` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `information_type` varchar(255) NOT NULL,
+  `information_type` varchar(64) NOT NULL,
   `information_id` bigint(20) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,

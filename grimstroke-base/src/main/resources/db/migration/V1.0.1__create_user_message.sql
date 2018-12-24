@@ -1,7 +1,7 @@
 CREATE TABLE `user_messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `trigger_type` varchar(255),
+  `trigger_type` varchar(64),
   `trigger_id` bigint(20),
   `message` mediumtext COLLATE utf8mb4_unicode_ci,
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
