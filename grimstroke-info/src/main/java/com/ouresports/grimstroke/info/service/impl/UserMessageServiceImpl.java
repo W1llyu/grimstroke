@@ -26,7 +26,7 @@ import static com.ouresports.grimstroke.base.enums.ServiceError.ALREADY_NOTIFIED
 public class UserMessageServiceImpl extends BaseServiceImpl<UserMessageMapper, UserMessage> implements UserMessageService {
     @Override
     public void addUserMessage(MessageTriggerable trigger) throws ServiceException {
-        if (trigger.getNotifyUser() == null) {
+        if (trigger.getNotifyUser() == null || trigger.getNotifyUser().getId() == null) {
             return;
         }
         QueryWrapper<UserMessage> wrapper = new QueryWrapper<UserMessage>()
