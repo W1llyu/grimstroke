@@ -3,8 +3,8 @@
 <mapper namespace="com.ouresports.grimstroke.info.mapper.SeriesStreamMapper">
     <select id="selectSeriesLiveStreamCount" resultType="com.ouresports.grimstroke.info.dto.SeriesLiveStreamCountDto">
         SELECT `series_streams`.`series_id`,
-          COUNT(CASE WHEN `live_streams`.`type` = 'Extern' THEN live_streams.id END) AS `extern_live_stream_count`,
-          COUNT(CASE WHEN `live_streams`.`type` = 'Ouresports' THEN live_streams.id END) AS `ouresports_live_stream_count`
+          COUNT(CASE WHEN `live_streams`.`type` = 'Official' THEN live_streams.id END) AS `official_stream_count`,
+          COUNT(CASE WHEN `live_streams`.`type` = 'Anchor' THEN live_streams.id END) AS `anchor_stream_count`
         FROM series_streams
         INNER JOIN `live_streams`
           ON `series_streams`.live_stream_id = `live_streams`.`id`

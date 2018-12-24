@@ -13,11 +13,11 @@ public enum LiveStreamType implements IEnum {
     /**
      * 即最快视频流
      */
-    Extern("Extern"),
+    Official("Official"),
     /**
      * 即解说
      */
-    Ouresports("Ouresports");
+    Anchor("Anchor");
 
     private String type;
 

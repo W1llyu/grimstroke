@@ -1,6 +1,4 @@
-package com.ouresports.grimstroke.info.enums;
-
-import com.baomidou.mybatisplus.core.enums.IEnum;
+package com.ouresports.grimstroke.lib.livestream.enums;
 
 import java.io.Serializable;
 
@@ -9,13 +7,13 @@ import java.io.Serializable;
  * @author will
  * @date 2018/12/19
  */
-public enum ExternLivePlatform implements IEnum {
+public enum ExternLivePlatform {
     /**
      * 直播平台
      */
-    Twitch("Twitch"),
-    Douyu("Douyu"),
-    Huya("Huya")
+    Twitch("twitch"),
+    Douyu("douyu"),
+    Huya("huya")
     ;
 
     private String platform;
@@ -24,12 +22,10 @@ public enum ExternLivePlatform implements IEnum {
         this.platform = platform;
     }
 
-    @Override
     public Serializable getValue() {
         return platform;
     }
 
-    @Override
     public String toString() {
         return platform;
     }

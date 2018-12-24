@@ -10,6 +10,6 @@ import lombok.Data;
 @Data
 public class SeriesLiveStreamCountDto {
     private Long seriesId;
-    private Integer externLiveStreamCount;
-    private Integer ouresportsLiveStreamCount;
+    private Integer officialStreamCount;
+    private Integer anchorStreamCount;
 }

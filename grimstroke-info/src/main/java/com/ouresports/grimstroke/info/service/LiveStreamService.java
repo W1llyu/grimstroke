@@ -2,7 +2,7 @@ package com.ouresports.grimstroke.info.service;
 
 import com.ouresports.grimstroke.base.service.Service;
 import com.ouresports.grimstroke.info.entity.LiveStream;
-import com.ouresports.grimstroke.info.enums.ExternLivePlatform;
+import com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform;
 
 /**
  *

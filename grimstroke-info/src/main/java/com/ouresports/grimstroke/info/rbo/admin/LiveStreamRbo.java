@@ -2,7 +2,7 @@ package com.ouresports.grimstroke.info.rbo.admin;
 
 import com.ouresports.grimstroke.base.entity.BaseTo;
 import com.ouresports.grimstroke.info.entity.LiveStream;
-import com.ouresports.grimstroke.info.enums.ExternLivePlatform;
+import com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform;
 import com.ouresports.grimstroke.info.enums.LiveStreamType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

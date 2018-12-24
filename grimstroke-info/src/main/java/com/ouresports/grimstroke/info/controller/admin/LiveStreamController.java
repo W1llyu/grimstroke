@@ -9,6 +9,7 @@ import com.ouresports.grimstroke.info.rbo.admin.SeriesIdRbo;
 import com.ouresports.grimstroke.info.service.LiveStreamService;
 import com.ouresports.grimstroke.info.service.SeriesStreamService;
 import com.ouresports.grimstroke.info.vo.admin.LiveStreamUrlVo;
+import com.ouresports.grimstroke.lib.livestream.service.LivestreamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,8 @@ import static com.ouresports.grimstroke.info.enums.LiveStreamType.*;
 public class LiveStreamController extends BaseController<LiveStream, LiveStreamService> {
     @Resource
     private SeriesStreamService seriesStreamService;
+    @Resource
+    private LivestreamService livestreamService;
 
     /**
      * 创建直播流
@@ -40,12 +43,30 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
      */
     @PostMapping(value="")
     public ResponseEntity create(@Valid @RequestBody LiveStreamRbo rbo) throws Exception {
-        if (rbo.getType() == Extern) {
+        if (rbo.getType() == Official) {
             baseService.createExternLiveStream(rbo.convertTo(), rbo.getPlatform(), rbo.getRoomId());
         } else {
             baseService.createOuresportsLiveStream(rbo.convertTo());
         }
         return render(ResultTemplate.createOk());
+    }
+
+    /**
+     * 停止外部直播流
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping(value="/{id}/stop")
+    public ResponseEntity stop(@PathVariable long id) throws Exception {
+        LiveStream liveStream = baseService.find(id);
+        if (liveStream.getType() == Anchor) {
+            if (livestreamService.deleteLivestreamSync(liveStream.getId().toString())) {
+                liveStream.setActive(false);
+                baseService.updateById(liveStream);
+            }
+        }
+        return render(ResultTemplate.ok());
     }
 
     /**

@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.lib.util;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,16 @@ public class OkHttpUtil {
         Call call = okHttpClient.newCall(request);
         try {
             return call.execute().body().string();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static Response execute(Request request) {
+        OkHttpClient okHttpClient = okHttpClientBuilder.build();
+        Call call = okHttpClient.newCall(request);
+        try {
+            return call.execute();
         } catch (IOException e) {
             return null;
         }
