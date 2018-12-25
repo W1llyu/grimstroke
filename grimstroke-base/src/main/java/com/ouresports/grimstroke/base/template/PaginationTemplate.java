@@ -1,11 +1,9 @@
 package com.ouresports.grimstroke.base.template;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.base.entity.ITo;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 
@@ -16,9 +14,7 @@ import java.util.List;
  */
 @Data
 public class PaginationTemplate<T> {
-    @JSONField(name="meta")
-    private MetaDto meta;
-    @JSONField(name="data")
+    private IMeta meta;
     protected List data;
 
     public PaginationTemplate(IPage<T> iPage) {
@@ -31,22 +27,24 @@ public class PaginationTemplate<T> {
         initMeta(iPage);
     }
 
+    public PaginationTemplate(List<T> list, Class<? extends ITo<T>> voClass, IMeta meta) throws IllegalAccessException, InstantiationException {
+        data = voClass.newInstance().convertFor(list);
+        this.meta = meta;
+    }
+
     private void initMeta(IPage iPage) {
-        meta = MetaDto.builder()
+        meta = MetaVo.builder()
                 .currentPage(iPage.getCurrent())
                 .totalCount(iPage.getTotal())
                 .per(iPage.getSize())
                 .build();
     }
 
-    @Getter
+    @Data
     @Builder
-    static private class MetaDto {
-        @JSONField(name="per")
+    static private class MetaVo implements IMeta {
         private long per;
-        @JSONField(name="total_count")
         private long totalCount;
-        @JSONField(name="current_page")
         private long currentPage;
     }
 }

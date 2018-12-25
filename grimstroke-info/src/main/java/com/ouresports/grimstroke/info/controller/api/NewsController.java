@@ -1,9 +1,11 @@
 package com.ouresports.grimstroke.info.controller.api;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.base.annotation.AuthToken;
+import com.ouresports.grimstroke.base.template.IMeta;
 import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
@@ -16,6 +18,8 @@ import com.ouresports.grimstroke.info.entity.News;
 import com.ouresports.grimstroke.info.service.CommentService;
 import com.ouresports.grimstroke.info.service.NewsService;
 import com.ouresports.grimstroke.info.service.UsersInformationService;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,7 +72,13 @@ public class NewsController extends BaseController {
                                    @RequestParam(defaultValue="10") int per) throws Exception {
         Page<CommentDto> page = new Page<>(currentPage, per);
         IPage<CommentDto> commentDtoIPage = commentService.getCommentDtos(page, newsService.find(id), getCurrentUser());
-        return render(new PaginationTemplate<>(commentDtoIPage, CommentVo.class));
+        NewsDto newsDto = newsService.getDto(id);
+        MetaVo metaVo = MetaVo.builder()
+                .currentPage(commentDtoIPage.getCurrent())
+                .totalCount(commentDtoIPage.getTotal())
+                .per(commentDtoIPage.getSize())
+                .commentCount(newsDto.getCommentCount()).build();
+        return render(new PaginationTemplate<>(commentDtoIPage.getRecords(), CommentVo.class, metaVo));
     }
 
     /**
@@ -102,5 +112,14 @@ public class NewsController extends BaseController {
 
     private News generateGeneralQuery() {
         return new News().setEnabled(true);
+    }
+
+    @Data
+    @Builder
+    static private class MetaVo implements IMeta {
+        private long per;
+        private long totalCount;
+        private long currentPage;
+        private long commentCount;
     }
 }
