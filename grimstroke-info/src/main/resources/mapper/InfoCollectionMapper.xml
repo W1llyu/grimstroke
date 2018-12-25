@@ -13,8 +13,8 @@
       IF(COUNT(DISTINCT `news`.`id`) + COUNT(DISTINCT `video_comments`.`id`) = 0, NULL, MAX(GREATEST(IFNULL(`news`.`created_at`, 0), IFNULL(`videos`.`created_at`, 0)))) AS `last_info_time`,
       `info_collections`.`created_at`,
       `info_collections`.`deleted_at`,
-      COUNT(DISTINCT CASE WHEN `news_root_comments`.`enabled` = 1 OR `news_root_comments`.`enabled` IS NULL THEN `news_comments`.`id` END) + COUNT(DISTINCT CASE WHEN `video_root_comments`.`enabled` = 1 OR `video_root_comments`.`enabled` IS NULL THEN `video_comments`.`id` END) AS `news_count`,
-      COUNT(DISTINCT `news_comments`.`id`) + COUNT(DISTINCT `video_comments`.`id`) AS `comment_count`
+      COUNT(DISTINCT CASE WHEN `news_root_comments`.`enabled` = 1 OR `news_root_comments`.`enabled` IS NULL THEN `news_comments`.`id` END) + COUNT(DISTINCT CASE WHEN `video_root_comments`.`enabled` = 1 OR `video_root_comments`.`enabled` IS NULL THEN `video_comments`.`id` END) AS `comment_count`,
+      COUNT(DISTINCT `news`.`id`) + COUNT(DISTINCT `videos`.`id`) AS `news_count`
       FROM `info_collections`
       LEFT OUTER JOIN `info_collections_informations` AS `col_news`
         ON `col_news`.`info_collection_id` = `info_collections`.`id` AND `col_news`.`information_type` = 'News'
