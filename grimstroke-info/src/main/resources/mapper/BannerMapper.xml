@@ -25,10 +25,10 @@
         WHEN 'InfoCollection' THEN `info_collections`.`cover_image`
         ELSE NULL END AS `resource_cover_image`
         FROM `banners`, `news`, `videos`, `info_collections`
-        WHERE (`banners`.`resource_type` = 'News' AND `banners`.`resource_id` = `news`.`id`)
+        WHERE ((`banners`.`resource_type` = 'News' AND `banners`.`resource_id` = `news`.`id`)
         OR (`banners`.`resource_type` = 'Video' AND `banners`.`resource_id` = `videos`.`id`)
         OR (`banners`.`resource_type` = 'InfoCollection' AND `banners`.`resource_id` = `info_collections`.`id`)
-        OR (`banners`.`resource_type` IS NULL)
+        OR (`banners`.`resource_type` IS NULL))
         AND ${ew.sqlSegment}
     </select>
 </mapper>
