@@ -18,14 +18,14 @@
       FROM `info_collections`
       LEFT OUTER JOIN `info_collections_informations` AS `col_news`
         ON `col_news`.`info_collection_id` = `info_collections`.`id` AND `col_news`.`information_type` = 'News'
-      LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id`
+      LEFT OUTER JOIN `news` ON `news`.`id` = `col_news`.`information_id` AND `news`.`enabled` = 1
       LEFT OUTER JOIN `comments` AS `news_comments`
         ON `news_comments`.`root_type` = 'News' AND `news_comments`.`root_id` = `news`.`id` AND `news_comments`.`enabled` = 1
       LEFT OUTER JOIN `comments` AS `news_root_comments`
 	    ON `news_root_comments`.`id` = `news_comments`.`root_comment_id`
       LEFT OUTER JOIN `info_collections_informations` AS `col_videos`
         ON `col_videos`.`info_collection_id` = `info_collections`.`id` AND `col_videos`.`information_type` = 'Video'
-      LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id`
+      LEFT OUTER JOIN `videos` ON `videos`.`id` = `col_videos`.`information_id` AND `videos`.`enabled` = 1
       LEFT OUTER JOIN `comments` AS `video_comments`
         ON `video_comments`.`root_type` = 'Video' AND `video_comments`.`root_id` = `videos`.`id` AND `video_comments`.`enabled` = 1
       LEFT OUTER JOIN `comments` AS `video_root_comments`
