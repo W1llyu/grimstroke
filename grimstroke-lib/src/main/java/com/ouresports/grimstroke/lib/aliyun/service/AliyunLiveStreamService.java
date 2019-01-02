@@ -52,10 +52,10 @@ public class AliyunLiveStreamService extends AliyunBaseService {
      * @param name
      * @return
      */
-    public String generateStreamPlayUrl(String name) {
+    public String generateStreamPlayUrl(String name, String template) {
         long timestamp = (System.currentTimeMillis() / 1000) + 600;
-        String seed = String.format("/%s/%s.m3u8-%d-0-0-%s", APP_NAME, name, timestamp, liveStreamKey);
-        return String.format("http://%s/%s/%s.m3u8?auth_key=%d-0-0-%s", liveStreamPlayDomain, APP_NAME, name, timestamp, SecretUtil.md5(seed));
+        String seed = String.format("/%s/%s_%s.m3u8-%d-0-0-%s", APP_NAME, name, template, timestamp, liveStreamKey);
+        return String.format("http://%s/%s/%s_%s.m3u8?auth_key=%d-0-0-%s", liveStreamPlayDomain, APP_NAME, name, template, timestamp, SecretUtil.md5(seed));
     }
 
     /**

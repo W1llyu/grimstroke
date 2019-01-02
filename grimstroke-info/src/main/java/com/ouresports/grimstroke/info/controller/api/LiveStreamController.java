@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.info.entity.LiveStream;
+import com.ouresports.grimstroke.info.enums.StreamTemplate;
 import com.ouresports.grimstroke.info.rbo.admin.LiveStreamCallbackRbo;
 import com.ouresports.grimstroke.info.service.LiveStreamService;
 import com.ouresports.grimstroke.info.vo.admin.LiveStreamUrlVo;
@@ -32,8 +33,9 @@ public class LiveStreamController extends BaseController {
      * @throws Exception
      */
     @GetMapping(value="/{id}/play_url")
-    public ResponseEntity getPlayUrl(@PathVariable long id) throws Exception {
-        String url = liveStreamService.getPlayUrl(liveStreamService.find(id));
+    public ResponseEntity getPlayUrl(@PathVariable long id,
+                                     @RequestParam(defaultValue="LSD") StreamTemplate template) throws Exception {
+        String url = liveStreamService.getPlayUrl(liveStreamService.find(id), template);
         return render(new SingleTemplate<>(new LiveStreamUrlVo().setUrl(url)));
     }
 

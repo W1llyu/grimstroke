@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.info.service.impl;
 
 import com.ouresports.grimstroke.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.info.entity.LiveStream;
+import com.ouresports.grimstroke.info.enums.StreamTemplate;
 import com.ouresports.grimstroke.lib.livestream.entity.LivestreamSyncRbo;
 import com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform;
 import com.ouresports.grimstroke.info.mapper.LiveStreamMapper;
@@ -57,7 +58,7 @@ public class LiveStreamServiceImpl extends BaseServiceImpl<LiveStreamMapper, Liv
     }
 
     @Override
-    public String getPlayUrl(LiveStream liveStream) {
-        return aliyunLiveStreamService.generateStreamPlayUrl(liveStream.getId().toString());
+    public String getPlayUrl(LiveStream liveStream, StreamTemplate template) {
+        return aliyunLiveStreamService.generateStreamPlayUrl(liveStream.getId().toString(), template.toString());
     }
 }
