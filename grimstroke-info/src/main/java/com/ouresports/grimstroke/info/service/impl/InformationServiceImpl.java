@@ -95,7 +95,7 @@ public class InformationServiceImpl implements InformationService{
         wrapper.eq("`news`.`type`", InformationSubType.News)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
-                .last(String.format("LIMIT %d, %d", (currentPage - 1) * NEWS_PAGE_SIZE, currentPage * NEWS_PAGE_SIZE));
+                .last(String.format("LIMIT %d, %d", (currentPage - 1) * NEWS_PAGE_SIZE, NEWS_PAGE_SIZE));
         return NewsDto.toInformations(newsService.getDtos(wrapper));
     }
 
@@ -113,7 +113,7 @@ public class InformationServiceImpl implements InformationService{
         }
         wrapper.orderByDesc("`info_collections`.`sticky`")
                 .orderByDesc("`last_info_time`")
-                .last(String.format("LIMIT %d, %d", (currentPage - 1) * COL_PAGE_SIZE, currentPage * COL_PAGE_SIZE));
+                .last(String.format("LIMIT %d, %d", (currentPage - 1) * COL_PAGE_SIZE, COL_PAGE_SIZE));
         return InfoCollectionDto.toInformations(infoCollectionService.getDtos(wrapper));
     }
 
@@ -146,7 +146,7 @@ public class InformationServiceImpl implements InformationService{
         wrapper.eq("`news`.`type`", InformationSubType.Analysis)
                 .orderByDesc("`news`.`sticky`")
                 .orderByDesc("`news`.`created_at`")
-                .last(String.format("LIMIT %d, %d", currentPage - 1, currentPage));
+                .last(String.format("LIMIT %d, %d", currentPage - 1, 1));
         List<NewsDto> list = newsService.getDtos(wrapper);
         InformationDto dto = null;
         if (!list.isEmpty()) {
