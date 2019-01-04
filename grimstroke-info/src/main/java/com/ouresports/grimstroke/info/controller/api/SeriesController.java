@@ -35,6 +35,12 @@ public class SeriesController extends BaseController {
         return render(new SingleTemplate<>(dtos, LiveStreamVo.class));
     }
 
+    /**
+     * 获取系列赛列表的直播流
+     * @param ids
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value="/live_streams")
     public ResponseEntity getLiveStreams(@RequestParam String ids) throws Exception {
         List<Long> idList = Lists.newArrayList();

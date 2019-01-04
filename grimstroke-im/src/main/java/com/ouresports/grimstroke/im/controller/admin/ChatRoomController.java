@@ -3,16 +3,22 @@ package com.ouresports.grimstroke.im.controller.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ouresports.grimstroke.base.annotation.AuthToken;
 import com.ouresports.grimstroke.base.controller.AbstractController;
 import com.ouresports.grimstroke.base.service.UserService;
 import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
+import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.im.dto.ChatRoomBanDto;
+import com.ouresports.grimstroke.im.dto.RoomMessageDto;
 import com.ouresports.grimstroke.im.entity.ChatRoomBan;
+import com.ouresports.grimstroke.im.entity.RoomMessage;
 import com.ouresports.grimstroke.im.rbo.admin.BanTimeRbo;
+import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.admin.BanUserVo;
+import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +37,7 @@ import java.util.stream.Collectors;
  */
 @RestController("AdminChatRoomController")
 @RequestMapping(value="/admin/chat_rooms", produces="application/json;charset=UTF-8")
+@AuthToken
 public class ChatRoomController extends AbstractController {
     @Resource
     private RoomMessageService roomMessageService;
@@ -93,5 +100,44 @@ public class ChatRoomController extends AbstractController {
     public ResponseEntity removeUserBan(@PathVariable long id) throws Exception {
         chatRoomBanService.remove(new QueryWrapper<ChatRoomBan>().eq("user_id", id));
         return render(ResultTemplate.deleteOk());
+    }
+
+    /**
+     * 获取消息列表
+     * @param currentPage
+     * @param per
+     * @param roomName
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/messages")
+    public ResponseEntity messages(@RequestParam(value="page", defaultValue="1") int currentPage,
+                                   @RequestParam(defaultValue="10") int per,
+                                   @RequestParam(value="room_name") String roomName) throws Exception {
+        Page<RoomMessage> page = new Page<>(currentPage, per);
+        QueryWrapper<RoomMessage> wrapper = new QueryWrapper<>(new RoomMessage().setRoomName(roomName)).orderByDesc("created_at");
+        IPage<RoomMessageDto> dtos = roomMessageService.getRoomMessageDtos(page, wrapper);
+        return render(new PaginationTemplate<>(dtos, RoomMessageVo.class));
+    }
+
+    /**
+     * 管理员发送房间消息
+     * @param roomName
+     * @param rbo
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value="/{roomName}/messages")
+    public ResponseEntity sendRoomMessage(@PathVariable String roomName,
+                                          @Valid @RequestBody RoomMessageRbo rbo) throws Exception {
+        RoomMessageDto dto = roomMessageService.createAdminMessageAndNotify(roomName, rbo.getContent());
+        return render(new SingleTemplate<>(dto, RoomMessageVo.class));
+    }
+
+    @PostMapping(value="/{roomName}/notices")
+    public ResponseEntity sendRoomNotice(@PathVariable String roomName,
+                                         @Valid @RequestBody RoomMessageRbo rbo) throws Exception {
+        roomMessageService.createNoticeAndNotify(roomName, rbo.getContent());
+        return render(ResultTemplate.createOk());
     }
 }

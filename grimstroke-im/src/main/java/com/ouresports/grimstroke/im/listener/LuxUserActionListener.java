@@ -27,7 +27,7 @@ public class LuxUserActionListener {
     @Resource
     private NotificationService notificationService;
 
-    private static final String ROOM_ACTION_RECEIVED_EVENT = "grimstorke.action.received";
+    private static final String ROOM_ACTION_RECEIVED_EVENT = "grimstroke.action.received";
 
     @RabbitListener(queues="join_room")
     public void processJoinRoom(String msg) {

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.base.annotation.AuthToken;
+import com.ouresports.grimstroke.base.template.IMeta;
 import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
@@ -14,12 +15,16 @@ import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
 import com.ouresports.grimstroke.im.service.MatchSeriesService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
+import com.ouresports.grimstroke.im.vo.api.RoomInfoVo;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Date;
 
 /**
  *
@@ -35,6 +40,23 @@ public class SeriesController extends BaseController {
     private RoomMessageService roomMessageService;
     @Resource
     private ChatRoomBanService chatRoomBanService;
+
+    /**
+     * 获取赛事聊天室信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/{id}/room")
+    public ResponseEntity getRoomInfo(@PathVariable long id) throws Exception {
+        MatchSeries matchSeries = matchSeriesService.find(id);
+        String roomName = matchSeriesService.getRoomName(matchSeries);
+        RoomInfoVo roomInfoVo = new RoomInfoVo()
+                .setName(roomName)
+                .setChannel(roomMessageService.getRoomChannel(roomName))
+                .setOpen(matchSeriesService.chatRoomOpen(matchSeries));
+        return render(new SingleTemplate<>(roomInfoVo));
+    }
 
     /**
      * 在聊天室发送消息
@@ -65,12 +87,32 @@ public class SeriesController extends BaseController {
     @GetMapping(value="/{id}/room_messages")
     public ResponseEntity getRoomMessages(@PathVariable long id,
                                           @RequestParam(value="page", defaultValue="1") int currentPage,
-                                          @RequestParam(defaultValue="10") int per) throws Exception {
+                                          @RequestParam(defaultValue="10") int per,
+                                          @RequestParam(value="last_time", required=false) String lastTime) throws Exception {
         Page<RoomMessage> page = new Page<>(currentPage, per);
         QueryWrapper<RoomMessage> wrapper = new QueryWrapper<>(new RoomMessage()
                 .setRoomName(matchSeriesService.getRoomName(matchSeriesService.find(id))))
                 .orderByDesc("created_at");
+        if (lastTime != null) {
+            wrapper.lt("`created_at`", lastTime);
+        }
         IPage<RoomMessageDto> dtos = roomMessageService.getRoomMessageDtos(page, wrapper);
-        return render(new PaginationTemplate<>(dtos, RoomMessageVo.class));
+        MetaVo metaVo = MetaVo.builder()
+                .currentPage(dtos.getCurrent())
+                .totalCount(dtos.getTotal())
+                .per(dtos.getSize()).build();
+        if (dtos.getRecords().size() > 0) {
+            metaVo.setLastTime(dtos.getRecords().get(dtos.getRecords().size() - 1).getCreatedAt());
+        }
+        return render(new PaginationTemplate<>(dtos.getRecords(), RoomMessageVo.class, metaVo));
+    }
+
+    @Data
+    @Builder
+    static private class MetaVo implements IMeta {
+        private long per;
+        private long totalCount;
+        private long currentPage;
+        private Date lastTime;
     }
 }

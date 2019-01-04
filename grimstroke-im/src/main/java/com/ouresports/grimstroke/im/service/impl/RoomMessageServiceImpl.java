@@ -29,8 +29,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, RoomMessage> implements RoomMessageService {
-    private static final String ROOMMESSAGE_RECEIVED_EVENT = "grimstorke.chat_room.message.received";
-    private static final String ROOMMESSAGE_REMOVED_EVENT = "grimstorke.chat_room.message.removed";
+    private static final String ROOMMESSAGE_RECEIVED_EVENT = "grimstroke.chat_room.message.received";
+    private static final String ROOMMESSAGE_REMOVED_EVENT = "grimstroke.chat_room.message.removed";
+    private static final String ROOMNOTICE_RECEIVED_EVENT = "grimstroke.chat_room.notice.received";
     @Resource
     private NotificationService notificationService;
     @Resource
@@ -57,7 +58,22 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
         IPage<RoomMessage> tmpPage = baseMapper.selectPage(page, wrapper);
         List<RoomMessageDto> dtos = tmpPage.getRecords().stream().map(x -> (RoomMessageDto) new RoomMessageDto().convertFor(x)).collect(Collectors.toList());
         userService.includeUsers(dtos);
+        includeAdmin(dtos);
         return new Page<RoomMessageDto>(tmpPage.getCurrent(), tmpPage.getSize(), tmpPage.getTotal()).setRecords(dtos);
+    }
+
+    @Override
+    public RoomMessageDto createAdminMessageAndNotify(String roomName, String content) {
+        return createMessageAndNotify(generateAdminUser(), roomName, content);
+    }
+
+    @Override
+    public void createNoticeAndNotify(String roomName, String content) {
+        LuxMessageRbo message = new LuxMessageRbo()
+                .setChannel(getRoomChannel(roomName))
+                .setEvent(ROOMNOTICE_RECEIVED_EVENT)
+                .setData(JSONObject.toJSON(new RoomMessageVo().setContent(content), GeneralFastjsonConfig.getFastJsonConfig().getSerializeConfig()));
+        notificationService.sendNotification(message);
     }
 
     @Override
@@ -70,7 +86,22 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
         notificationService.sendNotification(message);
     }
 
-    private String getRoomChannel(String roomName) {
+    @Override
+    public String getRoomChannel(String roomName) {
         return String.format("grimstroke.chat_room.%s", roomName);
+    }
+
+    private void includeAdmin(List<RoomMessageDto> dtos) {
+        for (RoomMessageDto dto: dtos) {
+            if (dto.getUserId() == 0) {
+                dto.setUser(generateAdminUser());
+            }
+        }
+    }
+
+    private User generateAdminUser() {
+        User user = new User().setName("超管").setPhone("00000001");
+        user.setId(0L);
+        return user;
     }
 }

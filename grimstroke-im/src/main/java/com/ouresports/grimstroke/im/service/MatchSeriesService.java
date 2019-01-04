@@ -10,6 +10,8 @@ import com.ouresports.grimstroke.im.entity.MatchSeries;
  * @date 2018/12/18
  */
 public interface MatchSeriesService extends Service<MatchSeries> {
+    boolean chatRoomOpen(MatchSeries matchSeries);
+
     void checkChatRoomOpen(MatchSeries matchSeries) throws ServiceException;
 
     String getRoomName(MatchSeries matchSeries);

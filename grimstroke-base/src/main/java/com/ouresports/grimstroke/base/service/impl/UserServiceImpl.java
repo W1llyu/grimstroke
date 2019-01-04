@@ -1,5 +1,6 @@
 package com.ouresports.grimstroke.base.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.ouresports.grimstroke.base.concern.WithUser;
@@ -55,6 +56,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public User getUserByToken(String token) {
-        return findBy(new User().setToken(token));
+        QueryWrapper<User> wrapper = new QueryWrapper<User>().eq("token", token).or(k -> new QueryWrapper<User>().eq("web_token", token));
+        return findOne(wrapper);
     }
 }

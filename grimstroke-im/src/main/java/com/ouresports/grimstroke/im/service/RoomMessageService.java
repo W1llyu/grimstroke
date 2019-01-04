@@ -17,5 +17,11 @@ public interface RoomMessageService extends Service<RoomMessage> {
 
     IPage<RoomMessageDto> getRoomMessageDtos(IPage<RoomMessage> page, QueryWrapper<RoomMessage> wrapper);
 
+    RoomMessageDto createAdminMessageAndNotify(String roomName, String content);
+
+    void createNoticeAndNotify(String roomName, String content);
+
     void deleteMessageAndNotify(RoomMessage message);
+
+    String getRoomChannel(String roomName);
 }
