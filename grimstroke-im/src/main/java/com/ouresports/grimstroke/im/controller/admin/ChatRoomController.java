@@ -18,6 +18,7 @@ import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.admin.BanUserVo;
+import com.ouresports.grimstroke.im.vo.api.MetaVo;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -107,17 +108,29 @@ public class ChatRoomController extends AbstractController {
      * @param currentPage
      * @param per
      * @param roomName
+     * @param lastTime
      * @return
      * @throws Exception
      */
     @GetMapping(value="/messages")
     public ResponseEntity messages(@RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per,
-                                   @RequestParam(value="room_name") String roomName) throws Exception {
+                                   @RequestParam(value="room_name") String roomName,
+                                   @RequestParam(value="last_time", required=false) String lastTime) throws Exception {
         Page<RoomMessage> page = new Page<>(currentPage, per);
         QueryWrapper<RoomMessage> wrapper = new QueryWrapper<>(new RoomMessage().setRoomName(roomName)).orderByDesc("created_at");
+        if (lastTime != null) {
+            wrapper.lt("`created_at`", lastTime);
+        }
         IPage<RoomMessageDto> dtos = roomMessageService.getRoomMessageDtos(page, wrapper);
-        return render(new PaginationTemplate<>(dtos, RoomMessageVo.class));
+        MetaVo metaVo = MetaVo.builder()
+                .currentPage(dtos.getCurrent())
+                .totalCount(dtos.getTotal())
+                .per(dtos.getSize()).build();
+        if (dtos.getRecords().size() > 0) {
+            metaVo.setLastTime(dtos.getRecords().get(dtos.getRecords().size() - 1).getCreatedAt());
+        }
+        return render(new PaginationTemplate<>(dtos.getRecords(), RoomMessageVo.class, metaVo));
     }
 
     /**
@@ -134,6 +147,13 @@ public class ChatRoomController extends AbstractController {
         return render(new SingleTemplate<>(dto, RoomMessageVo.class));
     }
 
+    /**
+     * 管理员发送房间通知
+     * @param roomName
+     * @param rbo
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value="/{roomName}/notices")
     public ResponseEntity sendRoomNotice(@PathVariable String roomName,
                                          @Valid @RequestBody RoomMessageRbo rbo) throws Exception {

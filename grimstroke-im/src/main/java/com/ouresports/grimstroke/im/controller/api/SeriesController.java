@@ -15,6 +15,7 @@ import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
 import com.ouresports.grimstroke.im.service.MatchSeriesService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
+import com.ouresports.grimstroke.im.vo.api.MetaVo;
 import com.ouresports.grimstroke.im.vo.api.RoomInfoVo;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
 import lombok.Builder;
@@ -81,6 +82,7 @@ public class SeriesController extends BaseController {
      * @param id
      * @param currentPage
      * @param per
+     * @param lastTime
      * @return
      * @throws Exception
      */
@@ -105,14 +107,5 @@ public class SeriesController extends BaseController {
             metaVo.setLastTime(dtos.getRecords().get(dtos.getRecords().size() - 1).getCreatedAt());
         }
         return render(new PaginationTemplate<>(dtos.getRecords(), RoomMessageVo.class, metaVo));
-    }
-
-    @Data
-    @Builder
-    static private class MetaVo implements IMeta {
-        private long per;
-        private long totalCount;
-        private long currentPage;
-        private Date lastTime;
     }
 }

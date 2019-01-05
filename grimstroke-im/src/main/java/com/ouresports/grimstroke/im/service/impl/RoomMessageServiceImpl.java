@@ -16,6 +16,7 @@ import com.ouresports.grimstroke.im.rbo.socket.LuxMessageRbo;
 import com.ouresports.grimstroke.im.service.NotificationService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
+import com.ouresports.grimstroke.lib.sensiwords.SensitiveWordFilterService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,10 +37,13 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     private NotificationService notificationService;
     @Resource
     private UserService userService;
+    @Resource
+    private SensitiveWordFilterService sensitiveWordFilterService;
 
     @Override
     public RoomMessageDto createMessageAndNotify(User user, String roomName, String content) {
-        RoomMessage roomMessage = new RoomMessage().setUserId(user.getId()).setRoomName(roomName).setContent(content);
+        RoomMessage roomMessage = new RoomMessage().setUserId(user.getId()).setRoomName(roomName)
+                .setContent(sensitiveWordFilterService.replaceBadWord(content, 2, "*"));
         save(roomMessage);
         RoomMessageDto dto = (RoomMessageDto) new RoomMessageDto().convertFor(roomMessage);
         dto.setUser(user);
@@ -65,6 +69,10 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     @Override
     public RoomMessageDto createAdminMessageAndNotify(String roomName, String content) {
         return createMessageAndNotify(generateAdminUser(), roomName, content);
+    }
+
+    @Override
+    public void checkFrequency(User user) {
     }
 
     @Override

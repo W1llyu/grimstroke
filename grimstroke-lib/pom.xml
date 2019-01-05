@@ -45,6 +45,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>dictionary/*.txt</include>
                     <include>*.yml</include>
                 </includes>
             </resource>

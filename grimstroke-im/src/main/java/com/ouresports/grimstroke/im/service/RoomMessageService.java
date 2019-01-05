@@ -19,6 +19,8 @@ public interface RoomMessageService extends Service<RoomMessage> {
 
     RoomMessageDto createAdminMessageAndNotify(String roomName, String content);
 
+    void checkFrequency(User user);
+
     void createNoticeAndNotify(String roomName, String content);
 
     void deleteMessageAndNotify(RoomMessage message);
