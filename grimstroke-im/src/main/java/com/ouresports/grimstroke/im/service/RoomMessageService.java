@@ -3,6 +3,7 @@ package com.ouresports.grimstroke.im.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ouresports.grimstroke.base.entity.User;
+import com.ouresports.grimstroke.base.exception.ServiceException;
 import com.ouresports.grimstroke.base.service.Service;
 import com.ouresports.grimstroke.im.dto.RoomMessageDto;
 import com.ouresports.grimstroke.im.entity.RoomMessage;
@@ -19,7 +20,7 @@ public interface RoomMessageService extends Service<RoomMessage> {
 
     RoomMessageDto createAdminMessageAndNotify(String roomName, String content);
 
-    void checkFrequency(User user);
+    void checkFrequency(User user, String roomName) throws ServiceException;
 
     void createNoticeAndNotify(String roomName, String content);
 

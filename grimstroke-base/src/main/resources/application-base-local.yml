@@ -18,3 +18,15 @@ spring:
           password:
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://localhost:3306/arc-warden_dev?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Hongkong
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 7
+    jedis:
+      pool:
+        max-active: 32
+        max-idle: 16
+        min-idle: 8
+        max-wait: -1
+

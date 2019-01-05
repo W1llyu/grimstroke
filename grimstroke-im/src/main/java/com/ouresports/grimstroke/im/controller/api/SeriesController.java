@@ -73,6 +73,7 @@ public class SeriesController extends BaseController {
         MatchSeries matchSeries = matchSeriesService.find(id);
         matchSeriesService.checkChatRoomOpen(matchSeries);
         chatRoomBanService.checkUserIsBan(getCurrentUser());
+        roomMessageService.checkFrequency(getCurrentUser(), matchSeriesService.getRoomName(matchSeries));
         RoomMessageDto dto = roomMessageService.createMessageAndNotify(getCurrentUser(), matchSeriesService.getRoomName(matchSeries), rbo.getContent());
         return render(new SingleTemplate<>(dto, RoomMessageVo.class));
     }

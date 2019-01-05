@@ -2,7 +2,6 @@ package com.ouresports.grimstroke.info.rbo.admin;
 
 import com.ouresports.grimstroke.base.entity.BaseTo;
 import com.ouresports.grimstroke.info.entity.LiveStream;
-import com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform;
 import com.ouresports.grimstroke.info.enums.LiveStreamType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +23,6 @@ public class LiveStreamRbo extends BaseTo<LiveStream> {
     private String description;
     private Boolean enabled;
     private Long userId;
-    private ExternLivePlatform platform;
-    private String roomId;
+    @NotNull(message="比赛id不可为空")
+    private Long matchSeriesId;
 }

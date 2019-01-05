@@ -4,11 +4,13 @@ import com.ouresports.grimstroke.base.annotation.*;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.info.entity.LiveStream;
+import com.ouresports.grimstroke.info.rbo.admin.ExternLiveStreamRbo;
 import com.ouresports.grimstroke.info.rbo.admin.LiveStreamRbo;
-import com.ouresports.grimstroke.info.rbo.admin.SeriesIdRbo;
 import com.ouresports.grimstroke.info.service.LiveStreamService;
 import com.ouresports.grimstroke.info.service.SeriesStreamService;
 import com.ouresports.grimstroke.info.vo.admin.LiveStreamUrlVo;
+import com.ouresports.grimstroke.info.vo.admin.LiveStreamVo;
+import com.ouresports.grimstroke.lib.livestream.entity.LivestreamSyncRbo;
 import com.ouresports.grimstroke.lib.livestream.service.LivestreamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ import static com.ouresports.grimstroke.info.enums.LiveStreamType.*;
  */
 @RestCrudController(value="AdminLiveStreamController")
 @RequestMapping(value="/admin/live_streams", produces="application/json;charset=UTF-8")
-@RestIndex
-@RestShow
+@RestIndex(dto=true, voClass=LiveStreamVo.class)
+@RestShow(dto=true, voClass=LiveStreamVo.class)
 @RestUpdate(rboClass=LiveStreamRbo.class, valid=false)
 @AuthToken
 public class LiveStreamController extends BaseController<LiveStream, LiveStreamService> {
@@ -43,16 +45,36 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
      */
     @PostMapping(value="")
     public ResponseEntity create(@Valid @RequestBody LiveStreamRbo rbo) throws Exception {
-        if (rbo.getType() == Official) {
-            baseService.createExternLiveStream(rbo.convertTo(), rbo.getPlatform(), rbo.getRoomId());
-        } else {
-            baseService.createOuresportsLiveStream(rbo.convertTo());
-        }
+        LiveStream liveStream = rbo.convertTo();
+        baseService.save(liveStream);
+        seriesStreamService.addSeries(liveStream, rbo.getMatchSeriesId());
         return render(ResultTemplate.createOk());
     }
 
     /**
-     * 停止外部直播流
+     * 开始官方直播流
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value="/{id}/start")
+    public ResponseEntity start(@PathVariable long id,
+                                @Valid @RequestBody ExternLiveStreamRbo rbo) throws Exception {
+        LiveStream liveStream = baseService.find(id);
+        LivestreamSyncRbo livestreamSyncRbo = new LivestreamSyncRbo()
+                .setId(liveStream.getId().toString())
+                .setRoomId(rbo.getRoomId())
+                .setPlatform(rbo.getPlatform())
+                .setRtmp(baseService.getPushUrl(liveStream));
+        if (livestreamService.createLivestreamSync(livestreamSyncRbo)) {
+            liveStream.setActive(true);
+            baseService.updateById(liveStream);
+        }
+        return render(ResultTemplate.updateOk());
+    }
+
+    /**
+     * 停止官方直播流
      * @param id
      * @return
      * @throws Exception
@@ -60,7 +82,7 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
     @DeleteMapping(value="/{id}/stop")
     public ResponseEntity stop(@PathVariable long id) throws Exception {
         LiveStream liveStream = baseService.find(id);
-        if (liveStream.getType() == Anchor) {
+        if (liveStream.getType() == Official) {
             if (livestreamService.deleteLivestreamSync(liveStream.getId().toString())) {
                 liveStream.setActive(false);
                 baseService.updateById(liveStream);
@@ -79,33 +101,5 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
     public ResponseEntity getPushUrl(@PathVariable long id) throws Exception {
         String url = baseService.getPushUrl(baseService.find(id));
         return render(new SingleTemplate<>(new LiveStreamUrlVo().setUrl(url)));
-    }
-
-    /**
-     * 直播流绑定比赛
-     * @param id
-     * @param rbo
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(value="/{id}/series")
-    public ResponseEntity addSeries(@PathVariable long id,
-                                    @Valid @RequestBody SeriesIdRbo rbo) throws Exception {
-        seriesStreamService.addSeries(baseService.find(id), rbo.getSeriesId());
-        return render(ResultTemplate.createOk());
-    }
-
-    /**
-     * 直播流解除绑定比赛
-     * @param id
-     * @param rbo
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(value="/{id}/remove_series")
-    public ResponseEntity removeSeries(@PathVariable long id,
-                                       @Valid @RequestBody SeriesIdRbo rbo) throws Exception {
-        seriesStreamService.removeSeries(baseService.find(id), rbo.getSeriesId());
-        return render(ResultTemplate.deleteOk());
     }
 }

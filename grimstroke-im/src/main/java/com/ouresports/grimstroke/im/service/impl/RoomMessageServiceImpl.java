@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.base.config.GeneralFastjsonConfig;
 import com.ouresports.grimstroke.base.entity.User;
+import com.ouresports.grimstroke.base.exception.ServiceException;
 import com.ouresports.grimstroke.base.service.BaseServiceImpl;
 import com.ouresports.grimstroke.base.service.UserService;
 import com.ouresports.grimstroke.base.util.WrapperUtil;
@@ -17,11 +18,15 @@ import com.ouresports.grimstroke.im.service.NotificationService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
 import com.ouresports.grimstroke.lib.sensiwords.SensitiveWordFilterService;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ouresports.grimstroke.im.enums.ImServiceError.USER_SPEAK_FREQUENTLY;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  *
@@ -33,12 +38,15 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     private static final String ROOMMESSAGE_RECEIVED_EVENT = "grimstroke.chat_room.message.received";
     private static final String ROOMMESSAGE_REMOVED_EVENT = "grimstroke.chat_room.message.removed";
     private static final String ROOMNOTICE_RECEIVED_EVENT = "grimstroke.chat_room.notice.received";
+    private static final int FREQUENCY_SECOND = 10;
     @Resource
     private NotificationService notificationService;
     @Resource
     private UserService userService;
     @Resource
     private SensitiveWordFilterService sensitiveWordFilterService;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public RoomMessageDto createMessageAndNotify(User user, String roomName, String content) {
@@ -51,6 +59,7 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
                 .setChannel(getRoomChannel(roomName))
                 .setEvent(ROOMMESSAGE_RECEIVED_EVENT)
                 .setData(JSONObject.toJSON(new RoomMessageVo().convertFor(dto), GeneralFastjsonConfig.getFastJsonConfig().getSerializeConfig()));
+        stringRedisTemplate.opsForValue().set(getCacheKey(user, roomName), Long.toString(roomMessage.getCreatedAt().getTime()), FREQUENCY_SECOND, SECONDS);
         notificationService.sendNotification(message);
         return dto;
     }
@@ -72,7 +81,11 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     }
 
     @Override
-    public void checkFrequency(User user) {
+    public void checkFrequency(User user, String roomName) throws ServiceException {
+        String lastStamp = stringRedisTemplate.opsForValue().get(getCacheKey(user, roomName));
+        if (lastStamp != null) {
+            throw new ServiceException(USER_SPEAK_FREQUENTLY);
+        }
     }
 
     @Override
@@ -111,5 +124,9 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
         User user = new User().setName("超管").setPhone("00000001");
         user.setId(0L);
         return user;
+    }
+
+    private String getCacheKey(User user, String roomName) {
+        return String.format("grimstroke_user:%d_room:%s", user.getId(), roomName);
     }
 }

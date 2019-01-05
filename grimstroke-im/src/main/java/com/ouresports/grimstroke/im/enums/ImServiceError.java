@@ -15,6 +15,7 @@ public enum ImServiceError implements ServiceError {
     USER_BANED_IN_CHATROOM(5041, "用户已被禁言"),
     CHATROOM_NOT_OPEN(5043, "聊天室未开启"),
     CHATROOM_CLOSED(5044, "聊天室已关闭"),
+    USER_SPEAK_FREQUENTLY(5048, "发言过于频繁")
     ;
 
     private int value;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -18,27 +19,23 @@ public class SensitiveWordFilterService {
     private static Set<String> words;
     private static Map<String, String> badWordMap;
     private static final String END_FLAG = "isEnd";
-    private static final int minMatchTYpe = 1;
-    private static final int maxMatchType = 2;
+    private static final int MIN_MATCHT_YPE = 1;
+    private static final int MAX_MATCH_TYPE = 2;
+    private static final String[] DICS = {"advertise.txt", "politics.txt", "sex.txt", "website.txt"};
 
-    public SensitiveWordFilterService() throws FileNotFoundException {
+    public SensitiveWordFilterService() throws IOException {
         SensitiveWordFilterService.words = Sets.newHashSet();
-        File directory = ResourceUtils.getFile("classpath:dictionary");
-        if (directory.exists()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    initWords(file);
-                }
-            }
+        for (String fileName: DICS) {
+            initWords(fileName);
         }
         initBadWordMap();
     }
 
-    private void initWords(File file) {
+    private void initWords(String fileName) {
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("dictionary/" + fileName);
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
             String temp;
             while ((temp = reader.readLine()) != null) {
                 words.add(temp);
@@ -124,7 +121,7 @@ public class SensitiveWordFilterService {
                 matchFlag++;
                 if("1".equals(nowMap.get(END_FLAG))){
                     flag = true;
-                    if(minMatchTYpe == matchType){
+                    if(MIN_MATCHT_YPE == matchType){
                         break;
                     }
                 }

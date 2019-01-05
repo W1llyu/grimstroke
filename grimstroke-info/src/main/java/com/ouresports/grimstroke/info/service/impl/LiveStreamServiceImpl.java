@@ -28,19 +28,10 @@ public class LiveStreamServiceImpl extends BaseServiceImpl<LiveStreamMapper, Liv
     private LivestreamService livestreamService;
 
     @Override
-    public void createOuresportsLiveStream(LiveStream liveStream) {
-        if (liveStream.getType() != Anchor) {
-            return;
-        }
-        save(liveStream);
-    }
-
-    @Override
-    public void createExternLiveStream(LiveStream liveStream, ExternLivePlatform platform, String roomId) throws Exception {
+    public void enactiveOfficialLiveStream(LiveStream liveStream, ExternLivePlatform platform, String roomId) throws Exception {
         if (liveStream.getType() != Official) {
             return;
         }
-        save(liveStream);
         LivestreamSyncRbo rbo = new LivestreamSyncRbo()
                 .setId(liveStream.getId().toString())
                 .setRoomId(roomId)
