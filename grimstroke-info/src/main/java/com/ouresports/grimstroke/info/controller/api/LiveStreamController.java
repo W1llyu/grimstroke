@@ -39,6 +39,12 @@ public class LiveStreamController extends BaseController {
         return render(new SingleTemplate<>(new LiveStreamUrlVo().setUrl(url)));
     }
 
+    /**
+     * aliyun直播的回调
+     * @param rbo
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value="/callback")
     public ResponseEntity callback(@Valid LiveStreamCallbackRbo rbo) throws Exception {
         LiveStream liveStream = liveStreamService.findBy(new QueryWrapper<LiveStream>().eq("id", Long.parseLong(rbo.getId())));

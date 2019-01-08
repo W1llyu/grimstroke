@@ -2,7 +2,7 @@ server:
   port: 8080
 mybatis-plus:
   typeEnumsPackage: com.ouresports.grimstroke.*.enums
-  mapper-locations: classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath*:/mapper/*Mapper.xml
 spring:
   datasource:
     dynamic:

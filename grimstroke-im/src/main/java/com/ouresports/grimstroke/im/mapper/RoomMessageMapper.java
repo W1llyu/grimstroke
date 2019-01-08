@@ -1,8 +1,9 @@
 package com.ouresports.grimstroke.im.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.ouresports.grimstroke.base.mapper.BaseMapper;
 import com.ouresports.grimstroke.im.entity.RoomMessage;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface RoomMessageMapper extends BaseMapper<RoomMessage> {
-
+    long selectUserCount(@Param("ew") Wrapper<RoomMessage> wrapper);
 }

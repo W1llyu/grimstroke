@@ -8,7 +8,6 @@ import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.info.rbo.api.CommentRbo;
 import com.ouresports.grimstroke.info.vo.api.CommentDetailVo;
-import com.ouresports.grimstroke.info.vo.api.CommentVo;
 import com.ouresports.grimstroke.info.vo.api.SubCommentVo;
 import com.ouresports.grimstroke.info.dto.CommentDto;
 import com.ouresports.grimstroke.info.dto.SubCommentDto;

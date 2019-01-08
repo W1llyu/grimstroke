@@ -26,5 +26,7 @@ public interface RoomMessageService extends Service<RoomMessage> {
 
     void deleteMessageAndNotify(RoomMessage message);
 
+    Long getRoomUserCount(String roomName);
+
     String getRoomChannel(String roomName);
 }

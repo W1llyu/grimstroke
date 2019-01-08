@@ -27,6 +27,15 @@ public class UserMessageController extends BaseController {
     @Resource
     private UserMessageService userMessageService;
 
+    /**
+     * 用户消息列表
+     * @param currentPage
+     * @param per
+     * @param isRead
+     * @param lastTime
+     * @return
+     * @throws Exception
+     */
     @AuthToken
     @GetMapping(value="")
     public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
@@ -44,6 +53,12 @@ public class UserMessageController extends BaseController {
         return render(new PaginationTemplate<>(messageDtos, UserMessageVo.class));
     }
 
+    /**
+     * 批量已读用户消息
+     * @param rbo
+     * @return
+     * @throws Exception
+     */
     @AuthToken
     @PostMapping(value="/batch_read")
     public ResponseEntity batchRead(@RequestBody UserMsgBatchReadRbo rbo) throws Exception {

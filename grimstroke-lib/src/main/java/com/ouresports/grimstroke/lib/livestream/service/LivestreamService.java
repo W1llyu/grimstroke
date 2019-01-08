@@ -1,6 +1,7 @@
 package com.ouresports.grimstroke.lib.livestream.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ouresports.grimstroke.lib.exception.LibServiceException;
 import com.ouresports.grimstroke.lib.livestream.entity.LivestreamSyncRbo;
 import com.ouresports.grimstroke.lib.util.OkHttpUtil;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class LivestreamService {
     private String user;
     private String password;
 
-    public boolean createLivestreamSync(LivestreamSyncRbo rbo) {
+    public void createLivestreamSync(LivestreamSyncRbo rbo) throws LibServiceException {
         String url = String.format("%s/stream/%s?platform=%s&room_id=%s", host, rbo.getId(), rbo.getPlatform(), rbo.getRoomId());
         Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -34,11 +35,14 @@ public class LivestreamService {
                 .header("Authorization", String.format("Basic %s", Base64.getEncoder().encodeToString((user + ":" + password).getBytes())))
                 .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSONObject.toJSONString(rbo)))
                 .build();
+        System.out.println();
         Response response = OkHttpUtil.execute(request);
-        return response != null && response.code() == 201;
+        if (response == null || response.code() != 201) {
+            throw new LibServiceException("启动推流失败");
+        }
     }
 
-    public boolean deleteLivestreamSync(String name) {
+    public void deleteLivestreamSync(String name) throws LibServiceException {
         String url = String.format("%s/stream/%s", host, name);
         Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -47,6 +51,8 @@ public class LivestreamService {
                 .delete()
                 .build();
         Response response = OkHttpUtil.execute(request);
-        return response != null && response.code() == 202;
+        if (response == null || response.code() != 202) {
+            throw new LibServiceException("停止推流失败");
+        }
     }
 }

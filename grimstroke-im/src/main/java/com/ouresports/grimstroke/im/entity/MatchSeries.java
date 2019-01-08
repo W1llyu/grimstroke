@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class MatchSeries extends BaseEntity {
+    private Integer gameId;
     private Integer startTime;
     private MatchSeriesStatus status;
 }

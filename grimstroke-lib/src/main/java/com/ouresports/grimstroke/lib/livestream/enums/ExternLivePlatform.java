@@ -26,6 +26,7 @@ public enum ExternLivePlatform {
         return platform;
     }
 
+    @Override
     public String toString() {
         return platform;
     }

@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import static com.ouresports.grimstroke.info.enums.LiveStreamType.*;
-
 /**
  *
  * @author will
@@ -66,10 +64,9 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
                 .setRoomId(rbo.getRoomId())
                 .setPlatform(rbo.getPlatform())
                 .setRtmp(baseService.getPushUrl(liveStream));
-        if (livestreamService.createLivestreamSync(livestreamSyncRbo)) {
-            liveStream.setActive(true);
-            baseService.updateById(liveStream);
-        }
+        livestreamService.createLivestreamSync(livestreamSyncRbo);
+        liveStream.setActive(true);
+        baseService.updateById(liveStream);
         return render(ResultTemplate.updateOk());
     }
 
@@ -82,12 +79,9 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
     @DeleteMapping(value="/{id}/stop")
     public ResponseEntity stop(@PathVariable long id) throws Exception {
         LiveStream liveStream = baseService.find(id);
-        if (liveStream.getType() == Official) {
-            if (livestreamService.deleteLivestreamSync(liveStream.getId().toString())) {
-                liveStream.setActive(false);
-                baseService.updateById(liveStream);
-            }
-        }
+        livestreamService.deleteLivestreamSync(liveStream.getId().toString());
+        liveStream.setActive(false);
+        baseService.updateById(liveStream);
         return render(ResultTemplate.ok());
     }
 

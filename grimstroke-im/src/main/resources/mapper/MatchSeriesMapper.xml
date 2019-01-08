@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouresports.grimstroke.im.mapper.MatchSeriesMapper">
+    <select id="selectDtos" resultType="com.ouresports.grimstroke.im.dto.MatchSeriesDto">
+        SELECT
+        `match_series`.*,
+        `left_teams`.`tag` AS `left_tag`,
+        `right_teams`.`tag` AS `right_tag`,
+        `leagues`.`name` AS `league_name`
+        FROM `match_series`
+        INNER JOIN `teams` AS `left_teams` ON `left_teams`.`id` = `match_series`.`left_team_id`
+        INNER JOIN `teams` AS `right_teams` ON `right_teams`.`id` = `match_series`.`right_team_id`
+        INNER JOIN `leagues` ON `leagues`.`id` = `match_series`.`league_id`
+        WHERE ${ew.sqlSegment}
+    </select>
+</mapper>

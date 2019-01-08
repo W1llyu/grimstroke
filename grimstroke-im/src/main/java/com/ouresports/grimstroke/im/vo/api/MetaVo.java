@@ -17,5 +17,5 @@ public class MetaVo implements IMeta {
     private long per;
     private long totalCount;
     private long currentPage;
-    private Date lastTime;
+    private long lastId;
 }

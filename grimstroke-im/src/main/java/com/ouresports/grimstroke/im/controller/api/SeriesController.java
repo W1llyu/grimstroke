@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ouresports.grimstroke.base.annotation.AuthToken;
-import com.ouresports.grimstroke.base.template.IMeta;
 import com.ouresports.grimstroke.base.template.PaginationTemplate;
-import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.im.dto.RoomMessageDto;
 import com.ouresports.grimstroke.im.entity.MatchSeries;
@@ -18,14 +16,11 @@ import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.api.MetaVo;
 import com.ouresports.grimstroke.im.vo.api.RoomInfoVo;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
-import lombok.Builder;
-import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Date;
 
 /**
  *
@@ -83,7 +78,7 @@ public class SeriesController extends BaseController {
      * @param id
      * @param currentPage
      * @param per
-     * @param lastTime
+     * @param lastId
      * @return
      * @throws Exception
      */
@@ -91,13 +86,13 @@ public class SeriesController extends BaseController {
     public ResponseEntity getRoomMessages(@PathVariable long id,
                                           @RequestParam(value="page", defaultValue="1") int currentPage,
                                           @RequestParam(defaultValue="10") int per,
-                                          @RequestParam(value="last_time", required=false) String lastTime) throws Exception {
+                                          @RequestParam(value="last_id", required=false) Long lastId) throws Exception {
         Page<RoomMessage> page = new Page<>(currentPage, per);
         QueryWrapper<RoomMessage> wrapper = new QueryWrapper<>(new RoomMessage()
                 .setRoomName(matchSeriesService.getRoomName(matchSeriesService.find(id))))
                 .orderByDesc("created_at");
-        if (lastTime != null) {
-            wrapper.lt("`created_at`", lastTime);
+        if (lastId != null) {
+            wrapper.lt("`id`", lastId);
         }
         IPage<RoomMessageDto> dtos = roomMessageService.getRoomMessageDtos(page, wrapper);
         MetaVo metaVo = MetaVo.builder()
@@ -105,7 +100,7 @@ public class SeriesController extends BaseController {
                 .totalCount(dtos.getTotal())
                 .per(dtos.getSize()).build();
         if (dtos.getRecords().size() > 0) {
-            metaVo.setLastTime(dtos.getRecords().get(dtos.getRecords().size() - 1).getCreatedAt());
+            metaVo.setLastId(dtos.getRecords().get(dtos.getRecords().size() - 1).getId());
         }
         return render(new PaginationTemplate<>(dtos.getRecords(), RoomMessageVo.class, metaVo));
     }

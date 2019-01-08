@@ -108,6 +108,13 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     }
 
     @Override
+    public Long getRoomUserCount(String roomName) {
+        QueryWrapper<RoomMessage> wrapper = new QueryWrapper<RoomMessage>()
+                .eq("`room_name`", roomName);
+        return baseMapper.selectUserCount(wrapper);
+    }
+
+    @Override
     public String getRoomChannel(String roomName) {
         return String.format("grimstroke.chat_room.%s", roomName);
     }

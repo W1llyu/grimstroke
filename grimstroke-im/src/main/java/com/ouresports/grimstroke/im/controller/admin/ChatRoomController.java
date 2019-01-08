@@ -10,14 +10,18 @@ import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.im.dto.ChatRoomBanDto;
+import com.ouresports.grimstroke.im.dto.MatchSeriesDto;
 import com.ouresports.grimstroke.im.dto.RoomMessageDto;
 import com.ouresports.grimstroke.im.entity.ChatRoomBan;
+import com.ouresports.grimstroke.im.entity.MatchSeries;
 import com.ouresports.grimstroke.im.entity.RoomMessage;
 import com.ouresports.grimstroke.im.rbo.admin.BanTimeRbo;
 import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
+import com.ouresports.grimstroke.im.service.MatchSeriesService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.admin.BanUserVo;
+import com.ouresports.grimstroke.im.vo.admin.SeriesChatRoomVo;
 import com.ouresports.grimstroke.im.vo.api.MetaVo;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static com.ouresports.grimstroke.im.enums.MatchSeriesStatus.Finished;
+import static com.ouresports.grimstroke.im.enums.MatchSeriesStatus.NotStartYet;
+import static com.ouresports.grimstroke.im.enums.MatchSeriesStatus.Ongoing;
+
 /**
  *
  * @author will
@@ -41,11 +49,43 @@ import java.util.stream.Collectors;
 @AuthToken
 public class ChatRoomController extends AbstractController {
     @Resource
+    private MatchSeriesService matchSeriesService;
+    @Resource
     private RoomMessageService roomMessageService;
     @Resource
     private ChatRoomBanService chatRoomBanService;
     @Resource
     private UserService userService;
+
+    /**
+     * 比赛聊天室列表
+     * @param currentPage
+     * @param per
+     * @param gameId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="")
+    public ResponseEntity getRooms(@RequestParam(value="page", defaultValue="1") int currentPage,
+                                   @RequestParam(defaultValue="10") int per,
+                                   @RequestParam(value="game_id", required=false) Integer gameId) throws Exception {
+        Page<MatchSeriesDto> page = new Page<>(currentPage, per);
+        QueryWrapper<MatchSeries> wrapper = new QueryWrapper<MatchSeries>()
+                .eq("`match_series`.`status`", Ongoing);
+        if (gameId != null) {
+            wrapper.eq("`match_series`.`game_id`", gameId);
+        }
+        wrapper.or()
+                .eq("`match_series`.`status`", NotStartYet)
+                .lt("`match_series`.`start_time`", System.currentTimeMillis()/1000 + 1800)
+                .ge("`match_series`.`start_time`", System.currentTimeMillis()/1000 - 1800)
+            .or()
+                .eq("`match_series`.`status`", Finished)
+                .ge("`match_series`.`start_time`", System.currentTimeMillis()/1000 - 600)
+            .orderByDesc("`match_series`.`created_at`");
+        IPage<MatchSeriesDto> dtos = matchSeriesService.getDtos(page, wrapper);
+        return render(new PaginationTemplate<>(dtos, SeriesChatRoomVo.class));
+    }
 
     /**
      * 删除一条消息
@@ -108,7 +148,7 @@ public class ChatRoomController extends AbstractController {
      * @param currentPage
      * @param per
      * @param roomName
-     * @param lastTime
+     * @param lastId
      * @return
      * @throws Exception
      */
@@ -116,11 +156,11 @@ public class ChatRoomController extends AbstractController {
     public ResponseEntity messages(@RequestParam(value="page", defaultValue="1") int currentPage,
                                    @RequestParam(defaultValue="10") int per,
                                    @RequestParam(value="room_name") String roomName,
-                                   @RequestParam(value="last_time", required=false) String lastTime) throws Exception {
+                                   @RequestParam(value="last_id", required=false) Long lastId) throws Exception {
         Page<RoomMessage> page = new Page<>(currentPage, per);
         QueryWrapper<RoomMessage> wrapper = new QueryWrapper<>(new RoomMessage().setRoomName(roomName)).orderByDesc("created_at");
-        if (lastTime != null) {
-            wrapper.lt("`created_at`", lastTime);
+        if (lastId != null) {
+            wrapper.lt("`id`", lastId);
         }
         IPage<RoomMessageDto> dtos = roomMessageService.getRoomMessageDtos(page, wrapper);
         MetaVo metaVo = MetaVo.builder()
@@ -128,7 +168,7 @@ public class ChatRoomController extends AbstractController {
                 .totalCount(dtos.getTotal())
                 .per(dtos.getSize()).build();
         if (dtos.getRecords().size() > 0) {
-            metaVo.setLastTime(dtos.getRecords().get(dtos.getRecords().size() - 1).getCreatedAt());
+            metaVo.setLastId(dtos.getRecords().get(dtos.getRecords().size() - 1).getId());
         }
         return render(new PaginationTemplate<>(dtos.getRecords(), RoomMessageVo.class, metaVo));
     }

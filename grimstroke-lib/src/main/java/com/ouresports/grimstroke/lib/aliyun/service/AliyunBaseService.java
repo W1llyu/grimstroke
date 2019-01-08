@@ -69,7 +69,7 @@ public class AliyunBaseService {
      */
     protected static String getCQS(List<String> allParams) {
         ParamsComparator paramsComparator = new ParamsComparator();
-        Collections.sort(allParams, paramsComparator);
+        allParams.sort(paramsComparator);
         String cqString = "";
         for (int i = 0; i < allParams.size(); i++) {
             cqString += allParams.get(i);
@@ -90,7 +90,7 @@ public class AliyunBaseService {
                 mac.init(signKey);
                 byte[] rawHmac = mac.doFinal(stringtoSign.getBytes());
                 //按照Base64 编码规则把上面的 HMAC 值编码成字符串，即得到签名值（Signature）
-                return new String(new BASE64Encoder().encode(rawHmac));
+                return new BASE64Encoder().encode(rawHmac);
             } catch (Exception e) {
                 throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
             }
@@ -111,8 +111,7 @@ public class AliyunBaseService {
             String urlEncodeOrignStr = URLEncoder.encode(value, "UTF-8");
             String plusReplaced = urlEncodeOrignStr.replace("+", "%20");
             String starReplaced = plusReplaced.replace("*", "%2A");
-            String waveReplaced = starReplaced.replace("%7E", "~");
-            return waveReplaced;
+            return starReplaced.replace("%7E", "~");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -154,8 +153,7 @@ public class AliyunBaseService {
      * @return
      */
     protected static String generateRandom() {
-        String signatureNonce = UUID.randomUUID().toString();
-        return signatureNonce;
+        return UUID.randomUUID().toString();
     }
 
     protected static class ParamsComparator implements Comparator<String> {
