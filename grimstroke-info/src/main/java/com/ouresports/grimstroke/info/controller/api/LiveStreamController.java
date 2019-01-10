@@ -5,14 +5,13 @@ import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
 import com.ouresports.grimstroke.info.entity.LiveStream;
 import com.ouresports.grimstroke.info.enums.StreamTemplate;
-import com.ouresports.grimstroke.info.rbo.admin.LiveStreamCallbackRbo;
 import com.ouresports.grimstroke.info.service.LiveStreamService;
 import com.ouresports.grimstroke.info.vo.admin.LiveStreamUrlVo;
+import com.ouresports.grimstroke.lib.aliyun.service.AliyunLiveStreamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.Objects;
 
 /**
@@ -25,6 +24,8 @@ import java.util.Objects;
 public class LiveStreamController extends BaseController {
     @Resource
     private LiveStreamService liveStreamService;
+    @Resource
+    private AliyunLiveStreamService aliyunLiveStreamService;
 
     /**
      * 获得播放地址
@@ -41,21 +42,33 @@ public class LiveStreamController extends BaseController {
 
     /**
      * aliyun直播的回调
-     * @param rbo
+     * @param id
+     * @param action
      * @return
      * @throws Exception
      */
     @GetMapping(value="/callback")
-    public ResponseEntity callback(@Valid LiveStreamCallbackRbo rbo) throws Exception {
-        LiveStream liveStream = liveStreamService.findBy(new QueryWrapper<LiveStream>().eq("id", Long.parseLong(rbo.getId())));
+    public ResponseEntity callback(@RequestParam long id,
+                                   @RequestParam String action) throws Exception {
+        LiveStream liveStream = liveStreamService.findBy(new QueryWrapper<LiveStream>().eq("id", id));
         if (liveStream != null) {
-            if (Objects.equals(rbo.getAction(), "publish")) {
+            if (Objects.equals(action, "publish")) {
                 liveStream.setActive(true);
-            } else if (Objects.equals(rbo.getAction(), "publish_done")) {
+            } else if (Objects.equals(action, "publish_done")) {
                 liveStream.setActive(false);
             }
         }
         liveStreamService.updateById(liveStream);
         return render(ResultTemplate.ok());
+    }
+
+    /**
+     * 获得通知信息
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/get_notifyinfo")
+    public ResponseEntity getNotifyinfo() throws Exception {
+        return render(new SingleTemplate<>(aliyunLiveStreamService.getLiveStreamNotifyUrl().getLiveStreamsNotifyConfig()));
     }
 }

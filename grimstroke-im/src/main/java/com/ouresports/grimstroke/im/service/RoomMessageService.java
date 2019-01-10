@@ -22,11 +22,7 @@ public interface RoomMessageService extends Service<RoomMessage> {
 
     void checkFrequency(User user, String roomName) throws ServiceException;
 
-    void createNoticeAndNotify(String roomName, String content);
-
     void deleteMessageAndNotify(RoomMessage message);
 
     Long getRoomUserCount(String roomName);
-
-    String getRoomChannel(String roomName);
 }

@@ -26,12 +26,13 @@ public class AliyunLiveStreamServiceTest extends GrimstrokeLibApplicationTest {
         System.out.println(url);
     }
 
+    @Test
     public void testGetLiveStreamNotifyUrl() throws LibServiceException {
         LiveStreamNotifyUrlResponse res = aliyunLiveStreamService.getLiveStreamNotifyUrl();
     }
 
     public void testSetLiveStreamNotifyUrl() throws LibServiceException {
-        boolean result = aliyunLiveStreamService.setLiveStreamNotifyUrl("http://06416162.800.si/api/live_streams/callback");
+        boolean result = aliyunLiveStreamService.setLiveStreamNotifyUrl();
         Assert.assertTrue(result);
     }
 
@@ -40,7 +41,6 @@ public class AliyunLiveStreamServiceTest extends GrimstrokeLibApplicationTest {
         Assert.assertTrue(result);
     }
 
-    @Test
     public void resumeLiveStream() throws LibServiceException {
         boolean result = aliyunLiveStreamService.resumeLiveStream("1");
         Assert.assertTrue(result);

@@ -18,6 +18,7 @@ import com.ouresports.grimstroke.im.entity.RoomMessage;
 import com.ouresports.grimstroke.im.rbo.admin.BanTimeRbo;
 import com.ouresports.grimstroke.im.rbo.api.RoomMessageRbo;
 import com.ouresports.grimstroke.im.service.ChatRoomBanService;
+import com.ouresports.grimstroke.im.service.ChatRoomService;
 import com.ouresports.grimstroke.im.service.MatchSeriesService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.admin.BanUserVo;
@@ -52,6 +53,8 @@ public class ChatRoomController extends AbstractController {
     private MatchSeriesService matchSeriesService;
     @Resource
     private RoomMessageService roomMessageService;
+    @Resource
+    private ChatRoomService chatRoomService;
     @Resource
     private ChatRoomBanService chatRoomBanService;
     @Resource
@@ -197,7 +200,7 @@ public class ChatRoomController extends AbstractController {
     @PostMapping(value="/{roomName}/notices")
     public ResponseEntity sendRoomNotice(@PathVariable String roomName,
                                          @Valid @RequestBody RoomMessageRbo rbo) throws Exception {
-        roomMessageService.createNoticeAndNotify(roomName, rbo.getContent());
+        chatRoomService.createNoticeAndNotify(roomName, rbo.getContent());
         return render(ResultTemplate.createOk());
     }
 }

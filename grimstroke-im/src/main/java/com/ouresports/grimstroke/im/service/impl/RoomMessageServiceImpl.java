@@ -14,6 +14,7 @@ import com.ouresports.grimstroke.im.dto.RoomMessageDto;
 import com.ouresports.grimstroke.im.entity.RoomMessage;
 import com.ouresports.grimstroke.im.mapper.RoomMessageMapper;
 import com.ouresports.grimstroke.im.rbo.socket.LuxMessageRbo;
+import com.ouresports.grimstroke.im.service.ChatRoomService;
 import com.ouresports.grimstroke.im.service.NotificationService;
 import com.ouresports.grimstroke.im.service.RoomMessageService;
 import com.ouresports.grimstroke.im.vo.api.RoomMessageVo;
@@ -37,10 +38,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, RoomMessage> implements RoomMessageService {
     private static final String ROOMMESSAGE_RECEIVED_EVENT = "grimstroke.chat_room.message.received";
     private static final String ROOMMESSAGE_REMOVED_EVENT = "grimstroke.chat_room.message.removed";
-    private static final String ROOMNOTICE_RECEIVED_EVENT = "grimstroke.chat_room.notice.received";
     private static final int FREQUENCY_SECOND = 10;
     @Resource
     private NotificationService notificationService;
+    @Resource
+    private ChatRoomService chatRoomService;
     @Resource
     private UserService userService;
     @Resource
@@ -56,7 +58,7 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
         RoomMessageDto dto = (RoomMessageDto) new RoomMessageDto().convertFor(roomMessage);
         dto.setUser(user);
         LuxMessageRbo message = new LuxMessageRbo()
-                .setChannel(getRoomChannel(roomName))
+                .setChannel(chatRoomService.getRoomChannel(roomName))
                 .setEvent(ROOMMESSAGE_RECEIVED_EVENT)
                 .setData(JSONObject.toJSON(new RoomMessageVo().convertFor(dto), GeneralFastjsonConfig.getFastJsonConfig().getSerializeConfig()));
         stringRedisTemplate.opsForValue().set(getCacheKey(user, roomName), Long.toString(roomMessage.getCreatedAt().getTime()), FREQUENCY_SECOND, SECONDS);
@@ -89,19 +91,10 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
     }
 
     @Override
-    public void createNoticeAndNotify(String roomName, String content) {
-        LuxMessageRbo message = new LuxMessageRbo()
-                .setChannel(getRoomChannel(roomName))
-                .setEvent(ROOMNOTICE_RECEIVED_EVENT)
-                .setData(JSONObject.toJSON(new RoomMessageVo().setContent(content), GeneralFastjsonConfig.getFastJsonConfig().getSerializeConfig()));
-        notificationService.sendNotification(message);
-    }
-
-    @Override
     public void deleteMessageAndNotify(RoomMessage roomMessage) {
         removeById(roomMessage.getId());
         LuxMessageRbo message = new LuxMessageRbo()
-                .setChannel(getRoomChannel(roomMessage.getRoomName()))
+                .setChannel(chatRoomService.getRoomChannel(roomMessage.getRoomName()))
                 .setEvent(ROOMMESSAGE_REMOVED_EVENT)
                 .setData(JSONObject.toJSON(roomMessage, GeneralFastjsonConfig.getFastJsonConfig().getSerializeConfig()));
         notificationService.sendNotification(message);
@@ -112,11 +105,6 @@ public class RoomMessageServiceImpl extends BaseServiceImpl<RoomMessageMapper, R
         QueryWrapper<RoomMessage> wrapper = new QueryWrapper<RoomMessage>()
                 .eq("`room_name`", roomName);
         return baseMapper.selectUserCount(wrapper);
-    }
-
-    @Override
-    public String getRoomChannel(String roomName) {
-        return String.format("grimstroke.chat_room.%s", roomName);
     }
 
     private void includeAdmin(List<RoomMessageDto> dtos) {

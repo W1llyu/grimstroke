@@ -65,8 +65,6 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
                 .setPlatform(rbo.getPlatform())
                 .setRtmp(baseService.getPushUrl(liveStream));
         livestreamService.createLivestreamSync(livestreamSyncRbo);
-        liveStream.setActive(true);
-        baseService.updateById(liveStream);
         return render(ResultTemplate.updateOk());
     }
 
@@ -80,8 +78,6 @@ public class LiveStreamController extends BaseController<LiveStream, LiveStreamS
     public ResponseEntity stop(@PathVariable long id) throws Exception {
         LiveStream liveStream = baseService.find(id);
         livestreamService.deleteLivestreamSync(liveStream.getId().toString());
-        liveStream.setActive(false);
-        baseService.updateById(liveStream);
         return render(ResultTemplate.ok());
     }
 

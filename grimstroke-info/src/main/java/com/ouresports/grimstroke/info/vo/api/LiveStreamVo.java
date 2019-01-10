@@ -19,11 +19,11 @@ public class LiveStreamVo extends BaseTo<LiveStreamDto> {
     private Long id;
     private LiveStreamType type;
     private String name;
-    private UserVo user;
+    private AnalystVo user;
 
     public void setUser(User user) {
         if (user != null) {
-            this.user = new UserVo();
+            this.user = new AnalystVo();
             BeanUtil.copyProperties(user, this.user);
         }
     }

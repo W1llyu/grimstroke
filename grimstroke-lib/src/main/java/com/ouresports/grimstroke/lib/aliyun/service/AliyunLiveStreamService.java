@@ -28,6 +28,7 @@ public class AliyunLiveStreamService extends AliyunBaseService {
     private String liveStreamPushDomain;
     private String liveStreamPlayDomain;
     private String liveStreamKey;
+    private String liveStreamCallbackUrl;
     private static final String APP_NAME = "ouresports";
     private static final String HTTP_METHOD = "GET";
     private static final String API_BASE_URL = "http://live.aliyuncs.com/";
@@ -74,15 +75,14 @@ public class AliyunLiveStreamService extends AliyunBaseService {
 
     /**
      * 设置通知地址
-     * @param notifyUrl
      * @return
      * @throws LibServiceException
      */
-    public boolean setLiveStreamNotifyUrl(String notifyUrl) throws LibServiceException {
+    public boolean setLiveStreamNotifyUrl() throws LibServiceException {
         Map<String, String> params = Maps.newHashMap();
         params.put("Action", "SetLiveStreamsNotifyUrlConfig");
         params.put("DomainName", liveStreamPlayDomain);
-        params.put("NotifyUrl", notifyUrl);
+        params.put("NotifyUrl", liveStreamCallbackUrl);
         String url = generateURL(API_BASE_URL, HTTP_METHOD, generatePublicParameters(), params);
         String body = OkHttpUtil.httpGet(url);
         return JSONObject.parseObject(body, AliyunResponse.class).getCode() == null;

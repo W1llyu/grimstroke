@@ -18,6 +18,10 @@ import static com.ouresports.grimstroke.base.enums.ApplicationError.*;
 public class LibExceptionHandler extends ApplicationExceptionHandler {
     @ExceptionHandler(LibServiceException.class)
     public ResponseEntity libServiceExceptionHandler(LibServiceException e) {
-        return generateResponseEntity(ResultTemplate.of(SERVICE_ERROR.status(), SERVICE_ERROR.value(), String.format("%s;%s", SERVICE_ERROR.message(), e.getMessage())));
+        if (e.getMessage() == null) {
+            return generateResponseEntity(ResultTemplate.of(SERVICE_ERROR.status(), SERVICE_ERROR.value(), String.format("%s;%s", SERVICE_ERROR.message(), e.getMessage())));
+        } else {
+            return generateResponseEntity(ResultTemplate.of(SERVICE_ERROR.status(), e.isWithErrorCode() ? e.getCode() : SERVICE_ERROR.value(), e.getMessage()));
+        }
     }
 }
