@@ -2,6 +2,7 @@ package com.ouresports.grimstroke.im.rbo.api;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -12,5 +13,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class RoomMessageRbo {
     @NotNull(message="内容不可为空")
+    @NotEmpty(message="内容不可为空")
     private String content;
 }

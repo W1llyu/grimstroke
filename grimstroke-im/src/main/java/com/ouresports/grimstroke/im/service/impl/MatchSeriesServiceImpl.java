@@ -59,6 +59,6 @@ public class MatchSeriesServiceImpl extends BaseServiceImpl<MatchSeriesMapper, M
 
     private boolean chatRoomAlreadyFinished(MatchSeries matchSeries) {
         Long nowTimestamp = System.currentTimeMillis() / 1000;
-        return matchSeries.getStatus() == Finished && nowTimestamp >= (matchSeries.getUpdatedAt().getTime() / 1000) + 600;
+        return matchSeries.getStatus() == Finished && nowTimestamp >= (matchSeries.getUpdatedAt().getTime() / 1000) + 8 * 3600 + 600;
     }
 }

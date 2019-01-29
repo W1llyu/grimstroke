@@ -33,7 +33,9 @@ public class LuxUserActionListener {
     public void processJoinRoom(String msg) {
         try {
             GrimRoomCallbackMessageRbo callbackRbo = JSONObject.parseObject(msg, GrimRoomCallbackMessageRbo.class, GeneralFastjsonConfig.getFastJsonConfig().getFeatures());
-            notifyUserAction(callbackRbo, UserAction.JoinRoom);
+            if (needNotify(callbackRbo)) {
+                notifyUserAction(callbackRbo, UserAction.JoinRoom);
+            }
         } catch (Exception ignored) {}
     }
 
@@ -41,8 +43,14 @@ public class LuxUserActionListener {
     public void processLeaveRoom(String msg) {
         try {
             GrimRoomCallbackMessageRbo callbackRbo = JSONObject.parseObject(msg, GrimRoomCallbackMessageRbo.class, GeneralFastjsonConfig.getFastJsonConfig().getFeatures());
-            notifyUserAction(callbackRbo, UserAction.LeaveRoom);
+            if (needNotify(callbackRbo)) {
+                notifyUserAction(callbackRbo, UserAction.LeaveRoom);
+            }
         } catch (Exception ignored) {}
+    }
+
+    private boolean needNotify(GrimRoomCallbackMessageRbo rbo) {
+        return rbo.getRoomName().matches("grimstroke\\..*?");
     }
 
     private void notifyUserAction(GrimRoomCallbackMessageRbo callbackRbo, UserAction action) {

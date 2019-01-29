@@ -22,7 +22,7 @@ public class MyBatisPlusConfiguration {
      * SQL执行效率插件
      */
     @Bean
-    @Profile({"base-local","base-staging"})
+    @Profile({"base-local"})
     public PerformanceInterceptor performanceInterceptor() {
         return new PerformanceInterceptor();
     }

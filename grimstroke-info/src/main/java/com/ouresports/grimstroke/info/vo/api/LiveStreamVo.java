@@ -20,6 +20,7 @@ public class LiveStreamVo extends BaseTo<LiveStreamDto> {
     private LiveStreamType type;
     private String name;
     private AnalystVo user;
+    private Boolean active;
 
     public void setUser(User user) {
         if (user != null) {
