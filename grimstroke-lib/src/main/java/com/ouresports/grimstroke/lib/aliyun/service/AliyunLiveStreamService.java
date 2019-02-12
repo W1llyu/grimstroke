@@ -49,14 +49,30 @@ public class AliyunLiveStreamService extends AliyunBaseService {
     }
 
     /**
-     * 获取播放地址
+     * 获取m3u8播放地址
      * @param name
      * @return
      */
-    public String generateStreamPlayUrl(String name, String template) {
+    public String generateM3u8StreamPlayUrl(String name, String template) {
         long timestamp = (System.currentTimeMillis() / 1000) + 600;
         String seed = String.format("/%s/%s_%s.m3u8-%d-0-0-%s", APP_NAME, name, template, timestamp, liveStreamKey);
         return String.format("http://%s/%s/%s_%s.m3u8?auth_key=%d-0-0-%s", liveStreamPlayDomain, APP_NAME, name, template, timestamp, SecretUtil.md5(seed));
+    }
+
+    /**
+     * 获取FLV播放地址
+     * @param name
+     * @return
+     */
+    public String generateFlvStreamPlayUrl(String name, String template) {
+        long timestamp = (System.currentTimeMillis() / 1000) + 600;
+        if (template == null) {
+            String seed = String.format("/%s/%s.flv-%d-0-0-%s", APP_NAME, name, timestamp, liveStreamKey);
+            return String.format("http://%s/%s/%s.flv?auth_key=%d-0-0-%s", liveStreamPlayDomain, APP_NAME, name, timestamp, SecretUtil.md5(seed));
+        } else {
+            String seed = String.format("/%s/%s_%s.flv-%d-0-0-%s", APP_NAME, name, template, timestamp, liveStreamKey);
+            return String.format("http://%s/%s/%s_%s.flv?auth_key=%d-0-0-%s", liveStreamPlayDomain, APP_NAME, name, template, timestamp, SecretUtil.md5(seed));
+        }
     }
 
     /**

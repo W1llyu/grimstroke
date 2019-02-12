@@ -6,9 +6,12 @@ import com.ouresports.grimstroke.info.enums.StreamTemplate;
 import com.ouresports.grimstroke.info.mapper.LiveStreamMapper;
 import com.ouresports.grimstroke.info.service.LiveStreamService;
 import com.ouresports.grimstroke.lib.aliyun.service.AliyunLiveStreamService;
+import com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import static com.ouresports.grimstroke.lib.livestream.enums.ExternLivePlatform.Twitch;
 
 /**
  *
@@ -27,6 +30,10 @@ public class LiveStreamServiceImpl extends BaseServiceImpl<LiveStreamMapper, Liv
 
     @Override
     public String getPlayUrl(LiveStream liveStream, StreamTemplate template) {
-        return aliyunLiveStreamService.generateStreamPlayUrl(liveStream.getId().toString(), template.toString());
+        if (liveStream.getPlatform() == Twitch) {
+            return aliyunLiveStreamService.generateFlvStreamPlayUrl(liveStream.getId().toString(), null);
+        } else {
+            return aliyunLiveStreamService.generateFlvStreamPlayUrl(liveStream.getId().toString(), template.toString());
+        }
     }
 }

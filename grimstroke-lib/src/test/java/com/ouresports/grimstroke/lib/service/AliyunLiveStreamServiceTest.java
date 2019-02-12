@@ -22,7 +22,7 @@ public class AliyunLiveStreamServiceTest extends GrimstrokeLibApplicationTest {
     }
 
     public void testGenerateStreamPlayUrl() {
-        String url = aliyunLiveStreamService.generateStreamPlayUrl("lolol", "lsd");
+        String url = aliyunLiveStreamService.generateFlvStreamPlayUrl("lolol", "lsd");
         System.out.println(url);
     }
 

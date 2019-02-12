@@ -35,7 +35,11 @@ public class ZeusService {
                 .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSONObject.toJSONString(rbo)))
                 .build();
         Response response = OkHttpUtil.execute(request);
-        if (response == null || response.code() > 299) {
+        int code = response == null ? 400 : response.code();
+        if (response != null) {
+            response.close();
+        }
+        if (code > 299) {
             OperationResponse body = getErrorMessage(response);
             throw body == null ? new LibServiceException(null) : new LibServiceException(body.getErrorCode(), body.getErrorMessage());
         }

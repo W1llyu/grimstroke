@@ -37,7 +37,11 @@ public class LivestreamService {
                 .build();
         System.out.println();
         Response response = OkHttpUtil.execute(request);
-        if (response == null || response.code() != 201) {
+        int code = response == null ? 400 : response.code();
+        if (response != null) {
+            response.close();
+        }
+        if (code != 201) {
             throw new LibServiceException("启动推流失败");
         }
     }
@@ -51,7 +55,11 @@ public class LivestreamService {
                 .delete()
                 .build();
         Response response = OkHttpUtil.execute(request);
-        if (response == null || response.code() != 202) {
+        int code = response == null ? 400 : response.code();
+        if (response != null) {
+            response.close();
+        }
+        if (code != 202) {
             throw new LibServiceException("停止推流失败");
         }
     }

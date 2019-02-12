@@ -28,7 +28,10 @@ public class OkHttpUtil {
         OkHttpClient okHttpClient = okHttpClientBuilder.build();
         Call call = okHttpClient.newCall(request);
         try {
-            return call.execute().body().string();
+            Response response = call.execute();
+            String body = response.body().string();
+            response.close();
+            return body;
         } catch (IOException e) {
             return null;
         }

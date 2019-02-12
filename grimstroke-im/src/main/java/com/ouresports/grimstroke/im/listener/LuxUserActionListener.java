@@ -60,6 +60,9 @@ public class LuxUserActionListener {
             vo.setUser(new User().setName("匿名用户"));
         } else {
             vo.setUser(userService.getUserByToken(callbackRbo.getCredential()));
+            if (vo.getUser().getName() == null && vo.getUser().getPhone() == null) {
+                vo.getUser().setName("匿名用户");
+            }
         }
         LuxMessageRbo message = new LuxMessageRbo()
                 .setChannel(callbackRbo.getRoomName())
