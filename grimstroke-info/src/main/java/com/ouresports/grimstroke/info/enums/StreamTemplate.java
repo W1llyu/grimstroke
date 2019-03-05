@@ -13,10 +13,10 @@ public enum StreamTemplate implements IEnum {
     /**
      * 直播流清晰度
      */
-    LLD("lld"),
-    LSD("lsd"),
-    LHD("lhd"),
-    LUD("lud");
+    LLD("ld"),
+    LSD("sd"),
+    LHD("hd"),
+    LUD("ud");
 
     private String id;
 

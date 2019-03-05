@@ -9,7 +9,7 @@ import org.junit.Test;
 public class DouyuTest {
     @Test
     public void testGetStreamLink() throws LibServiceException {
-        Douyu douyu = new Douyu("606118");
+        Douyu douyu = new Douyu("288016");
         System.out.println(douyu.getStreamLink());
     }
 }

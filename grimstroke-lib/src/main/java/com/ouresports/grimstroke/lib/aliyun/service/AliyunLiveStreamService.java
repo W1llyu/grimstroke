@@ -29,7 +29,7 @@ public class AliyunLiveStreamService extends AliyunBaseService {
     private String liveStreamPlayDomain;
     private String liveStreamKey;
     private String liveStreamCallbackUrl;
-    private static final String APP_NAME = "ouresports";
+    private static final String APP_NAME = "kusoiy";
     private static final String HTTP_METHOD = "GET";
     private static final String API_BASE_URL = "http://live.aliyuncs.com/";
 

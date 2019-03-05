@@ -30,10 +30,10 @@ public class LiveStreamServiceImpl extends BaseServiceImpl<LiveStreamMapper, Liv
 
     @Override
     public String getPlayUrl(LiveStream liveStream, StreamTemplate template) {
-        if (liveStream.getPlatform() == Twitch) {
-            return aliyunLiveStreamService.generateFlvStreamPlayUrl(liveStream.getId().toString(), null);
-        } else {
+        if (liveStream.getPlatform().getTranscoding()) {
             return aliyunLiveStreamService.generateFlvStreamPlayUrl(liveStream.getId().toString(), template.toString());
+        } else {
+            return aliyunLiveStreamService.generateFlvStreamPlayUrl(liveStream.getId().toString(), null);
         }
     }
 }
