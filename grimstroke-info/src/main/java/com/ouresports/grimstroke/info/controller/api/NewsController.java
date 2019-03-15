@@ -1,6 +1,5 @@
 package com.ouresports.grimstroke.info.controller.api;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,8 +8,11 @@ import com.ouresports.grimstroke.base.template.IMeta;
 import com.ouresports.grimstroke.base.template.PaginationTemplate;
 import com.ouresports.grimstroke.base.template.ResultTemplate;
 import com.ouresports.grimstroke.base.template.SingleTemplate;
+import com.ouresports.grimstroke.info.dto.InformationDto;
+import com.ouresports.grimstroke.info.enums.InformationSubType;
 import com.ouresports.grimstroke.info.rbo.api.CommentRbo;
 import com.ouresports.grimstroke.info.vo.api.CommentVo;
+import com.ouresports.grimstroke.info.vo.api.InformationVo;
 import com.ouresports.grimstroke.info.vo.api.NewsVo;
 import com.ouresports.grimstroke.info.dto.CommentDto;
 import com.ouresports.grimstroke.info.dto.NewsDto;
@@ -40,6 +42,32 @@ public class NewsController extends BaseController {
     private UsersInformationService usersNewsService;
     @Resource
     private CommentService commentService;
+
+    /**
+     * 资讯列表
+     * @param currentPage
+     * @param per
+     * @param type
+     * @param tagId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="")
+    public ResponseEntity index(@RequestParam(value="page", defaultValue="1") int currentPage,
+                                @RequestParam(defaultValue="10") int per,
+                                @RequestParam(value="type") InformationSubType type,
+                                @RequestParam(value="tag_id") long tagId) throws Exception {
+        Page<NewsDto> page = new Page<>(currentPage, per);
+        News news = new News().setType(type).setTagId(tagId);
+        QueryWrapper<News> wrapper = new QueryWrapper<>(news)
+                .orderByDesc("`news`.`sticky`")
+                .orderByDesc("`news`.`created_at`");
+        IPage<NewsDto> newsPage = newsService.getDtos(page, wrapper);
+        IPage<InformationDto> infoPage = new Page<>(currentPage, per);
+        infoPage.setRecords(NewsDto.toInformations(newsPage.getRecords()));
+        infoPage.setTotal(newsPage.getTotal());
+        return render(new PaginationTemplate<>(infoPage, InformationVo.class));
+    }
 
     /**
      * 资讯详情
