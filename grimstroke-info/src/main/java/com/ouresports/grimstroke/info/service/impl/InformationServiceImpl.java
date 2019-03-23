@@ -33,7 +33,7 @@ public class InformationServiceImpl implements InformationService{
     private InfoCollectionService infoCollectionService;
 
     // 每页资讯数
-    private static final int NEWS_PAGE_SIZE = 5;
+    private static final int NEWS_PAGE_SIZE = 3;
     // 每页专题合集数
     private static final int COL_PAGE_SIZE = 2;
     // 专题间隔
@@ -51,22 +51,11 @@ public class InformationServiceImpl implements InformationService{
     @Override
     public IPage<InformationDto> getOrderedInformation(int page, Integer gameId) {
         List<InformationDto> newsInfo = getNewsInformation(page, gameId);
-        List<InformationDto> colInfo = getInfoColInformation(page, gameId);
         InformationDto courseInfo = getCourseInformation();
-        InformationDto analysisInfo = getAnalysisInformation(page, gameId);
-        if (colInfo.size() > 0) {
-            CollectionUtil.addElement(newsInfo, colInfo.get(0), COL_INTERVAL - 1);
-        }
         if (courseInfo != null) {
             CollectionUtil.addElement(newsInfo, courseInfo, COURSE_INDEX);
         }
-        if (colInfo.size() > 1) {
-            CollectionUtil.addElement(newsInfo, colInfo.get(1), 2 * COL_INTERVAL - 1);
-        }
-        if (analysisInfo != null) {
-            newsInfo.add(analysisInfo);
-        }
-        IPage<InformationDto> pages = new Page<>(page, NEWS_PAGE_SIZE + COL_PAGE_SIZE + 2);
+        IPage<InformationDto> pages = new Page<>(page, NEWS_PAGE_SIZE + 1);
         pages.setRecords(newsInfo);
         pages.setTotal(getInformationCount(gameId));
         return pages;

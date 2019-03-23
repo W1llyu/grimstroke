@@ -1,8 +1,10 @@
 package com.ouresports.grimstroke.info.dto;
 
+import com.ouresports.grimstroke.info.entity.Tag;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,4 +20,5 @@ public class TagDto {
     private String parentTagName;
     private Boolean enabled;
     private Date createdAt;
+    private List<Tag> children;
 }
